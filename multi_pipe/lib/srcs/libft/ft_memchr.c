@@ -1,16 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosopher.h                                      :+:      :+:    :+:   */
+/*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maleca <maleca@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/23 18:53:30 by maleca            #+#    #+#             */
-/*   Updated: 2025/09/23 18:54:07 by maleca           ###   ########.fr       */
+/*   Created: 2025/04/24 19:22:12 by maleca            #+#    #+#             */
+/*   Updated: 2025/09/07 20:09:03 by maleca           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILOSOPHER_H
-# define PHILOSOPHER_H
+#include "../../includes/libft.h"
 
-#endif
+void	*ft_memchr(const void *ptr, int val, size_t siz)
+{
+	size_t			i;
+	unsigned char	*str;
+
+	str = (unsigned char *)ptr;
+	i = 0;
+	while (i < siz)
+	{
+		if (str[i] == (unsigned char)val)
+			return (&str[i]);
+		i++;
+	}
+	return (NULL);
+}
