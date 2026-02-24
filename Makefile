@@ -1,5 +1,4 @@
-NAME = pipex
-BONUS_NAME = pipex_bonus
+NAME = minishell
 
 RED				= \e[31m
 GREEN			= \e[32m
@@ -9,17 +8,13 @@ MAGENTA			= \e[35m
 CYAN			= \e[36m
 RESET			= \e[m
 
-SRCS_DIR = src/
-INC = includes/pipex.h
+SRCS_DIR = srcs/
+INC = includes/minishell.h
 LIB = lib/libft.a
-SRCS = $(SRCS_DIR)pipex.c \
-		$(SRCS_DIR)pipex_utils.c
-
-BONUS_SRC = $(SRCS_DIR)
+SRCS = 
 
 
 OBJS = $(SRCS:%.c=build/%.o)
-BONUS_OBJS = $(BONUS_SRC:%.c=build/%.o)
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
@@ -31,22 +26,10 @@ $(NAME): $(OBJS) $(LIB)
 	@$(CC) $(CFLAGS) -o $@ $^ 
 	@echo "$(GREEN)Build complete$(NO_COLOR)"
 
-bonus: $(BONUS_NAME)
-	
-$(BONUS_NAME): $(BONUS_OBJS) $(LIB)
-	@echo "$(GREEN)Linking bonus$(RESET)"
-	@$(CC) $(CFLAGS) -o $@ $^
-	@echo "$(GREEN)Bonus build complete$(RESET)"
-	@echo "$(GREEN)Build complete$(NO_COLOR)"
-
 $(LIB):
 	@$(MAKE) -C lib lib
 
-$(OBJS) $(BONUS_OBJS): $(INC) | build
-
 $(OBJS): | build
-
-$(BONUS_OBJS): | build
 
 build:
 	@mkdir -p build
@@ -69,4 +52,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re
