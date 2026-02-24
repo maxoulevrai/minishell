@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_echo.c                                          :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/22 15:34:22 by maleca            #+#    #+#             */
-/*   Updated: 2026/02/24 16:14:35 by root             ###   ########.fr       */
+/*   Updated: 2026/02/24 17:09:56 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../includes/bultins.h"
 
 // verifie la validité du flag -n
 // return 1 si flag valide sinon 0
@@ -46,14 +46,14 @@ int	ft_echo(char **t_cmd)
 	newline = TRUE;
 	i = 0;
 	if (!t_cmd[0])
-		return (ft_fprintf("\n", 1), 1);
+		return (ft_fprintf(STDERR_FILENO, "\n", 1), 1);
 	while (is_n_flag(t_cmd[i]) && t_cmd[i])
 	{
 		newline = FALSE;
 		i++;
 	}
-	ft_fprintf("%s", &t_cmd[1][i], 1);
+	ft_fprintf(STDOUT_FILENO, "%s", &t_cmd[1][i], 1);
 	if (newline)
-		ft_fprintf("\n", 1);
+		ft_fprintf(STDOUT_FILENO, "\n", 1);
 	return (0);
 }
