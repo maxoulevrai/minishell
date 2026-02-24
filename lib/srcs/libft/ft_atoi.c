@@ -6,11 +6,11 @@
 /*   By: maleca <maleca@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 17:32:25 by maleca            #+#    #+#             */
-/*   Updated: 2025/08/22 21:55:02 by maleca           ###   ########.fr       */
+/*   Updated: 2025/09/07 20:09:03 by maleca           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../libft.h"
+#include "../../includes/libft.h"
 
 int	ft_atoi(const char *nptr)
 {

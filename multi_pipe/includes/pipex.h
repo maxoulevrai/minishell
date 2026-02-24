@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maleca <maleca@student.42.fr>              +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 15:39:51 by maleca            #+#    #+#             */
-/*   Updated: 2025/09/12 22:23:14 by maleca           ###   ########.fr       */
+/*   Updated: 2026/02/24 14:53:32 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 # define PIPEX_H
 
 # include "../lib/includes/libft.h"
-# include "../lib/includes/get_next_line.h"
-# include "../lib/includes/ft_fprintf.h"
 # include <errno.h>
 
 void	check_exit(void);

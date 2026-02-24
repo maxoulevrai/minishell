@@ -6,21 +6,11 @@
 /*   By: maleca <maleca@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:46:51 by maleca            #+#    #+#             */
-/*   Updated: 2025/08/08 19:38:02 by maleca           ###   ########.fr       */
+/*   Updated: 2025/09/07 20:03:41 by maleca           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../ft_printf.h"
-
-static size_t	ft_strlen(char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
+#include "../../../includes/ft_printf.h"
 
 void	ft_putnbr_basef(unsigned long long nb, char *base, size_t *count)
 {

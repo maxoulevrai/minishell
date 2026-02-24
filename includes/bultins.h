@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   bultins.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maleca <maleca@student.42.fr>              +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/22 15:34:22 by maleca            #+#    #+#             */
-/*   Updated: 2026/02/22 16:41:25 by maleca           ###   ########.fr       */
+/*   Created: 2026/02/24 15:41:35 by root              #+#    #+#             */
+/*   Updated: 2026/02/24 15:44:26 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#ifndef BUILTINS_H
+# define BUILTINS_H
 
-void	ft_echo()
-{
+#include "minishell.h"
 
-}
+#endif

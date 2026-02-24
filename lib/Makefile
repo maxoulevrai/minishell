@@ -10,6 +10,7 @@ RESET			= \033[0m
 
 GNL_DIR = srcs/get_next_line/
 PRINTF_DIR = srcs/printf/
+FPRINTF_DIR = srcs/fprintf/
 LIB_DIR = srcs/libft/
 BUILD_DIR = build/
 
@@ -22,6 +23,13 @@ PRINTF_SRCS = $(PRINTF_DIR)ft_printf.c \
 			$(PRINTF_DIR)utils/ft_putnbr_basef.c \
 			$(PRINTF_DIR)utils/ft_putnbrf.c \
 			$(PRINTF_DIR)utils/ft_putstrf.c
+
+FPRINTF_SRCS = $(FPRINTF_DIR)ft_fprintf.c \
+			$(FPRINTF_DIR)utils/ft_putaddyf_fd.c \
+			$(FPRINTF_DIR)utils/ft_putcharf_fd.c \
+			$(FPRINTF_DIR)utils/ft_putnbr_basef_fd.c \
+			$(FPRINTF_DIR)utils/ft_putnbrf_fd.c \
+			$(FPRINTF_DIR)utils/ft_putstrf_fd.c
 
 LIB_SRCS = $(LIB_DIR)ft_abs.c \
 			$(LIB_DIR)ft_isalpha.c \
@@ -75,7 +83,7 @@ LIB_SRCS = $(LIB_DIR)ft_abs.c \
 			$(LIB_DIR)ft_lstiter.c \
 			$(LIB_DIR)ft_lstmap.c 
 
-ALL_SRCS = $(LIB_SRCS) $(GNL_SRCS) $(PRINTF_SRCS)
+ALL_SRCS = $(LIB_SRCS) $(GNL_SRCS) $(PRINTF_SRCS) $(FPRINTF_SRCS)
 LIB_OBJS = $(ALL_SRCS:%.c=$(BUILD_DIR)%.o)
 
 CC = cc

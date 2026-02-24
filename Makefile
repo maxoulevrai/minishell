@@ -1,5 +1,4 @@
-NAME = pipex
-BONUS_NAME = pipex_bonus
+NAME = minishell
 
 RED				= \e[31m
 GREEN			= \e[32m
@@ -10,16 +9,13 @@ CYAN			= \e[36m
 RESET			= \e[m
 
 SRCS_DIR = src/
-INC = includes/pipex.h
+INC = includes/minishell.h
 LIB = lib/libft.a
 SRCS = $(SRCS_DIR)pipex.c \
 		$(SRCS_DIR)pipex_utils.c
 
-BONUS_SRC = $(SRCS_DIR)
-
 
 OBJS = $(SRCS:%.c=build/%.o)
-BONUS_OBJS = $(BONUS_SRC:%.c=build/%.o)
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
@@ -29,14 +25,6 @@ all: $(NAME)
 $(NAME): $(OBJS) $(LIB)
 	@echo "$(GREEN)Linking $@$(NO_COLOR)"
 	@$(CC) $(CFLAGS) -o $@ $^ 
-	@echo "$(GREEN)Build complete$(NO_COLOR)"
-
-bonus: $(BONUS_NAME)
-	
-$(BONUS_NAME): $(BONUS_OBJS) $(LIB)
-	@echo "$(GREEN)Linking bonus$(RESET)"
-	@$(CC) $(CFLAGS) -o $@ $^
-	@echo "$(GREEN)Bonus build complete$(RESET)"
 	@echo "$(GREEN)Build complete$(NO_COLOR)"
 
 $(LIB):
