@@ -6,7 +6,7 @@
 /*   By: maleca <maleca@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:58:33 by maleca            #+#    #+#             */
-/*   Updated: 2025/08/05 22:41:34 by maleca           ###   ########.fr       */
+/*   Updated: 2026/02/26 15:12:27 by maleca           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	*ft_memcpy(void *dst, const void *src, size_t siz);
 void	*ft_memmove(void *dst, const void *src, size_t siz);
 char	*ft_itoa(int n);
 char	*ft_strdup(const char *src);
+char	*ft_strndup(char *src, size_t siz);
 char	*ft_strcat(char *dst, char *src);
 char	*ft_strchr(const char *str, int c);
 char	*ft_strrchr(const char *str, int c);
