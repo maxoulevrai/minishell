@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maleca <maleca@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yzidani <yzidani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 18:53:30 by maleca            #+#    #+#             */
-/*   Updated: 2026/02/26 14:57:59 by maleca           ###   ########.fr       */
+/*   Updated: 2026/02/28 17:29:58 by yzidani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,29 @@ typedef struct s_env
 	t_env	*next;
 }				t_env;
 
+typedef struct s_token
+{
+	char			*value;
+	int				type;
+	struct s_token	*next;
+}				t_token;
+
+typedef struct s_cmd
+{
+	char			**args;
+	char			*input_file;
+	char			*output_file;
+	int				append;
+	struct s_cmd	*next;
+}				t_cmd;
+
+typedef struct s_data
+{
+	char	*line;
+	t_env	*envp;
+}				t_data;
+
+// Parsing
+t_cmd	*parsing(t_data *data);
 
 #endif
