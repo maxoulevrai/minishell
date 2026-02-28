@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_check_dispatch.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: maleca <maleca@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 15:40:58 by root              #+#    #+#             */
-/*   Updated: 2026/02/24 16:12:28 by root             ###   ########.fr       */
+/*   Updated: 2026/02/28 15:22:45 by maleca           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,23 +24,23 @@
 int	builtins_checker(char *t_cmd)
 {
 	if (!t_cmd)
-		return (FALSE);
+		return (FAILURE);
 	else if (!ft_strcmp(t_cmd, "pwd"))
-		return (TRUE);
+		return (SUCCESS);
 	else if (!ft_strcmp(t_cmd, "export"))
-		return (TRUE);
+		return (SUCCESS);
 	else if (!ft_strcmp(t_cmd, "unset"))
-		return (TRUE);
+		return (SUCCESS);
 	else if (!ft_strcmp(t_cmd, "env"))
-		return (TRUE);
+		return (SUCCESS);
 	else if (!ft_strcmp(t_cmd, "exit"))
-		return (TRUE);
+		return (SUCCESS);
 	else if (!ft_strcmp(t_cmd, "echo"))
-		return (TRUE);
+		return (SUCCESS);
 	else if (!ft_strcmp(t_cmd, "cd"))
 		return (2);
 	else
-		return (FALSE);
+		return (FAILURE);
 }
 
 int	builtins_dispatcher(char **t_cmd)
@@ -60,5 +60,5 @@ int	builtins_dispatcher(char **t_cmd)
 	else if (!ft_strcmp(t_cmd, "cd"))
 		return (ft_cd());
 	else
-		return (FALSE);
+		return (FAILURE);
 }

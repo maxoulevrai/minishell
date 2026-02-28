@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: maleca <maleca@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/22 15:34:22 by maleca            #+#    #+#             */
-/*   Updated: 2026/02/24 17:09:56 by root             ###   ########.fr       */
+/*   Updated: 2026/02/25 15:28:19 by maleca           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,13 @@ int	ft_echo(char **t_cmd)
 	int	i;
 	int newline;
 
-	newline = TRUE;
+	newline = 1;
 	i = 0;
 	if (!t_cmd[0])
 		return (ft_fprintf(STDERR_FILENO, "\n", 1), 1);
 	while (is_n_flag(t_cmd[i]) && t_cmd[i])
 	{
-		newline = FALSE;
+		newline = 0;
 		i++;
 	}
 	ft_fprintf(STDOUT_FILENO, "%s", &t_cmd[1][i], 1);
