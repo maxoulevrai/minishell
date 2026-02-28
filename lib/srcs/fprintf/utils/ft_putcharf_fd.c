@@ -1,29 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memchr.c                                        :+:      :+:    :+:   */
+/*   ft_putcharf_fd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maleca <maleca@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/24 19:22:12 by maleca            #+#    #+#             */
-/*   Updated: 2025/09/07 20:09:03 by maleca           ###   ########.fr       */
+/*   Created: 2025/04/30 03:59:05 by maleca            #+#    #+#             */
+/*   Updated: 2025/09/07 20:25:26 by maleca           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/libft.h"
+#include "../../../includes/ft_fprintf.h"
 
-void	*ft_memchr(const void *ptr, int val, size_t siz)
+void	ft_putcharf_fd(char c, size_t *count, int fd)
 {
-	size_t			i;
-	unsigned char	*str;
-
-	str = (unsigned char *)ptr;
-	i = 0;
-	while (i < siz)
-	{
-		if (str[i] == (unsigned char)val)
-			return (&str[i]);
-		i++;
-	}
-	return (NULL);
+	write(fd, &c, 1);
+	(*count)++;
 }

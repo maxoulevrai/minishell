@@ -6,23 +6,27 @@
 /*   By: maleca <maleca@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:58:33 by maleca            #+#    #+#             */
-/*   Updated: 2026/02/26 15:12:27 by maleca           ###   ########.fr       */
+/*   Updated: 2026/02/28 16:22:09 by maleca           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
+# include "ft_fprintf.h"
+# include "ft_printf.h"
+# include "get_next_line.h"
+
 # include <unistd.h>
 # include <stdlib.h>
 # include <limits.h>
-
+# include <string.h>
+# include <limits.h>
 # include <stdio.h>
 # include <string.h>
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
-# endif
+# include <sys/wait.h>
+# include <fcntl.h>
 
 typedef struct s_list
 {
@@ -57,7 +61,7 @@ void	*ft_memcpy(void *dst, const void *src, size_t siz);
 void	*ft_memmove(void *dst, const void *src, size_t siz);
 char	*ft_itoa(int n);
 char	*ft_strdup(const char *src);
-char	*ft_strndup(char *src, size_t siz);
+char	*ft_strndup(const char *src, size_t siz);
 char	*ft_strcat(char *dst, char *src);
 char	*ft_strchr(const char *str, int c);
 char	*ft_strrchr(const char *str, int c);
@@ -82,19 +86,5 @@ void	ft_lstadd_back(t_list **lst, t_list *new);
 void	ft_lstdelone(t_list *lst, void (*del)(void*));
 void	ft_lstclear(t_list **lst, void (*del)(void*));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
-
-int		ft_printf(const char *str, ...);
-void	ft_putcharf(char c, size_t *count);
-void	ft_putstrf(char *str, size_t *count);
-void	ft_putnbrf(int n, size_t *count);
-void	ft_putaddyf(unsigned long long adresse, size_t *count);
-void	ft_putnbr_basef(unsigned long long nb, char *base, size_t *count);
-
-size_t	gnl_len(char *str);
-void	stash_cleanup(char **stash);
-char	*get_next_line(int fd);
-char	*ft_strchr_gnl(char *str, char c);
-char	*ft_strjoin_gnl(char *stash, char *buff);
-char	*read_and_store(int fd, char *stash, int *flag);
 
 #endif

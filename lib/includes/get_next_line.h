@@ -3,30 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: maleca <maleca@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/27 19:03:31 by root              #+#    #+#             */
-/*   Updated: 2025/03/09 20:32:47 by root             ###   ########.fr       */
+/*   Created: 2025/09/07 20:05:09 by maleca            #+#    #+#             */
+/*   Updated: 2026/02/28 16:14:54 by maleca           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# include <unistd.h>
-# include <stdlib.h>
-# include <limits.h>
-
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
 # endif
 
-char	*get_next_line(int fd);
-size_t	ft_strlen_gnl(char *str);
-char	*ft_strchr_gnl(char *s, int c);
-char	*ft_strjoin_gnl(char *stash, char *buf);
-char	*extract_line(char *stash);
+# include "libft.h"
+# include <stdlib.h>
+# include <fcntl.h>
+# include <limits.h>
+
+# include <unistd.h>
+# include <stdio.h>
+
+char	*get_next_line(int fd, char *LIMITER);
+char	*ft_strchr_gnl(char *str, char c);
 void	stash_cleanup(char **stash);
-void	*ft_calloc(size_t nmemb, size_t size);
+char	*read_and_store(int fd, char *stash, int *flag);
+size_t	gnl_len(char *str);
+char	*ft_strjoin_gnl(char *stash, char *buff);
 
 #endif

@@ -1,38 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atol.c                                          :+:      :+:    :+:   */
+/*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maleca <maleca@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/25 12:33:52 by maleca            #+#    #+#             */
-/*   Updated: 2025/09/07 20:09:03 by maleca           ###   ########.fr       */
+/*   Created: 2025/09/07 19:37:19 by maleca            #+#    #+#             */
+/*   Updated: 2026/02/28 16:14:48 by maleca           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/libft.h"
+#ifndef FT_PRINTF_H
 
-long	ft_atol(const char *nptr)
-{
-	size_t	i;
-	int		sign;
-	long	nbr;
+# define FT_PRINTF_H
 
-	i = 0;
-	sign = 1;
-	nbr = 0;
-	while (nptr[i] == ' ' || (nptr[i] >= 9 && nptr[i] <= 13))
-		i++;
-	if (nptr[i] == '-' || nptr[i] == '+')
-	{
-		if (nptr[i] == '-')
-			sign *= -1;
-		i++;
-	}
-	while (nptr[i] >= '0' && nptr[i] <= '9')
-	{
-		nbr = nbr * 10 + (nptr[i] - '0');
-		i++;
-	}
-	return (sign * nbr);
-}
+# include "libft.h"
+# include <stdarg.h>
+# include <unistd.h>
+
+int		ft_printf(const char *str, ...);
+void	ft_putcharf(char c, size_t *count);
+void	ft_putstrf(char *str, size_t *count);
+void	ft_putnbrf(int n, size_t *count);
+void	ft_putaddyf(unsigned long long adresse, size_t *count);
+void	ft_putnbr_basef(unsigned long long nb, char *base, size_t *count);
+
+#endif

@@ -1,29 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memchr.c                                        :+:      :+:    :+:   */
+/*   ft_putaddyf_fd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maleca <maleca@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/24 19:22:12 by maleca            #+#    #+#             */
-/*   Updated: 2025/09/07 20:09:03 by maleca           ###   ########.fr       */
+/*   Created: 2025/05/02 12:15:43 by maleca            #+#    #+#             */
+/*   Updated: 2025/09/07 20:37:49 by maleca           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/libft.h"
+#include "../../../includes/ft_fprintf.h"
 
-void	*ft_memchr(const void *ptr, int val, size_t siz)
+void	ft_putaddyf_fd(unsigned long long adresse, size_t *count, int fd)
 {
-	size_t			i;
-	unsigned char	*str;
-
-	str = (unsigned char *)ptr;
-	i = 0;
-	while (i < siz)
+	if (!adresse)
 	{
-		if (str[i] == (unsigned char)val)
-			return (&str[i]);
-		i++;
+		ft_putstrf_fd("(nil)", count, fd);
+		return ;
 	}
-	return (NULL);
+	ft_putstrf_fd("0x", count, fd);
+	ft_putnbr_basef_fd(adresse, 'x', count, fd);
 }

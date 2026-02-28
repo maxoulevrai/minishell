@@ -6,11 +6,11 @@
 /*   By: maleca <maleca@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 13:43:05 by maleca            #+#    #+#             */
-/*   Updated: 2025/08/08 19:37:57 by maleca           ###   ########.fr       */
+/*   Updated: 2025/09/07 20:09:03 by maleca           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../libft.h"
+#include "../../includes/libft.h"
 
 char	*ft_substr(char const *src, unsigned int start, size_t len)
 {

@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: maleca <maleca@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/27 19:07:45 by root              #+#    #+#             */
-/*   Updated: 2025/08/22 21:55:43 by maleca           ###   ########.fr       */
+/*   Created: 2025/09/07 20:06:41 by maleca            #+#    #+#             */
+/*   Updated: 2025/09/07 20:06:50 by maleca           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "../../includes/get_next_line.h"
 
-size_t	ft_strlen_gnl(char *str)
+size_t	gnl_len(char *str)
 {
 	size_t	i;
 
@@ -24,24 +24,43 @@ size_t	ft_strlen_gnl(char *str)
 	return (i);
 }
 
-char	*ft_strchr_gnl(char *s, int c)
+char	*ft_strchr_gnl(char *str, char c)
 {
-	if (!s)
+	size_t	i;
+
+	i = 0;
+	if (!str)
 		return (NULL);
-	while (*s)
+	while (str[i])
 	{
-		if (*s == (char)c)
-			return ((char *)s);
-		s++;
+		if (str[i] == c)
+			return (&str[i]);
+		i++;
 	}
 	return (NULL);
 }
 
-char	*ft_strjoin_gnl(char *stash, char *buf)
+void	*ft_calloc(size_t nmemb, size_t siz)
+{
+	unsigned char	*ptr;
+	size_t			i;
+
+	i = 0;
+	if (siz && nmemb > (UINT_MAX / siz))
+		return (NULL);
+	ptr = malloc(nmemb * siz);
+	if (!ptr)
+		return (NULL);
+	while (i < nmemb * siz)
+		ptr[i++] = 0;
+	return (ptr);
+}
+
+char	*ft_strjoin_gnl(char *stash, char *buff)
 {
 	char	*new_stash;
-	size_t	i;
-	size_t	j;
+	int		i;
+	int		j;
 
 	if (!stash)
 	{
@@ -49,68 +68,19 @@ char	*ft_strjoin_gnl(char *stash, char *buf)
 		if (!stash)
 			return (NULL);
 	}
-	new_stash = malloc(sizeof(char)
-			*(ft_strlen_gnl(stash) + ft_strlen_gnl(buf) + 1));
+	new_stash = NULL;
+	if (!stash && !buff)
+		return (NULL);
+	new_stash = malloc(sizeof(char) * (gnl_len(stash) + gnl_len(buff) + 1));
 	if (!new_stash)
 		return (NULL);
 	i = -1;
-	while (stash[++i])
+	while (stash[++i] && *stash)
 		new_stash[i] = stash[i];
 	j = 0;
-	while (buf[j])
-		new_stash[i++] = buf[j++];
+	while (buff[j])
+		new_stash[i++] = buff[j++];
 	new_stash[i] = '\0';
 	free(stash);
 	return (new_stash);
-}
-
-char	*extract_line(char *stash)
-{
-	size_t	i;
-	char	*line;
-
-	if (!stash || !stash[0])
-		return (NULL);
-	i = 0;
-	while (stash[i] && stash[i] != '\n')
-		i++;
-	line = malloc(sizeof(char) * (i + 2));
-	if (!line)
-		return (NULL);
-	i = 0;
-	while (stash[i] && stash[i] != '\n')
-	{
-		line[i] = stash[i];
-		i++;
-	}
-	if (stash[i] == '\n')
-		line[i++] = '\n';
-	line[i] = '\0';
-	return (line);
-}
-
-void	stash_cleanup(char **stash)
-{
-	size_t	i;
-	size_t	j;
-	char	*new_stash;
-
-	if (!*stash || !ft_strchr_gnl(*stash, '\n'))
-	{
-		free(*stash);
-		*stash = NULL;
-		return ;
-	}
-	i = 0;
-	while ((*stash)[i] && (*stash)[i] != '\n')
-		i++;
-	new_stash = malloc(sizeof(char) * (ft_strlen_gnl(*stash) - i + 1));
-	if (!new_stash)
-		return ;
-	j = 0;
-	while ((*stash)[++i])
-		new_stash[j++] = (*stash)[i];
-	new_stash[j] = '\0';
-	free(*stash);
-	*stash = new_stash;
 }

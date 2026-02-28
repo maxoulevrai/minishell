@@ -1,29 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memchr.c                                        :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maleca <maleca@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/24 19:22:12 by maleca            #+#    #+#             */
-/*   Updated: 2025/09/07 20:09:03 by maleca           ###   ########.fr       */
+/*   Created: 2025/04/25 12:54:53 by maleca            #+#    #+#             */
+/*   Updated: 2026/02/28 16:54:11 by maleca           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/libft.h"
 
-void	*ft_memchr(const void *ptr, int val, size_t siz)
+char	*ft_strndup(const char *src, size_t siz)
 {
-	size_t			i;
-	unsigned char	*str;
+	char	*dst;
+	size_t	i;
 
-	str = (unsigned char *)ptr;
+	dst = malloc(sizeof(char) * (siz + 1));
+	if (!dst)
+		return (NULL);
 	i = 0;
-	while (i < siz)
+	while (src[i] && i < siz)
 	{
-		if (str[i] == (unsigned char)val)
-			return (&str[i]);
+		dst[i] = src[i];
 		i++;
 	}
-	return (NULL);
+	dst[i] = '\0';
+	return (dst);
 }

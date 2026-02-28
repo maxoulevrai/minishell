@@ -11,7 +11,7 @@ RESET			= \e[m
 SRCS_DIR = srcs/
 INC = includes/minishell.h
 LIB = lib/libft.a
-SRCS = 
+SRCS = $(SRCS_DIR)/main/env.c
 
 
 OBJS = $(SRCS:%.c=build/%.o)

@@ -1,29 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memchr.c                                        :+:      :+:    :+:   */
+/*   ft_putnbrf.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maleca <maleca@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/24 19:22:12 by maleca            #+#    #+#             */
-/*   Updated: 2025/09/07 20:09:03 by maleca           ###   ########.fr       */
+/*   Created: 2025/04/30 04:04:54 by maleca            #+#    #+#             */
+/*   Updated: 2025/09/07 20:03:58 by maleca           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/libft.h"
+#include "../../../includes/ft_fprintf.h"
 
-void	*ft_memchr(const void *ptr, int val, size_t siz)
+void	ft_putnbrf_fd(int n, size_t *count, int fd)
 {
-	size_t			i;
-	unsigned char	*str;
+	long	nb;
 
-	str = (unsigned char *)ptr;
-	i = 0;
-	while (i < siz)
+	nb = (long)n;
+	if (nb < 0)
 	{
-		if (str[i] == (unsigned char)val)
-			return (&str[i]);
-		i++;
+		nb *= -1;
+		ft_putcharf_fd('-', count, fd);
 	}
-	return (NULL);
+	if (nb > 9)
+	{
+		ft_putnbrf_fd(nb / 10, count, fd);
+		ft_putcharf_fd(nb % 10 + '0', count, fd);
+	}
+	else
+		ft_putcharf_fd(nb % 10 + '0', count, fd);
 }

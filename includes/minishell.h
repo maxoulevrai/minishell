@@ -6,14 +6,14 @@
 /*   By: maleca <maleca@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 18:53:30 by maleca            #+#    #+#             */
-/*   Updated: 2026/02/26 14:57:59 by maleca           ###   ########.fr       */
+/*   Updated: 2026/02/28 16:21:28 by maleca           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "../lib/libft.h"
+# include "../lib/includes/libft.h"
 # include <errno.h>
 # include <limits.h>
 # include <readline/history.h>
@@ -26,7 +26,14 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-# define PROMPT "6ft shell>>"
+# define PROMPT "6ft_shell>>"
+
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}				t_env;
 
 typedef struct s_shell
 {
@@ -34,13 +41,7 @@ typedef struct s_shell
 	t_env	*envp;
 }				t_shell;
 
-typedef struct s_env
-{
-	char	*key;
-	char	*value;
-	int		id;
-	t_env	*next;
-}				t_env;
+
 
 
 #endif

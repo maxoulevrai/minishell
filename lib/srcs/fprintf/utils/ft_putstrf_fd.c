@@ -1,26 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   ft_putstrf.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maleca <maleca@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/30 03:29:44 by maleca            #+#    #+#             */
-/*   Updated: 2025/05/03 16:51:19 by maleca           ###   ########.fr       */
+/*   Created: 2025/04/30 04:02:59 by maleca            #+#    #+#             */
+/*   Updated: 2025/09/07 20:03:58 by maleca           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#include "../../../includes/ft_fprintf.h"
 
-# include <stdarg.h>
-# include <unistd.h>
+void	ft_putstrf_fd(char *str, size_t *count, int fd)
+{
+	int	i;
 
-int		ft_printf(const char *str, ...);
-void	ft_putcharf(char c, size_t *count);
-void	ft_putstrf(char *str, size_t *count);
-void	ft_putnbrf(int n, size_t *count);
-void	ft_putaddyf(unsigned long long adresse, size_t *count);
-void	ft_putnbr_basef(unsigned long long nb, char *base, size_t *count);
-
-#endif
+	if (!str)
+	{
+		ft_putstrf_fd("(null)", count, fd);
+		return ;
+	}
+	i = 0;
+	while (str[i])
+	{
+		(*count)++;
+		i++;
+	}
+	write(fd, str, i);
+}
