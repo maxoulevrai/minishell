@@ -1,0 +1,348 @@
+================================================================================
+                        PLAN DE RÉALISATION - MINISHELL
+================================================================================
+
+OBJECTIF GÉNÉRAL:
+Implémenter un shell interactif (minishell) avec parsing de commandes, redirections,
+pipes, variables d'environnement, signaux et built-in commands.
+
+================================================================================
+ÉTAPE 1: INFRASTRUCTURE DE BASE ET ARCHITECTURE
+================================================================================
+
+Composants à mettre en place:
+  • Structure de données principale (s_minishell) pour gérer l'état
+  • Système de gestion des signaux globaux (signal handler)
+  • Boucle principale (REPL - Read-Eval-Print-Loop)
+  • Initialisation de l'environnement (copie des variables d'environnement)
+  • Libft liée correctement
+
+Tâches:
+  - Créer les structures de données nécessaires (minishell.h)
+  - Implémenter le signal handler global (limité au numéro de signal)
+  - Mettre en place la boucle principale
+  - Intégrer readline pour l'affichage du prompt
+  - Gérer la sauvegarde de l'historique
+
+
+================================================================================
+ÉTAPE 2: PARSING ET TOKENIZATION
+================================================================================
+
+Objectif: Transformer une ligne d'entrée en tokens exécutables.
+
+Sous-étapes:
+
+  2.1 LEXICAL ANALYSIS (Tokenization)
+      • Identifier les tokens: commandes, arguments, redirections, pipes
+      • Gérer les espaces blancs
+      • Structure pour représenter les tokens
+      • Sortie: liste de tokens bruts
+
+  2.2 QUOTE HANDLING (Quotes simples et doubles)
+      • Single quotes (') → pas d'interprétation des meta-caractères
+      • Double quotes (") → pas d'interprétation SAUF $ (dollar)
+      • Gestion des guillemets fermés/ouverts
+      • Retirer les quotes du résultat final
+      • Sortie: tokens avec quotes traitées
+
+  2.3 VARIABLE EXPANSION
+      • $ suivi de caractères → remplacer par valeur d'env
+      • $? → remplacer par exit status du dernier pipeline
+      • Gestion des variables non existantes (vide)
+      • Double quotes: expansion autorisée
+      • Single quotes: pas d'expansion
+      • Sortie: tokens avec variables expandues
+
+  2.4 CONSTRUCTION DE L'AST (Abstract Syntax Tree)
+      • Parser les tokens en commandes
+      • Identifier les redirections (< > >> <<)
+      • Identifier les pipes (|)
+      • Structure pour représenter la commande/pipeline
+      • Sortie: structure prête pour exécution
+
+
+================================================================================
+ÉTAPE 3: GESTION DES REDIRECTIONS
+================================================================================
+
+Objectif: Implémenter <, >, >>, <<
+
+Cas à traiter:
+  • < (input redirection)     → rediriger stdin depuis un fichier
+  • > (output redirection)    → rediriger stdout vers un fichier (truncate)
+  • >> (append redirection)   → rediriger stdout vers un fichier (append)
+  • << (here-doc)             → lire stdin jusqu'à delimiter
+  
+Pour chaque redirection:
+  - Identifier les fichiers/délimiteurs
+  - Ouvrir les fichiers avec les permissions correctes
+  - Gérer les erreurs (fichier non accessible, etc.)
+  - Utiliser dup2() pour rediriger les fd
+  - Fermer les fd après usage
+  - Gestion multiple redirections sur une commande
+
+
+================================================================================
+ÉTAPE 4: GESTION DES PIPES
+================================================================================
+
+Objectif: Implémenter l'opérateur pipe (|)
+
+Points clés:
+  • Comprendre qu'un pipe connecte stdout du cmd[i] à stdin du cmd[i+1]
+  • Créer des pipes avec pipe()
+  • Forker les sous-processus
+  • Rediriger les fd correctement (dup2)
+  • Attendre tous les processus avec wait/waitpid
+  • Gérer la séquence de création de pipes et fork
+  • Retourner le exit code du dernier processus
+
+
+================================================================================
+ÉTAPE 5: EXÉCUTION DES COMMANDES EXTERNES
+================================================================================
+
+Objectif: Chercher et lancer les exécutables
+
+Tâches:
+  • Parser la variable PATH
+  • Chercher l'exécutable:
+    - Si chemin absolu (starts with /) → utiliser directement
+    - Si chemin relatif (contains /) → utiliser directement
+    - Sinon: parcourir les répertoires du PATH
+  • Vérifier l'accessibilité du fichier (access())
+  • Lancer avec execve()
+  • Gérer les erreurs (commande non trouvée, permission denied)
+  • Gérer la sortie du processus enfant
+  • Implémenter un système de cache pour les chemins (optionnel selon la version)
+
+
+================================================================================
+ÉTAPE 6: BUILT-IN COMMANDS
+================================================================================
+
+Objectif: Implémenter les 7 commandes built-in
+
+Chaque built-in:
+  1. echo [-n] [args]
+     • Affiche les arguments séparés par des espaces
+     • -n: pas de newline à la fin
+     • Permet l'expansion des variables
+     
+  2. cd [path]
+     • Change le répertoire courant
+     • Chemin relatif ou absolu uniquement
+     • Mettre à jour PWD en variable d'environnement
+     • Gérer les erreurs (répertoire inexistant)
+     
+  3. pwd
+     • Affiche le répertoire courant
+     • Pas d'options
+     
+  4. export [var=value]
+     • Ajoute/modifie une variable d'environnement
+     • Peut être appelé sans argument (affiche env)
+     • Pas de validation de noms de variables requis
+     
+  5. unset [var]
+     • Supprime une variable d'environnement
+     • Peut avoir plusieurs arguments
+     
+  6. env
+     • Affiche toutes les variables d'environnement
+     • Pas d'options ou d'arguments
+     
+  7. exit [code]
+     • Quitte le shell avec le code spécifié
+     • Code par défaut: 0
+
+
+================================================================================
+ÉTAPE 7: GESTION DES SIGNAUX
+================================================================================
+
+Objectif: Gérer Ctrl-C, Ctrl-D, Ctrl-\
+
+Comportement attendu:
+  • Ctrl-C (SIGINT)
+    - En mode interactif: affiche un nouveau prompt sur une nouvelle ligne
+    - Ne pas quitter le shell
+    - Exit status de la task devient 130 (128 + 2)
+    
+  • Ctrl-D (EOF)
+    - Quitter le shell
+    - Pas de message
+    
+  • Ctrl-\ (SIGQUIT)
+    - Ne rien faire en mode interactif
+
+Implémentation:
+  • Utiliser sigaction() pour instaler les handlers
+  • Garder un signal global uniquement (numéro du signal)
+  • Dans le handler: juste stocker le numéro
+  • Dans la boucle principale: vérifier le flag et réagir
+  • Pas de structures complexes en global
+
+
+================================================================================
+ÉTAPE 8: GESTION DES VARIABLES D'ENVIRONNEMENT ET EXIT STATUS
+================================================================================
+
+Objectif: Maintenir l'état des variables et du dernier code de sortie
+
+Tâches:
+  • Copier l'environnement initial depuis envp[]
+  • Stocker les variables (structure: nom=valeur)
+  • Implémenter getenv() personnalisé
+  • Gérer les exports (variables à passer aux sous-processus)
+  • Mettre à jour $? après chaque exécution
+  • Gérer les builtins qui modifient l'environnement (export, unset)
+  • Passer l'environnement modifié à execve()
+
+
+================================================================================
+ÉTAPE 9: GESTION DES ERREURS ET CAS LIMITES
+================================================================================
+
+Points à traiter:
+  • Guillemets mal fermés → erreur de parsing
+  • Fichier de redirection non accessible
+  • Commande non trouvée
+  • Erreurs de fork/pipe/dup2
+  • Gestion correcte de perror() et strerror()
+  • Exit status corrects pour chaque erreur
+
+
+================================================================================
+ÉTAPE 10: TESTS ET OPTIMISATIONS
+================================================================================
+
+À tester:
+  • Commandes simples
+  • Pipes chaînés (cmd1 | cmd2 | cmd3)
+  • Redirections multiples
+  • Combinaison pipes + redirections
+  • Variables d'environnement expansion
+  • Built-in commands
+  • Signaux et interruptions
+  • Historique readline
+  • Edge cases (chemins avec espaces, etc.)
+
+Optimisations:
+  • Vérifier les fuites mémoire (valgrind)
+  • Norme 42 respectée
+  • Pas de code mort
+  • Structure claire et modulaire
+
+
+================================================================================
+ORDRE DE RÉALISATION RECOMMANDÉ
+================================================================================
+
+Phase 1 - Fondations (Infrastructure):
+  → Étape 1: Architecture de base
+  
+Phase 2 - Parsing (Cœur du shell):
+  → Étape 2: Parsing et tokenization (complexe, mais critique)
+  
+Phase 3 - Exécution simple:
+  → Étape 5: Exécution des commandes externes
+  → Étape 6: Built-in commands
+  
+Phase 4 - Redirections et Pipes:
+  → Étape 3: Redirections
+  → Étape 4: Pipes
+  
+Phase 5 - Variables et Signaux:
+  → Étape 8: Gestion des variables et exit status
+  → Étape 7: Gestion des signaux
+  
+Phase 6 - Finition:
+  → Étape 9: Gestion des erreurs
+  → Étape 10: Tests et optimisations
+
+
+================================================================================
+DÉPENDANCES ENTRE LES ÉTAPES
+================================================================================
+
+Étape 2 (Parsing) → dépend de → Étape 1 (Infrastructure)
+Étape 3 (Redirections) → dépend de → Étape 2
+Étape 4 (Pipes) → dépend de → Étape 2, 3
+Étape 5 (Exécution externe) → dépend de → Étape 1, 2
+Étape 6 (Built-ins) → dépend de → Étape 1, 5, 8
+Étape 7 (Signaux) → dépend de → Étape 1
+Étape 8 (Variables) → dépend de → Étape 1
+Étape 9 (Erreurs) → dépend de toutes les phases
+
+
+================================================================================
+FICHIERS À CRÉER / ORGANISER
+================================================================================
+
+Structure suggérée:
+  includes/
+    ├── minishell.h        (structures principales)
+    └── ...
+  
+  srcs/
+    ├── main.c             (boucle principale, signal handler)
+    ├── parser/
+    │   ├── parse.c        (parsing principal)
+    │   ├── tokenize.c     (tokenization)
+    │   └── expand.c       (variable expansion, quotes)
+    ├── execution/
+    │   ├── execute.c      (exécution générale)
+    │   ├── execute_cmd.c  (exécution commande simple)
+    │   └── execute_pipe.c (exécution pipeline)
+    ├── builtin/
+    │   ├── builtin_echo.c
+    │   ├── builtin_cd.c
+    │   ├── builtin_pwd.c
+    │   ├── builtin_export.c
+    │   ├── builtin_unset.c
+    │   ├── builtin_env.c
+    │   └── builtin_exit.c
+    ├── redirection/
+    │   └── redirection.c  (< > >> <<)
+    ├── environment/
+    │   └── env.c          (gestion des variables)
+    └── utils/
+        └── ...            (utilitaires)
+  
+  Makefile               (compilation)
+  lib/                   (libft comme dans workspace existant)
+
+
+================================================================================
+NOTES IMPORTANTES
+================================================================================
+
+1. SIGNAL GLOBAL
+   - Une seule variable globale: le numéro du signal
+   - Pas de structures globales complexes
+   - Le handler ne fait que stocker le numéro
+   - La logique est dans la boucle principale
+
+2. READLINE
+   - Peut avoir des fuites mémoire (autorisé par le sujet)
+   - Votre code ne doit pas en avoir
+   - Nécessite: libreadline-dev à installer
+
+3. QUOTING
+   - Single quotes: pas d'interprétation
+   - Double quotes: interprétation du $ uniquement
+   - Pas de backslash (\\) à gérer
+
+4. PARSING COMPLEXE
+   - C'est la partie la plus délicate
+   - Bien la structurer
+   - Penser aux tokens et à l'AST
+
+5. FORK ET EXECUTION
+   - Parent: attend les enfants
+   - Enfants: exécutent les commandes
+   - Bien gérer les file descriptors
+
+================================================================================
