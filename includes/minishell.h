@@ -28,6 +28,14 @@
 
 # define PROMPT "6ft shell>>"
 
+// Token types
+# define TOKEN_WORD 0
+# define TOKEN_PIPE 1
+# define TOKEN_REDIR_IN 2
+# define TOKEN_REDIR_OUT 3
+# define TOKEN_REDIR_APPEND 4
+# define TOKEN_HERE_DOC 5
+
 typedef struct s_shell
 {
 	int		pid;
@@ -59,6 +67,15 @@ typedef struct s_cmd
 }				t_cmd;
 
 // Parsing
-t_cmd	*parsing(t_data *data);
+t_cmd	*parsing(t_shell *shell);
+t_token	*tokenize(t_shell *shell);
+void	free_tokens(t_token *token_list);
+
+// Token Utils
+t_token	*create_token(char *value, int type);
+void	add_token(t_token **list, t_token *new_token);
+int		get_token_type(const char *str);
+int		get_word_len(const char *str, int i);
+int		is_operator(char c);
 
 #endif
