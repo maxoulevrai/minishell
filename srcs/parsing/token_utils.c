@@ -45,18 +45,18 @@ void	add_token(t_token **list, t_token *new_token)
 int	get_token_type(const char *str)
 {
 	if (!str || !*str)
-		return (TOKEN_WORD);
+		return (WORD);
 	if (ft_strcmp(str, "|") == 0)
-		return (TOKEN_PIPE);
+		return (PIPE);
 	if (ft_strcmp(str, ">") == 0)
-		return (TOKEN_REDIR_OUT);
+		return (REDIR_OUT);
 	if (ft_strcmp(str, ">>") == 0)
-		return (TOKEN_REDIR_APPEND);
+		return (REDIR_APPEND);
 	if (ft_strcmp(str, "<") == 0)
-		return (TOKEN_REDIR_IN);
+		return (REDIR_IN);
 	if (ft_strcmp(str, "<<") == 0)
-		return (TOKEN_HERE_DOC);
-	return (TOKEN_WORD);
+		return (HERE_DOC);
+	return (WORD);
 }
 
 int	get_word_len(const char *str, int i)

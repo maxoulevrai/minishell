@@ -11,12 +11,15 @@ RESET			= \e[m
 SRCS_DIR = srcs/
 INC = includes/minishell.h
 LIB = lib/libft.a
-SRCS = srcs/main/main.c \
-       srcs/main/env.c \
-       srcs/parsing/parsing.c \
-       srcs/parsing/token.c \
-       srcs/parsing/token_utils.c \
-       srcs/parsing/expand.c
+SRCS =	srcs/main/main.c \
+		srcs/main/env.c \
+		srcs/parsing/parsing.c \
+		srcs/parsing/token.c \
+		srcs/parsing/token_utils.c \
+		srcs/parsing/expand.c \
+		srcs/parsing/expand_word.c \
+		srcs/parsing/expand_argv.c \
+		srcs/parsing/expand_utils.c
 
 
 OBJS = $(SRCS:%.c=build/%.o)
