@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 17:02:23 by root              #+#    #+#             */
-/*   Updated: 2026/02/24 17:07:01 by root             ###   ########.fr       */
+/*   Updated: 2026/03/05 01:25:24 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,25 @@
 // sans argument -> va dans HOME
 // avec argument -> va dans le path donné
 
-int	ft_cd(char **t_cmd)
+static char	*find_env_value(t_env *envp, char *key)
+{
+	while (envp)
+	{
+		if (ft_strcmp(envp->key, key) == 0)
+			return (envp->value);
+		envp = envp->next;
+	}
+	return (NULL);
+}
+
+int	ft_cd(t_env *envp, char **t_cmd)
 {
 	char	*path;
 	char	*home;
 
 	if (!t_cmd[1])
 	{
-		home = get_env("HOME");
+		home = find_env_value(envp, "HOME");
 		if (!home)
 			return (ft_fprintf(STDERR_FILENO, "cd: HOME not set\n"), 1);
 		path = home;

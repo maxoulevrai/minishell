@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maleca <maleca@student.42.fr>              +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/22 15:34:22 by maleca            #+#    #+#             */
-/*   Updated: 2026/02/25 15:28:19 by maleca           ###   ########.fr       */
+/*   Updated: 2026/03/05 01:25:32 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,19 +41,23 @@ int	is_n_flag(char *flag)
 int	ft_echo(char **t_cmd)
 {
 	int	i;
-	int newline;
+	int	newline;
 
-	newline = 1;
-	i = 0;
-	if (!t_cmd[0])
-		return (ft_fprintf(STDERR_FILENO, "\n", 1), 1);
-	while (is_n_flag(t_cmd[i]) && t_cmd[i])
+	newline = TRUE;
+	i = 1;
+	while (t_cmd[i] && is_n_flag(t_cmd[i]))
 	{
-		newline = 0;
+		newline = FALSE;
 		i++;
 	}
-	ft_fprintf(STDOUT_FILENO, "%s", &t_cmd[1][i], 1);
+	while (t_cmd[i])
+	{
+		ft_fprintf(STDOUT_FILENO, "%s", t_cmd[i]);
+		if (t_cmd[i + 1])
+			ft_fprintf(STDOUT_FILENO, " ");
+		i++;
+	}
 	if (newline)
-		ft_fprintf(STDOUT_FILENO, "\n", 1);
+		ft_fprintf(STDOUT_FILENO, "\n");
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 17:08:16 by root              #+#    #+#             */
-/*   Updated: 2026/02/24 17:11:23 by root             ###   ########.fr       */
+/*   Updated: 2026/03/05 01:26:12 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,24 +41,24 @@ static int	is_numeric(char *str)
 // avec argument -> exit avec le code donné (0-255)
 // trop d'arguments -> erreur, ne quitte pas
 
-int	ft_exit(char **t_cmd)
+int	ft_exit(char **cmd)
 {
 	long	exit_code;
 
 	ft_fprintf(STDOUT_FILENO, "exit\n");
-	if (!t_cmd[1])
+	if (!cmd[1])
 		exit(0);
-	if (t_cmd[2])
+	if (cmd[2])
 	{
 		ft_fprintf(STDERR_FILENO, "exit: too many arguments\n");
 		return (1);
 	}
-	if (!is_numeric(t_cmd[1]))
+	if (!is_numeric(cmd[1]))
 	{
 		ft_fprintf(STDERR_FILENO,
-			"exit: %s: numeric argument required\n", t_cmd[1]);
+			"exit: %s: numeric argument required\n", cmd[1]);
 		exit(2);
 	}
-	exit_code = ft_atol(t_cmd[1]);
+	exit_code = ft_atol(cmd[1]);
 	exit(exit_code % 256);
 }

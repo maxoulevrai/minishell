@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_check_dispatch.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maleca <maleca@student.42.fr>              +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 15:40:58 by root              #+#    #+#             */
-/*   Updated: 2026/02/28 15:22:45 by maleca           ###   ########.fr       */
+/*   Updated: 2026/03/06 16:27:04 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "bultins.h"
+#include "../includes/bultins.h"
 
 // Commandes a reproduires:
 // - pwd with no options
@@ -24,41 +24,41 @@
 int	builtins_checker(char *t_cmd)
 {
 	if (!t_cmd)
-		return (FAILURE);
+		return (FALSE);
 	else if (!ft_strcmp(t_cmd, "pwd"))
-		return (SUCCESS);
+		return (TRUE);
 	else if (!ft_strcmp(t_cmd, "export"))
-		return (SUCCESS);
+		return (TRUE);
 	else if (!ft_strcmp(t_cmd, "unset"))
-		return (SUCCESS);
+		return (TRUE);
 	else if (!ft_strcmp(t_cmd, "env"))
-		return (SUCCESS);
+		return (TRUE);
 	else if (!ft_strcmp(t_cmd, "exit"))
-		return (SUCCESS);
+		return (TRUE);
 	else if (!ft_strcmp(t_cmd, "echo"))
-		return (SUCCESS);
+		return (TRUE);
 	else if (!ft_strcmp(t_cmd, "cd"))
 		return (2);
 	else
-		return (FAILURE);
+		return (FALSE);
 }
 
-int	builtins_dispatcher(char **t_cmd)
+int	builtins_dispatcher(t_shell *shell, t_cmd *cmd)
 {
-	if (!ft_strcmp(t_cmd, "pwd"))
+	if (!ft_strcmp(cmd->args[0], "pwd"))
 		return (ft_pwd());
-	else if (!ft_strcmp(t_cmd, "export"))
-		return (ft_export());
-	else if (!ft_strcmp(t_cmd, "unset"))
-		return (ft_unset());
-	else if (!ft_strcmp(t_cmd, "env"))
-		return (ft_env());
-	else if (!ft_strcmp(t_cmd, "exit"))
-		return (ft_exit());
-	else if (!ft_strcmp(t_cmd, "echo"))
-		return (ft_echo());
-	else if (!ft_strcmp(t_cmd, "cd"))
-		return (ft_cd());
+	else if (!ft_strcmp(cmd->args[0], "export"))
+		return (ft_export(shell, cmd));
+	else if (!ft_strcmp(cmd->args[0], "unset"))
+		return (1);
+	else if (!ft_strcmp(cmd->args[0], "env"))
+		return (ft_env(*shell->envp, cmd->args));
+	else if (!ft_strcmp(cmd->args[0], "exit"))
+		return (ft_exit(cmd->args));
+	else if (!ft_strcmp(cmd->args[0], "echo"))
+		return (ft_echo(cmd->args));
+	else if (!ft_strcmp(cmd->args[0], "cd"))
+		return (ft_cd(*shell->envp, cmd->args));
 	else
-		return (FAILURE);
+		return (FALSE);
 }

@@ -3,20 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maleca <maleca@student.42.fr>              +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/28 15:20:49 by maleca            #+#    #+#             */
-/*   Updated: 2026/02/28 15:22:45 by maleca           ###   ########.fr       */
+/*   Created: 2026/03/05 00:23:44 by root              #+#    #+#             */
+/*   Updated: 2026/03/05 01:25:50 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/bultins.h"
 
-   Exit status:
-       125    if the env command itself fails
 
-       126    if COMMAND is found but cannot be invoked
 
-       127    if COMMAND cannot be found
 
-       -      the exit status of COMMAND otherwise
+
+
+// env [OPTION]... [-] [NAME=VALUE]... [COMMAND [ARG]...]
+
+int	ft_env(t_env *envp, char **cmd)
+{
+	t_env	*tmp;
+
+	tmp  = envp;
+	if (cmd[1])
+		return (127);
+	if (!tmp)
+		return (1);
+	while (tmp)
+	{
+		if (tmp->value)
+			ft_fprintf(1, "%s=%s\n", tmp->key, tmp->value);
+		tmp = tmp->next;
+	}
+	return (0);
+}
