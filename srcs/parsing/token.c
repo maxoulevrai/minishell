@@ -16,17 +16,25 @@ static char	*extract_operator(const char *line, int *i)
 {
 	char	*op;
 
-	op = NULL;
-	if (line[*i] == '|' && ++(*i))
-		op = ft_strdup("|");
-	else if (line[*i] == '>' && line[*i + 1] == '>' && (*i += 2))
-		op = ft_strdup(">>");
-	else if (line[*i] == '>' && ++(*i))
+	if (line[*i] == '>' && line[*i + 1] == '>')
+	{
+		*i += 2;
+		return (ft_strdup(">>"));
+	}
+	if (line[*i] == '<' && line[*i + 1] == '<')
+	{
+		*i += 2;
+		return (ft_strdup("<<"));
+	}
+	if (line[*i] == '>')
 		op = ft_strdup(">");
-	else if (line[*i] == '<' && line[*i + 1] == '<' && (*i += 2))
-		op = ft_strdup("<<");
-	else if (line[*i] == '<' && ++(*i))
+	else if (line[*i] == '<')
 		op = ft_strdup("<");
+	else if (line[*i] == '|')
+		op = ft_strdup("|");
+	else
+		return (NULL);
+	(*i)++;
 	return (op);
 }
 
@@ -81,7 +89,10 @@ t_token	*tokenize(t_shell *shell)
 		if (!shell->line[i])
 			break ;
 		if (!process_token(&token_list, shell->line, &i))
-			return (free_tokens(token_list), NULL);
+		{
+			free_tokens(token_list);
+			return (NULL);
+		}
 	}
 	return (token_list);
 }

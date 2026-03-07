@@ -12,36 +12,32 @@
 
 #include "../../includes/minishell.h"
 
-static void	expand_redirs(t_cmd *cmd, t_shell *shell)
+static void	update_redirection(t_cmd *command, char **file_ptr, t_shell *shell)
 {
-	char	*expanded;
+	char	*result;
 
-	if (cmd->input_file)
+	if (*file_ptr)
 	{
-		expanded = expand_word(cmd->input_file, shell);
-		if (expanded)
-			free(cmd->input_file);
-		cmd->input_file = expanded;
-	}
-	if (cmd->output_file)
-	{
-		expanded = expand_word(cmd->output_file, shell);
-		if (expanded)
-			free(cmd->output_file);
-		cmd->output_file = expanded;
+		result = expand_word(*file_ptr, shell);
+		if (result)
+		{
+			free(*file_ptr);
+			*file_ptr = result;
+		}
 	}
 }
 
 void	expand(t_cmd *cmd_list, t_shell *shell)
 {
-	t_cmd	*cur;
+	t_cmd	*command;
 
-	cur = cmd_list;
-	while (cur)
+	command = cmd_list;
+	while (command)
 	{
-		if (cur->args)
-			cur->args = expand_av(cur->args, shell);
-		expand_redirs(cur, shell);
-		cur = cur->next;
+		if (command->args)
+			command->args = expand_av(command->args, shell);
+		update_redirection(command, &command->input_file, shell);
+		update_redirection(command, &command->output_file, shell);
+		command = command->next;
 	}
 }

@@ -17,21 +17,21 @@ static int	is_var_char(char c)
 	return (ft_isalnum(c) || c == '_');
 }
 
-static int	next_quote_state(int quote, char c)
+static int	update_quote_state(int current_state, char ch)
 {
-	if (c == '\'' && quote != 2)
+	if (ch == '\'' && current_state != 2)
 	{
-		if (quote == 1)
+		if (current_state == 1)
 			return (0);
 		return (1);
 	}
-	if (c == '"' && quote != 1)
+	if (ch == '"' && current_state != 1)
 	{
-		if (quote == 2)
+		if (current_state == 2)
 			return (0);
 		return (2);
 	}
-	return (quote);
+	return (current_state);
 }
 
 static char	*expand_var(const char *src, int *i, t_shell *shell)
@@ -65,17 +65,17 @@ static char	*expand_loop(const char *src, t_shell *shell, char *out)
 {
 	char	*val;
 	int		i;
-	int		q;
+	int		j;
 	int		next;
 
 	i = 0;
-	q = 0;
+	j = 0;
 	while (out && src && src[i])
 	{
-		next = next_quote_state(q, src[i]);
-		if (next != q)
-			q = next;
-		else if (src[i] == '$' && q != 1)
+		next = update_quote_state(j, src[i]);
+		if (next != j)
+			j = next;
+		else if (src[i] == '$' && j != 1)
 		{
 			val = expand_var(src, &i, shell);
 			out = exp_append_str(out, val);

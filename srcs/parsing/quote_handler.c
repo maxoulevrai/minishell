@@ -28,38 +28,32 @@ int	skip_quotes(const char *str, int i, char quote)
 	return (len);
 }
 
-static int	copy_until_quote(char *dst, const char *src, int *j, char q)
-{
-	int	i;
-
-	i = 0;
-	while (src[i] && src[i] != q)
-		dst[(*j)++] = src[i++];
-	if (src[i] == q)
-		i++;
-	return (i);
-}
-
 static char	*build_unquoted(const char *src)
 {
-	char	*dst;
-	int		i;
-	int		j;
+	char	*result;
+	int		src_idx;
+	int		dst_idx;
+	char	quote;
 
-	dst = malloc(ft_strlen(src) + 1);
-	if (!dst)
+	result = malloc(ft_strlen(src) + 1);
+	if (!result)
 		return (NULL);
-	i = 0;
-	j = 0;
-	while (src[i])
+	src_idx = 0;
+	dst_idx = 0;
+	while (src[src_idx])
 	{
-		if (src[i] == '\'' || src[i] == '"')
-			i += copy_until_quote(dst, &src[i + 1], &j, src[i]);
-		else
-			dst[j++] = src[i++];
+		quote = 0;
+		if (src[src_idx] == '\'' || src[src_idx] == '"')
+			quote = src[src_idx++];
+		while (src[src_idx] && src[src_idx] != quote && quote != 0)
+			result[dst_idx++] = src[src_idx++];
+		if (quote && src[src_idx] == quote)
+			src_idx++;
+		if (!quote)
+			result[dst_idx++] = src[src_idx++];
 	}
-	dst[j] = '\0';
-	return (dst);
+	result[dst_idx] = '\0';
+	return (result);
 }
 
 char	*remove_quotes(char *str)

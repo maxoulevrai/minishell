@@ -52,24 +52,26 @@ t_cmd	*parse_tokens(t_token *tokens)
 	t_cmd	*head;
 	t_cmd	*current;
 	t_token	*start;
-	t_token	*tmp;
+	t_token	*end;
 
 	if (!tokens)
 		return (NULL);
 	head = NULL;
 	start = tokens;
-	tmp = tokens;
-	while (tmp)
+	while (tokens)
 	{
-		if (tmp->type == PIPE || !tmp->next)
+		if (tokens->type == PIPE || !tokens->next)
 		{
-			current = parse_single_cmd(start, tmp->type == PIPE ? tmp : NULL);
+			end = NULL;
+			if (tokens->type == PIPE)
+				end = tokens;
+			current = parse_single_cmd(start, end);
 			if (!current)
 				return (NULL);
 			add_cmd_to_list(&head, current);
-			start = tmp->next;
+			start = tokens->next;
 		}
-		tmp = tmp->next;
+		tokens = tokens->next;
 	}
 	return (head);
 }
