@@ -40,7 +40,7 @@ void	expand(t_cmd *cmd_list, t_shell *shell)
 	while (cur)
 	{
 		if (cur->args)
-			cur->args = expand_argv(cur->args, shell);
+			cur->args = expand_av(cur->args, shell);
 		expand_redirs(cur, shell);
 		cur = cur->next;
 	}

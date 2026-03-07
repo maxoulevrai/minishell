@@ -72,13 +72,22 @@ typedef struct s_cmd
 // Parsing
 t_cmd	*parsing(t_shell *shell);
 t_token	*tokenize(t_shell *shell);
+t_cmd	*parse_tokens(t_token *token_list);
 void	free_tokens(t_token *token_list);
 void	expand(t_cmd *cmd_list, t_shell *shell);
 char	*expand_word(const char *src, t_shell *shell);
-char	**expand_argv(char **argv, t_shell *shell);
-char	*ms_append_char(char *src, char c);
-char	*ms_append_str(char *src, const char *add);
-char	*ms_get_env_value(t_shell *shell, const char *key);
+char	**expand_av(char **av, t_shell *shell);
+char	*exp_append_char(char *src, char c);
+char	*exp_append_str(char *src, const char *add);
+char	*exp_get_env_value(t_shell *shell, const char *key);
+char	*remove_quotes(char *str);
+int		has_unclosed_quote(const char *str);
+int		skip_quotes(const char *str, int i, char quote);
+t_cmd	*init_cmd(void);
+int		is_redir(int type);
+void	handle_redir(t_cmd *cmd, t_token **tok);
+int		count_args(t_token *start, t_token *end);
+char	**build_args(t_token *start, t_token *end);
 
 // Token Utils
 t_token	*create_token(char *value, int type);

@@ -22,5 +22,7 @@ t_cmd	*parsing(t_shell *shell)
 		return (NULL);
 	cmd_list = parse_tokens(token_list);
 	free_tokens(token_list);
+	if (cmd_list)
+		expand(cmd_list, shell);
 	return (cmd_list);
 }

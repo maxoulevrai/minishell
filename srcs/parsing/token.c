@@ -75,7 +75,8 @@ t_token	*tokenize(t_shell *shell)
 	i = 0;
 	while (shell->line[i])
 	{
-		while (ft_isspace(shell->line[i]))
+		while (shell->line[i] && (shell->line[i] == ' '
+				|| shell->line[i] == '\t' || shell->line[i] == '\n'))
 			i++;
 		if (!shell->line[i])
 			break ;

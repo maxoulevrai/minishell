@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   token_utils.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: yzidani <yzidani@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/04 10:00:00 by yzidani           #+#    #+#             */
-/*   Updated: 2026/03/04 10:00:00 by yzidani          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -46,15 +35,15 @@ int	get_token_type(const char *str)
 {
 	if (!str || !*str)
 		return (WORD);
-	if (ft_strcmp(str, "|") == 0)
+	if (ft_strcmp((char *)str, "|") == 0)
 		return (PIPE);
-	if (ft_strcmp(str, ">") == 0)
+	if (ft_strcmp((char *)str, ">") == 0)
 		return (REDIR_OUT);
-	if (ft_strcmp(str, ">>") == 0)
+	if (ft_strcmp((char *)str, ">>") == 0)
 		return (REDIR_APPEND);
-	if (ft_strcmp(str, "<") == 0)
+	if (ft_strcmp((char *)str, "<") == 0)
 		return (REDIR_IN);
-	if (ft_strcmp(str, "<<") == 0)
+	if (ft_strcmp((char *)str, "<<") == 0)
 		return (HERE_DOC);
 	return (WORD);
 }
@@ -64,10 +53,13 @@ int	get_word_len(const char *str, int i)
 	int	len;
 
 	len = 0;
-	while (str[i] && !ft_isspace(str[i]) && str[i] != '|'
-		&& str[i] != '<' && str[i] != '>')
+	while (str[i] && str[i] != ' ' && str[i] != '\t' && str[i] != '\n'
+		&& str[i] != '|' && str[i] != '<' && str[i] != '>')
 	{
-		len++;
+		if (str[i] == '\'' || str[i] == '"')
+			len += skip_quotes(str, i, str[i]);
+		else
+			len++;
 		i++;
 	}
 	return (len);

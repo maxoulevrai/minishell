@@ -16,9 +16,12 @@ SRCS =	srcs/main/main.c \
 		srcs/parsing/parsing.c \
 		srcs/parsing/token.c \
 		srcs/parsing/token_utils.c \
+		srcs/parsing/quote_handler.c \
+		srcs/parsing/parse_cmd.c \
+		srcs/parsing/parse_utils.c \
 		srcs/parsing/expand.c \
 		srcs/parsing/expand_word.c \
-		srcs/parsing/expand_argv.c \
+		srcs/parsing/expand_av.c \
 		srcs/parsing/expand_utils.c
 
 

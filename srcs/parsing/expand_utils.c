@@ -1,18 +1,7 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   expand_utils.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: yzidani <yzidani@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/06 10:00:00 by yzidani           #+#    #+#             */
-/*   Updated: 2026/03/06 10:00:00 by yzidani          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-char	*ms_append_char(char *src, char c)
+char	*exp_append_char(char *src, char c)
 {
 	char	*new;
 	size_t	len;
@@ -30,7 +19,7 @@ char	*ms_append_char(char *src, char c)
 	return (new);
 }
 
-char	*ms_append_str(char *src, const char *add)
+char	*exp_append_str(char *src, const char *add)
 {
 	char	*new;
 	size_t	len1;
@@ -51,7 +40,7 @@ char	*ms_append_str(char *src, const char *add)
 	return (new);
 }
 
-char	*ms_get_env_value(t_shell *shell, const char *key)
+char	*exp_get_env_value(t_shell *shell, const char *key)
 {
 	t_env	*cur;
 

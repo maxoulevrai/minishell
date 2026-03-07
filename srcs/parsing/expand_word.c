@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   expand_word.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: yzidani <yzidani@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/06 10:00:00 by yzidani           #+#    #+#             */
-/*   Updated: 2026/03/06 10:00:00 by yzidani          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -56,7 +45,7 @@ static char	*expand_var(const char *src, int *i, t_shell *shell)
 	name = ft_substr(src, start, *i - start);
 	if (!name)
 		return (NULL);
-	value = ms_get_env_value(shell, name);
+	value = exp_get_env_value(shell, name);
 	free(name);
 	return (value);
 }
@@ -78,12 +67,12 @@ static char	*expand_loop(const char *src, t_shell *shell, char *out)
 		else if (src[i] == '$' && q != 1)
 		{
 			val = expand_var(src, &i, shell);
-			out = ms_append_str(out, val);
+			out = exp_append_str(out, val);
 			free(val);
 			continue ;
 		}
 		else
-			out = ms_append_char(out, src[i]);
+			out = exp_append_char(out, src[i]);
 		i++;
 	}
 	return (out);
