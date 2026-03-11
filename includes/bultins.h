@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bultins.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maleca <maleca@student.42.fr>              +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 15:41:35 by root              #+#    #+#             */
-/*   Updated: 2026/02/27 11:08:29 by maleca           ###   ########.fr       */
+/*   Updated: 2026/03/06 16:50:44 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "../lib/includes/ft_printf.h"
 #include "../lib/includes/ft_fprintf.h"
 #include "../lib/includes/get_next_line.h"
+#include "minishell.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>

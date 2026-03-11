@@ -3,21 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maleca <maleca@student.42.fr>              +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 18:53:30 by maleca            #+#    #+#             */
-/*   Updated: 2026/02/28 16:21:28 by maleca           ###   ########.fr       */
+/*   Updated: 2026/03/06 16:50:59 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "../lib/includes/libft.h"
+# include "../lib/libft.h"
 # include <errno.h>
 # include <limits.h>
-# include <readline/history.h>
-# include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
 # include <stdio.h>
@@ -26,22 +24,56 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-# define PROMPT "6ft_shell>>"
+# define PROMPT "6ft shell>>"
 
-typedef struct s_env
-{
-	char			*key;
-	char			*value;
-	struct s_env	*next;
-}				t_env;
+// Token types
+# define TOKEN_WORD 0
+# define TOKEN_PIPE 1
+# define TOKEN_REDIR_IN 2
+# define TOKEN_REDIR_OUT 3
+# define TOKEN_REDIR_APPEND 4
+# define TOKEN_HERE_DOC 5
 
 typedef struct s_shell
 {
 	int		pid;
+	char	*line;
 	t_env	*envp;
 }				t_shell;
 
+typedef struct s_env
+{
+	char	*key;
+	char	*value;
+	t_env	*next;
+}				t_env;
 
+typedef struct s_token
+{
+	char			*value;
+	int				type;
+	struct s_token	*next;
+}				t_token;
 
+typedef struct s_cmd
+{
+	char			**args;
+	char			*input_file;
+	char			*output_file;
+	int				append;
+	struct s_cmd	*next;
+}				t_cmd;
+
+// Parsing
+t_cmd	*parsing(t_shell *shell);
+t_token	*tokenize(t_shell *shell);
+void	free_tokens(t_token *token_list);
+
+// Token Utils
+t_token	*create_token(char *value, int type);
+void	add_token(t_token **list, t_token *new_token);
+int		get_token_type(const char *str);
+int		get_word_len(const char *str, int i);
+int		is_operator(char c);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/05 01:22:47 by root              #+#    #+#             */
-/*   Updated: 2026/03/06 16:51:12 by root             ###   ########.fr       */
+/*   Updated: 2026/03/07 19:29:13 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,7 @@ char	**convert_env_to_tab(t_env *envp)
 		i++;
 		tmp = tmp->next;
 	}
-	env_tab[i] = NULL;
-	return (env_tab);
+	return (env_tab[i] = NULL, env_tab);
 }
 
 static void	sort_n_print_env(char **env_tab)
