@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maleca <maleca@student.42.fr>              +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 14:46:39 by maleca            #+#    #+#             */
-/*   Updated: 2026/02/28 17:48:55 by maleca           ###   ########.fr       */
+/*   Updated: 2026/03/07 19:23:25 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	ft_envadd_back(t_env **head, t_env *new)
 // en liste chainee (modification dynamique de l'env beaucoup plus simple
 // pour des fonction comme export ou unset cf builtins)
 
-t_env	*env_cpy(char **envp)
+t_env	*env_dup(char **envp)
 {
 	t_env	*head;
 	t_env	*new;
@@ -101,29 +101,4 @@ t_env	*env_cpy(char **envp)
 		i++;
 	}
 	return (head);
-}
-
-int main(int ac, char **av, char **envp)
-{
-	t_env *envpp;
-	t_env	*tmp;
-	// int		i = 0;
-
-	(void)ac;
-	(void)av;
-	envpp = env_cpy(envp);
-	tmp = envpp;
-	while (tmp != NULL)
-	{
-		ft_printf("%s\n", tmp->key);
-		tmp = tmp->next;
-	}
-	// ft_printf("LEVRAIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII\n");
-	// while (envp[i])
-	// {
-	// 	ft_printf("%s\n", envp[i]);
-	// 	i++;
-	// }
-
-	return (0);
 }

@@ -11,7 +11,9 @@ RESET			= \e[m
 SRCS_DIR = srcs/
 INC = includes/minishell.h
 LIB = lib/libft.a
-SRCS = $(SRCS_DIR)/main/env.c
+SRCS = $(SRCS_DIR)/main/main.c \
+		$(SRCS_DIR)/env/env.c \
+		$(SRCS_DIR)/env/env_utils.c
 
 
 OBJS = $(SRCS:%.c=build/%.o)
@@ -23,7 +25,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS) $(LIB)
 	@echo "$(GREEN)Linking $@$(NO_COLOR)"
-	@$(CC) $(CFLAGS) -o $@ $^ 
+	@$(CC) $(CFLAGS) -o $@ $^ -lreadline
 	@echo "$(GREEN)Build complete$(NO_COLOR)"
 
 $(LIB):

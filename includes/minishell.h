@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maleca <maleca@student.42.fr>              +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 18:53:30 by maleca            #+#    #+#             */
-/*   Updated: 2026/02/28 16:21:28 by maleca           ###   ########.fr       */
+/*   Updated: 2026/03/07 19:28:33 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@
 # include "../lib/includes/libft.h"
 # include <errno.h>
 # include <limits.h>
-# include <readline/history.h>
-# include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
 # include <stdio.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # include <stdlib.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
@@ -28,19 +28,46 @@
 
 # define PROMPT "6ft_shell>>"
 
-typedef struct s_env
-{
-	char			*key;
-	char			*value;
-	struct s_env	*next;
-}				t_env;
+typedef struct s_env	t_env;
 
 typedef struct s_shell
 {
-	int		pid;
+	pid_t	*pid_table;
+	int		last_status;
+	char	*line;
 	t_env	*envp;
 }				t_shell;
 
+typedef struct s_env
+{
+	char	*key;
+	char	*value;
+	t_env	*next;
+}				t_env;
+
+typedef struct s_token
+{
+	char			*value;
+	int				type;
+	struct s_token	*next;
+}				t_token;
+
+typedef struct s_cmd
+{
+	char			**args;
+	char			*input_file;
+	char			*output_file;
+	int				append;
+	struct s_cmd	*next;
+}				t_cmd;
+
+
+t_env	*env_dup(char **envp);
+void	ft_envadd_back(t_env **head, t_env *new);
+t_env	*init_env_node(char	*env_line);
+char	*get_env_value(char *env_line);
+char	*get_env_key(char *env_line) ;
+char	*get_env(t_env **envp, char *key);
 
 
 
