@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 13:53:41 by maleca            #+#    #+#             */
-/*   Updated: 2026/03/07 13:17:11 by root             ###   ########.fr       */
+/*   Updated: 2026/03/14 18:39:57 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ t_shell	*init(char **envp)
 	data->line = NULL;
 	return (data);
 }
-
 
 int	loop(t_shell *data)
 {
