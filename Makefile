@@ -13,7 +13,19 @@ INC = includes/minishell.h
 LIB = lib/libft.a
 SRCS = $(SRCS_DIR)/main/main.c \
 		$(SRCS_DIR)/env/env.c \
-		$(SRCS_DIR)/env/env_utils.c
+		$(SRCS_DIR)/env/env_utils.c \
+		$(SRCS_DIR)/exec/pipex_bonus.c \
+		$(SRCS_DIR)/exec/pipex_utils.c \
+		$(SRCS_DIR)/parsing/parsing.c \
+		$(SRCS_DIR)/parsing/token.c \
+		$(SRCS_DIR)/parsing/token_utils.c \
+		$(SRCS_DIR)/parsing/parse_cmd.c \
+		$(SRCS_DIR)/parsing/parse_utils.c \
+		$(SRCS_DIR)/parsing/expand.c \
+		$(SRCS_DIR)/parsing/expand_word.c \
+		$(SRCS_DIR)/parsing/expand_av.c \
+		$(SRCS_DIR)/parsing/expand_utils.c \
+		$(SRCS_DIR)/parsing/quote_handler.c
 
 
 OBJS = $(SRCS:%.c=build/%.o)

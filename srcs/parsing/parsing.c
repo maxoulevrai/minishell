@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_utils.c                                        :+:      :+:    :+:   */
+/*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yzidani <yzidani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/07 14:57:21 by root              #+#    #+#             */
-/*   Updated: 2026/03/17 18:15:20 by root             ###   ########.fr       */
+/*   Created: 2026/02/28 17:01:13 by yzidani           #+#    #+#             */
+/*   Updated: 2026/02/28 17:49:16 by yzidani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-
-char	*get_env(t_env **envp, char *key)
+t_cmd	*parsing(t_shell *shell)
 {
-	t_env	*tmp;
+	t_token	*token_list;
+	t_cmd	*cmd_list;
 
-	tmp = *envp;
-	while (tmp)
-	{
-		if (tmp->key == key)
-			return (tmp->value);
-		tmp = tmp->next;
-	}
-	return (NULL);
+	token_list = tokenize(shell);
+	if (!token_list)
+		return (NULL);
+	cmd_list = parse_tokens(token_list);
+	free_tokens(token_list);
+	if (cmd_list)
+		expand(cmd_list, shell);
+	return (cmd_list);
 }

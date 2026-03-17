@@ -1,28 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_utils.c                                        :+:      :+:    :+:   */
+/*   expand_av.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yzidani <yzidani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/07 14:57:21 by root              #+#    #+#             */
-/*   Updated: 2026/03/17 18:15:20 by root             ###   ########.fr       */
+/*   Created: 2026/03/07 16:16:33 by yzidani           #+#    #+#             */
+/*   Updated: 2026/03/07 16:17:15 by yzidani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-
-char	*get_env(t_env **envp, char *key)
+char	**expand_av(char **av, t_shell *shell)
 {
-	t_env	*tmp;
+	int		i;
+	char	*expanded;
 
-	tmp = *envp;
-	while (tmp)
+	i = 0;
+	while (av && av[i])
 	{
-		if (tmp->key == key)
-			return (tmp->value);
-		tmp = tmp->next;
+		expanded = expand_word(av[i], shell);
+		if (!expanded)
+			return (av);
+		free(av[i]);
+		av[i] = expanded;
+		i++;
 	}
-	return (NULL);
+	return (av);
 }

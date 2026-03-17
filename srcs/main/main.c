@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 13:53:41 by maleca            #+#    #+#             */
-/*   Updated: 2026/03/14 18:39:57 by root             ###   ########.fr       */
+/*   Updated: 2026/03/17 18:07:19 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ t_shell	*init(char **envp)
 
 int	loop(t_shell *data)
 {
+	t_cmd	*cmd_tabl;
 
 	while (1)
 	{
@@ -43,8 +44,17 @@ int	loop(t_shell *data)
 		if (!data->line) // == EOF (Ctrl + D)
 			return (EXIT_FAILURE);
 		else if (data->line[0] != '\0')
+		{
 			add_history(data->line);
-		ft_fprintf(STDOUT_FILENO, "oeoeo: %s\n", data->line);
+			cmd_tabl = parsing(data);
+			if (!cmd_tabl)
+			{
+				free(data->line);
+				continue ;
+			}
+			exec(cmd_tabl, data);
+			free_cmd_list(cmd_tabl);
+		}
 		free(data->line);
 	}
 	return (EXIT_SUCCESS);
@@ -58,7 +68,8 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	data = init(envp);
-	data->envp = env_dup(envp);
+	if (!data)
+		return (1);
 	loop(data);
 	return (0);
 }

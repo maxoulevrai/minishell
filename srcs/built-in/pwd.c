@@ -1,28 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_utils.c                                        :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/07 14:57:21 by root              #+#    #+#             */
-/*   Updated: 2026/03/17 18:15:20 by root             ###   ########.fr       */
+/*   Created: 2026/02/24 16:30:03 by root              #+#    #+#             */
+/*   Updated: 2026/03/05 01:27:40 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../includes/bultins.h"
 
+// commande pwd 
+// prototype: pwd [OPTION]
 
-char	*get_env(t_env **envp, char *key)
+int	ft_pwd()
 {
-	t_env	*tmp;
+	char *cwd;
 
-	tmp = *envp;
-	while (tmp)
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
 	{
-		if (tmp->key == key)
-			return (tmp->value);
-		tmp = tmp->next;
+		perror("pwd: error retrieving current directory");
+		return (1);
 	}
-	return (NULL);
+	ft_fprintf(1, "%s\n", cwd);
+	free(cwd);
+	return (0);
 }
