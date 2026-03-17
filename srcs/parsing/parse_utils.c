@@ -23,6 +23,7 @@ t_cmd	*init_cmd(void)
 	cmd->input_file = NULL;
 	cmd->output_file = NULL;
 	cmd->append = 0;
+	cmd->heredoc = 0;
 	cmd->next = NULL;
 	return (cmd);
 }
@@ -42,7 +43,10 @@ void	handle_redir(t_cmd *cmd, t_token **tok)
 	if (!*tok || (*tok)->type != WORD)
 		return ;
 	if (type == REDIR_IN || type == HERE_DOC)
+	{
 		cmd->input_file = remove_quotes(ft_strdup((*tok)->value));
+		cmd->heredoc = (type == HERE_DOC);
+	}
 	else if (type == REDIR_OUT)
 		cmd->output_file = remove_quotes(ft_strdup((*tok)->value));
 	else if (type == REDIR_APPEND)
