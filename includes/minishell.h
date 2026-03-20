@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 18:53:30 by maleca            #+#    #+#             */
-/*   Updated: 2026/03/07 19:28:33 by root             ###   ########.fr       */
+/*   Updated: 2026/03/20 04:05:33 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,24 @@
 # define MINISHELL_H
 
 # include "../lib/includes/libft.h"
+# include "parsing.h"
+# include "execution.h"
+# include "builtins.h"
 # include <errno.h>
 # include <limits.h>
 # include <signal.h>
 # include <stdbool.h>
 # include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
 # include <stdlib.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
+# include <fcntl.h>
 # include <unistd.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
-# define PROMPT "6ft_shell>>"
+# define PROMPT "6ft shell>> $ "
+
 
 typedef struct s_env	t_env;
 
@@ -58,17 +63,17 @@ typedef struct s_cmd
 	char			*input_file;
 	char			*output_file;
 	int				append;
+	int				heredoc;
 	struct s_cmd	*next;
 }				t_cmd;
 
-
+int	main(int ac, char **av, char **envp);
 t_env	*env_dup(char **envp);
 void	ft_envadd_back(t_env **head, t_env *new);
 t_env	*init_env_node(char	*env_line);
 char	*get_env_value(char *env_line);
 char	*get_env_key(char *env_line) ;
 char	*get_env(t_env **envp, char *key);
-
 
 
 #endif

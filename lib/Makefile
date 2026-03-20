@@ -82,7 +82,8 @@ LIB_SRCS = $(LIB_DIR)ft_abs.c \
 			$(LIB_DIR)ft_lstdelone.c \
 			$(LIB_DIR)ft_lstclear.c \
 			$(LIB_DIR)ft_lstiter.c \
-			$(LIB_DIR)ft_lstmap.c 
+			$(LIB_DIR)ft_lstmap.c \
+			$(LIB_DIR)ft_dtab_swap.c 
 
 ALL_SRCS = $(LIB_SRCS) $(GNL_SRCS) $(PRINTF_SRCS) $(FPRINTF_SRCS)
 LIB_OBJS = $(ALL_SRCS:%.c=$(BUILD_DIR)%.o)

@@ -6,16 +6,14 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 13:53:41 by maleca            #+#    #+#             */
-/*   Updated: 2026/03/14 18:39:57 by root             ###   ########.fr       */
+/*   Updated: 2026/03/20 04:30:51 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include <readline/readline.h>
-#include <readline/history.h>
 
 
-t_shell	*init(char **envp)
+static t_shell	*init(char **envp)
 {
 	t_shell	*data;
 
@@ -34,8 +32,9 @@ t_shell	*init(char **envp)
 	return (data);
 }
 
-int	loop(t_shell *data)
+static int	loop(t_shell *data)
 {
+	t_cmd	*cmd_tabl;
 
 	while (1)
 	{
@@ -43,11 +42,40 @@ int	loop(t_shell *data)
 		if (!data->line) // == EOF (Ctrl + D)
 			return (EXIT_FAILURE);
 		else if (data->line[0] != '\0')
+		{
 			add_history(data->line);
-		ft_fprintf(STDOUT_FILENO, "oeoeo: %s\n", data->line);
+			cmd_tabl = parsing(data);
+			if (!cmd_tabl)
+			{
+				free(data->line);
+				continue ;
+			}
+			exec(cmd_tabl, data);
+			free_cmd_list(cmd_tabl);
+		}
 		free(data->line);
 	}
 	return (EXIT_SUCCESS);
+}
+
+void	free_all(t_shell *data)
+{
+	t_env	*cur;
+	t_env	*next;
+
+	if (!data)
+		return ;
+	cur = data->envp;
+	while (cur)
+	{
+		next = cur->next;
+		free(cur->key);
+		free(cur->value);
+		free(cur);
+		cur = next;
+	}
+	free(data->line);
+	free(data);
 }
 
 int	main(int ac, char **av, char **envp)
@@ -58,8 +86,10 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	data = init(envp);
-	data->envp = env_dup(envp);
+	if (!data)
+		return (1);
 	loop(data);
+	free_all(data);
 	return (0);
 }
 

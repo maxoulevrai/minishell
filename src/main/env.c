@@ -6,16 +6,30 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 14:46:39 by maleca            #+#    #+#             */
-/*   Updated: 2026/03/07 19:23:25 by root             ###   ########.fr       */
+/*   Updated: 2026/03/20 04:38:39 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+static void	free_env_list(t_env *env)
+{
+	t_env	*next;
+
+	while (env)
+	{
+		next = env->next;
+		free(env->key);
+		free(env->value);
+		free(env);
+		env = next;
+	}
+}
+
 // copie la ce qui se trouve avant le '=' 
 // dans la variable d'environnement (aka the key)
 
-char	*get_env_key(char *env_line) 
+char	*get_env_key(char *env_line)
 {
 	int	i;
 
@@ -55,6 +69,12 @@ t_env	*init_env_node(char	*env_line)
 		return (NULL);
 	node->key = get_env_key(env_line);
 	node->value = get_env_value(env_line);
+	if (!node->key)
+	{
+		free(node->value);
+		free(node);
+		return (NULL);
+	}
 	node->next = NULL;
 	return (node);
 }
@@ -96,7 +116,10 @@ t_env	*env_dup(char **envp)
 	{
 		new = init_env_node(envp[i]);
 		if (!new)
-			return (NULL); // sortie propre a gerer
+		{
+			free_env_list(head);
+			return (NULL);
+		}
 		ft_envadd_back(&head, new);
 		i++;
 	}
