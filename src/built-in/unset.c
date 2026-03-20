@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 16:51:22 by root              #+#    #+#             */
-/*   Updated: 2026/03/20 04:03:43 by root             ###   ########.fr       */
+/*   Updated: 2026/03/20 18:32:43 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	ft_unset(t_env *envp, char **args)
 		if (ft_strchr(args[i], '='))
 		{
 			ft_fprintf(STDERR_FILENO,
-				"unset: `%s': not a valid identifier\n", args[i]);
+				"minishell: unset: `%s': not a valid identifier\n", args[i]);
 			ret = 1;
 		}
 		else

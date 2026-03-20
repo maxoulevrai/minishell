@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 19:12:14 by root              #+#    #+#             */
-/*   Updated: 2026/03/20 03:59:37 by root             ###   ########.fr       */
+/*   Updated: 2026/03/20 18:21:33 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,15 @@ typedef struct s_shell	t_shell;
 typedef struct s_env	t_env;
 
 int		exec(t_cmd *cmd_tabl, t_shell *data);
-// void	exec_ult(int ac, char **av, t_env *env);
 void	free_cmd_list(t_cmd *cmd_list);
 char	**env_to_tab(t_env *envp);
 void	exec_cmd(char **args, t_env *env);
 char	*get_path(char *cmd, t_env *env);
 char	**get_path_list(t_env *env);
+int			is_parent_builtin(char *cmd);
+int			exec_parent_builtin(t_cmd *cmd, t_shell *data);
+int			apply_input_redir(t_cmd *cmd);
+int			apply_output_redir(t_cmd *cmd);
 void	hdl_error(char *arg, int err_code);
 
 #endif

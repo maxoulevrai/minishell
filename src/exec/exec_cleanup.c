@@ -1,31 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   exec_cleanup.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/24 16:30:03 by root              #+#    #+#             */
-/*   Updated: 2026/03/20 18:32:57 by root             ###   ########.fr       */
+/*   Created: 2026/03/20 19:30:00 by root              #+#    #+#             */
+/*   Updated: 2026/03/20 18:21:00 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/builtins.h"
+#include "../../includes/execution.h"
 
-// commande pwd 
-// prototype: pwd [OPTION]
-
-int	ft_pwd(void)
+void	free_cmd_list(t_cmd *cmd_list)
 {
-	char	*cwd;
+	t_cmd	*next;
 
-	cwd = getcwd(NULL, 0);
-	if (!cwd)
+	while (cmd_list)
 	{
-		ft_fprintf(STDERR_FILENO, "minishell: pwd: %s\n", strerror(errno));
-		return (1);
+		next = cmd_list->next;
+		if (cmd_list->args)
+			free_dtab(cmd_list->args);
+		free(cmd_list->input_file);
+		free(cmd_list->output_file);
+		free(cmd_list);
+		cmd_list = next;
 	}
-	ft_fprintf(1, "%s\n", cwd);
-	free(cwd);
-	return (0);
 }

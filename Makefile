@@ -21,6 +21,10 @@ SRCS = $(SRCS_DIR)main/main.c \
 		$(SRCS_DIR)main/env_utils.c \
 		$(SRCS_DIR)exec/exec.c \
 		$(SRCS_DIR)exec/exec_utils.c \
+				$(SRCS_DIR)exec/env_tab.c \
+				$(SRCS_DIR)exec/exec_cleanup.c \
+				$(SRCS_DIR)exec/parent_builtins.c \
+				$(SRCS_DIR)exec/redir.c \
 		$(SRCS_DIR)parsing/parsing.c \
 		$(SRCS_DIR)parsing/token.c \
 		$(SRCS_DIR)parsing/token_utils.c \

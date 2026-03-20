@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 17:08:16 by root              #+#    #+#             */
-/*   Updated: 2026/03/19 17:22:47 by root             ###   ########.fr       */
+/*   Updated: 2026/03/20 18:34:17 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,17 @@ int	ft_exit(char **cmd)
 {
 	long	exit_code;
 
-	ft_fprintf(STDOUT_FILENO, "exit\n");
 	if (!cmd[1])
 		exit(0);
 	if (cmd[2])
 	{
-		ft_fprintf(STDERR_FILENO, "exit: too many arguments\n");
+		ft_fprintf(STDERR_FILENO, "minishell: exit: too many arguments\n");
 		return (1);
 	}
 	if (!is_numeric(cmd[1]))
 	{
 		ft_fprintf(STDERR_FILENO,
-			"exit: %s: numeric argument required\n", cmd[1]);
+			"minishell: exit: %s: numeric argument required\n", cmd[1]);
 		exit(2);
 	}
 	exit_code = ft_atol(cmd[1]);

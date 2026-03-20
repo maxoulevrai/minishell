@@ -26,38 +26,6 @@ static void	free_env_list(t_env *env)
 	}
 }
 
-// copie la ce qui se trouve avant le '=' 
-// dans la variable d'environnement (aka the key)
-
-char	*get_env_key(char *env_line)
-{
-	int	i;
-
-	i = 0;
-	while (env_line[i] != '=' && env_line[i])
-		i++;
-	if (env_line[i] == 0)
-		return (NULL);
-	return (ft_strndup(env_line, i));
-}
-
-// copie la ce qui se trouve apres le '=' 
-// dans la variable d'environnement (aka the value)
-
-char	*get_env_value(char *env_line)
-{
-	int	i;
-
-	i = 0;
-	while (env_line[i] != '=' && env_line[i])
-		i++;
-	if (env_line[i] == 0)
-		return (NULL);
-	return (ft_strdup(&env_line[i + 1]));
-}
-
-// init de la nouvelle node (duuh)
-
 t_env	*init_env_node(char	*env_line)
 {
 	t_env	*node;
