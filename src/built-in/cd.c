@@ -19,7 +19,6 @@
 
 char	*get_env(t_env **envp, char *key);
 
-
 int	ft_cd(t_env *envp, char **t_cmd)
 {
 	char	*path;

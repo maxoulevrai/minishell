@@ -13,12 +13,9 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "../lib/includes/libft.h"
-# include "parsing.h"
-# include "execution.h"
-# include "builtins.h"
 # include <errno.h>
 # include <limits.h>
+# include <sys/types.h>
 # include <signal.h>
 # include <stdbool.h>
 # include <stdio.h>
@@ -31,6 +28,8 @@
 # include <readline/history.h>
 
 # define PROMPT "6ft shell>> $ "
+
+extern volatile sig_atomic_t	g_signal;
 
 typedef struct s_env	t_env;
 
@@ -74,5 +73,8 @@ char	*get_env_value(char *env_line);
 char	*get_env_key(char *env_line) ;
 char	*get_env(t_env **envp, char *key);
 
+void	setup_signals(void);
+void	handle_signal(int sig);
+int		check_signal(t_shell *data);
 
 #endif

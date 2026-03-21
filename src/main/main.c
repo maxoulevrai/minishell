@@ -12,7 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-
 static t_shell	*init(char **envp)
 {
 	t_shell	*data;
@@ -27,8 +26,9 @@ static t_shell	*init(char **envp)
 		return (NULL);
 	}
 	data->last_status = 0;
-	data->pid_table  = NULL;
+	data->pid_table = NULL;
 	data->line = NULL;
+	setup_signals();
 	return (data);
 }
 
@@ -41,17 +41,15 @@ static int	loop(t_shell *data)
 		data->line = readline(PROMPT);
 		if (!data->line) // == EOF (Ctrl + D)
 			return (EXIT_FAILURE);
-		else if (data->line[0] != '\0')
+		if (!check_signal(data) && data->line[0] != '\0')
 		{
 			add_history(data->line);
 			cmd_tabl = parsing(data);
-			if (!cmd_tabl)
+			if (cmd_tabl)
 			{
-				free(data->line);
-				continue ;
+				exec(cmd_tabl, data);
+				free_cmd_list(cmd_tabl);
 			}
-			exec(cmd_tabl, data);
-			free_cmd_list(cmd_tabl);
 		}
 		free(data->line);
 	}

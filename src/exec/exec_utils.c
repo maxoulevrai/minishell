@@ -86,4 +86,3 @@ void	exec_cmd(char **args, t_env *env)
 	free_dtab(env_tabl);
 	hdl_error(args[0], errno);
 }
-

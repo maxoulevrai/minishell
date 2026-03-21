@@ -19,6 +19,7 @@ LIB = lib/libft.a
 SRCS = $(SRCS_DIR)main/main.c \
 		$(SRCS_DIR)main/env.c \
 		$(SRCS_DIR)main/env_utils.c \
+		$(SRCS_DIR)signals/signals.c \
 		$(SRCS_DIR)exec/exec.c \
 		$(SRCS_DIR)exec/exec_utils.c \
 				$(SRCS_DIR)exec/env_tab.c \

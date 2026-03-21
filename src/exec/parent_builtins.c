@@ -26,6 +26,7 @@ int	is_parent_builtin(char *cmd)
 		return (1);
 	return (0);
 }
+
 int	exec_parent_builtin(t_cmd *cmd, t_shell *data)
 {
 	int	save_in;
