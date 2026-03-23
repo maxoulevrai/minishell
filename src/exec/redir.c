@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: maleca<maleca@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/20 18:08:38 by root              #+#    #+#             */
-/*   Updated: 2026/03/23 14:58:36 by root             ###   ########.fr       */
+/*   Created: 2026/03/20 18:08:38 by maleca             #+#    #+#             */
+/*   Updated: 2026/03/23 14:58:36 by maleca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,15 @@ static int	heredoc_to_fd(char *limiter)
 	while (1)
 	{
 		line = readline("> ");
+		if (g_signal == SIGINT)
+		{
+			free(line);
+			close(pipefd[0]);
+			close(pipefd[1]);
+			errno = EINTR;
+			init_signal();
+			return (-1);
+		}
 		if (!line)
 			break ;
 		if (ft_strcmp(line, limiter) == 0)

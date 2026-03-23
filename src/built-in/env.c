@@ -1,31 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maleca<maleca@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/24 16:30:03 by maleca             #+#    #+#             */
-/*   Updated: 2026/03/20 18:32:57 by maleca            ###   ########.fr       */
+/*   Created: 2026/03/23 21:50:22 by root              #+#    #+#             */
+/*   Updated: 2026/03/23 21:50:32 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/builtins.h"
 
-// commande pwd 
-// prototype: pwd [OPTION]
+// env [OPTION]... [-] [NAME=VALUE]... [COMMAND [ARG]...]
 
-int	ft_pwd(void)
+int	ft_env(t_env *envp, char **cmd)
 {
-	char	*cwd;
+	t_env	*tmp;
 
-	cwd = getcwd(NULL, 0);
-	if (!cwd)
-	{
-		ft_fprintf(STDERR_FILENO, "minishell: pwd: %s\n", strerror(errno));
+	tmp = envp;
+	if (cmd[1])
+		return (127);
+	if (!tmp)
 		return (1);
+	while (tmp)
+	{
+		if (tmp->value)
+			ft_fprintf(1, "%s=%s\n", tmp->key, tmp->value);
+		tmp = tmp->next;
 	}
-	ft_fprintf(1, "%s\n", cwd);
-	free(cwd);
 	return (0);
 }

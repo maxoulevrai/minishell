@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: maleca<maleca@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 18:53:30 by maleca            #+#    #+#             */
-/*   Updated: 2026/03/23 14:56:41 by root             ###   ########.fr       */
+/*   Updated: 2026/03/23 14:56:41 by maleca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,11 @@ char	*get_env(t_env **envp, char *key);
 
 void	init_signal(void);
 void	set_signal_heredoc(void);
+void	set_signal_exec_parent(void);
+void	set_signal_exec_child(void);
+
+//		-- MEM --
+
+void	free_data(t_shell *data);
 
 #endif

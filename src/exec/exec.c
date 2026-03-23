@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: maleca<maleca@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 15:08:31 by maleca            #+#    #+#             */
-/*   Updated: 2026/03/23 14:54:55 by root             ###   ########.fr       */
+/*   Updated: 2026/03/23 14:54:55 by maleca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static int	wait_pipeline(pid_t last_pid)
 {
 	int		status;
 	int		last_status;
+	int		sig;
 	pid_t	pid;
 
 	last_status = 0;
@@ -27,7 +28,14 @@ static int	wait_pipeline(pid_t last_pid)
 			if (WIFEXITED(status))
 				last_status = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
-				last_status = 128 + WTERMSIG(status);
+			{
+				sig = WTERMSIG(status);
+				if (sig == SIGINT)
+					write(STDOUT_FILENO, "\n", 1);
+				else if (sig == SIGQUIT)
+					write(STDERR_FILENO, "Quit (core dumped)\n", 19);
+				last_status = 128 + sig;
+			}
 		}
 		pid = wait(&status);
 	}
@@ -37,6 +45,7 @@ static int	wait_pipeline(pid_t last_pid)
 static void	child_process(t_cmd *cur, t_shell *data,
 		int prev_read, int pipefd[2])
 {
+	set_signal_exec_child();
 	if (prev_read != -1 && dup2(prev_read, STDIN_FILENO) == -1)
 		hdl_error("dup2", errno);
 	if (cur->next && dup2(pipefd[1], STDOUT_FILENO) == -1)
@@ -49,10 +58,14 @@ static void	child_process(t_cmd *cur, t_shell *data,
 		close(pipefd[1]);
 	}
 	if (apply_input_redir(cur) == -1 || apply_output_redir(cur) == -1)
+	{
+		if (g_signal == SIGINT)
+			_exit(130);
 		hdl_error("redir", errno);
+	}
 	if (!cur->args || !cur->args[0])
 		_exit(0);
-	exec_cmd(cur->args, data->envp);
+	exec_cmd(cur->args, data);
 }
 
 static pid_t	spawn_cmd(t_cmd *cur, t_shell *data,
@@ -92,13 +105,14 @@ int	exec(t_cmd *cmd_tabl, t_shell *data)
 	cur = cmd_tabl;
 	prev_read = -1;
 	last_pid = -1;
+	set_signal_exec_parent();
 	while (cur)
 	{
 		if (cur->next && pipe(pipefd) == -1)
-			return (1);
+			return (init_signal(), 1);
 		last_pid = spawn_cmd(cur, data, prev_read, pipefd);
 		if (last_pid == -1)
-			return (1);
+			return (init_signal(), 1);
 		update_parent_pipe(cur, &prev_read, pipefd);
 		cur = cur->next;
 	}

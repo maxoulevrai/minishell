@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: maleca<maleca@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 18:17:04 by maleca            #+#    #+#             */
-/*   Updated: 2026/03/23 14:53:58 by root             ###   ########.fr       */
+/*   Updated: 2026/03/23 14:53:58 by maleca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	*get_path(char *cmd, t_env *env)
 	return (NULL);
 }
 
-void	exec_cmd(char **args, t_env *env)
+void	exec_cmd(char **args, t_shell *data)
 {
 	char	*path;
 	char	**env_tabl;
@@ -73,10 +73,10 @@ void	exec_cmd(char **args, t_env *env)
 	if (!args || !args[0])
 		return (ft_fprintf(STDERR_FILENO, "6ft shell: : command not found\n"),
 			_exit(127));
-	if (builtins_checker(args[0]))
-		return (builtins_dispatcher(env, args), _exit(0));
-	env_tabl = env_to_tab(env);
-	path = get_path(args[0], env);
+	if (is_child_builtin(args[0]))
+		return (builtins_dispatcher(data, args), _exit(0));
+	env_tabl = env_to_tab(data->envp);
+	path = get_path(args[0], data->envp);
 	if (!path)
 		return (free_dtab(env_tabl),
 			ft_fprintf(STDERR_FILENO, "6ft shell: %s: command not found\n",

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_check_dispatch.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: maleca<maleca@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/24 15:40:58 by root              #+#    #+#             */
-/*   Updated: 2026/03/20 04:35:11 by root             ###   ########.fr       */
+/*   Created: 2026/02/24 15:40:58 by maleca             #+#    #+#             */
+/*   Updated: 2026/03/20 04:35:11 by maleca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,44 +21,51 @@
 // - echo with option -n
 // - cd with only a relative or absolute path
 
-int	builtins_checker(char *arg)
+int	is_parent_builtin(char *cmd)
 {
-	if (!arg[0])
+	if (!cmd)
+		return (0);
+	if (!ft_strcmp(cmd, "cd"))
+		return (1);
+	if (!ft_strcmp(cmd, "export"))
+		return (1);
+	if (!ft_strcmp(cmd, "unset"))
+		return (1);
+	if (!ft_strcmp(cmd, "exit"))
+		return (1);
+	return (0);
+}
+
+int	is_child_builtin(char *cmd)
+{
+	if (!cmd[0])
 		return (FALSE);
-	else if (!ft_strcmp(arg, "pwd"))
+	else if (!ft_strcmp(cmd, "pwd"))
 		return (TRUE);
-	else if (!ft_strcmp(arg, "export"))
+	else if (!ft_strcmp(cmd, "env"))
 		return (TRUE);
-	else if (!ft_strcmp(arg, "unset"))
+	else if (!ft_strcmp(cmd, "echo"))
 		return (TRUE);
-	else if (!ft_strcmp(arg, "env"))
-		return (TRUE);
-	else if (!ft_strcmp(arg, "exit"))
-		return (TRUE);
-	else if (!ft_strcmp(arg, "echo"))
-		return (TRUE);
-	else if (!ft_strcmp(arg, "cd"))
-		return (2);
 	else
 		return (FALSE);
 }
 
-int	builtins_dispatcher(t_env *envp, char **args)
+int		builtins_dispatcher(t_shell *data, char **args)
 {
 	if (!ft_strcmp(args[0], "pwd"))
 		return (ft_pwd());
 	else if (!ft_strcmp(args[0], "export"))
-		return (ft_export(envp, args));
+		return (ft_export(data->envp, args));
 	else if (!ft_strcmp(args[0], "unset"))
-		return (ft_unset(envp, args));
+		return (ft_unset(data->envp, args));
 	else if (!ft_strcmp(args[0], "env"))
-		return (ft_env(envp, args));
+		return (ft_env(data->envp, args));
 	else if (!ft_strcmp(args[0], "exit"))
-		return (ft_exit(args));
+		return (ft_exit(data, args));
 	else if (!ft_strcmp(args[0], "echo"))
 		return (ft_echo(args));
 	else if (!ft_strcmp(args[0], "cd"))
-		return (ft_cd(envp, args));
+		return (ft_cd(data->envp, args));
 	else
 		return (1);
 }

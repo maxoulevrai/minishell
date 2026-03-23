@@ -3,29 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parent_builtins.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: maleca<maleca@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/20 18:11:12 by root              #+#    #+#             */
-/*   Updated: 2026/03/23 14:58:16 by root             ###   ########.fr       */
+/*   Created: 2026/03/20 18:11:12 by maleca             #+#    #+#             */
+/*   Updated: 2026/03/23 14:58:16 by maleca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/execution.h"
 
-int	is_parent_builtin(char *cmd)
-{
-	if (!cmd)
-		return (0);
-	if (!ft_strcmp(cmd, "cd"))
-		return (1);
-	if (!ft_strcmp(cmd, "export"))
-		return (1);
-	if (!ft_strcmp(cmd, "unset"))
-		return (1);
-	if (!ft_strcmp(cmd, "exit"))
-		return (1);
-	return (0);
-}
 
 int	exec_parent_builtin(t_cmd *cmd, t_shell *data)
 {
@@ -43,9 +29,15 @@ int	exec_parent_builtin(t_cmd *cmd, t_shell *data)
 		dup2(save_out, STDOUT_FILENO);
 		close(save_in);
 		close(save_out);
+		if (g_signal == SIGINT)
+		{
+			data->last_status = 130;
+			g_signal = 0;
+			return (130);
+		}
 		return (1);
 	}
-	status = builtins_dispatcher(data->envp, cmd->args);
+	status = builtins_dispatcher(data, cmd->args);
 	dup2(save_in, STDIN_FILENO);
 	dup2(save_out, STDOUT_FILENO);
 	close(save_in);

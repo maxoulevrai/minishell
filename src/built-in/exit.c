@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: maleca<maleca@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/24 17:08:16 by root              #+#    #+#             */
-/*   Updated: 2026/03/23 14:57:16 by root             ###   ########.fr       */
+/*   Created: 2026/02/24 17:08:16 by maleca             #+#    #+#             */
+/*   Updated: 2026/03/23 14:57:16 by maleca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,23 +41,29 @@ static int	is_numeric(char *str)
 // avec argument -> exit avec le code donné (0-255)
 // trop d'arguments -> erreur, ne quitte pas
 
-int	ft_exit(char **cmd)
+int	ft_exit(t_shell *data, char **cmd)
 {
 	long	exit_code;
 
 	if (!cmd[1])
+	{
+		free_data(data);
 		exit(0);
+	}
 	if (cmd[2])
 	{
 		ft_fprintf(STDERR_FILENO, "minishell: exit: too many arguments\n");
+		free_data(data);
 		return (1);
 	}
 	if (!is_numeric(cmd[1]))
 	{
 		ft_fprintf(STDERR_FILENO,
 			"minishell: exit: %s: numeric argument required\n", cmd[1]);
+		free_data(data);
 		exit(2);
 	}
 	exit_code = ft_atol(cmd[1]);
+	free_data(data);
 	exit(exit_code % 256);
 }

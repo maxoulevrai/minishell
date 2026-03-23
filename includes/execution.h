@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: maleca<maleca@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/17 19:12:14 by root              #+#    #+#             */
-/*   Updated: 2026/03/23 14:56:25 by root             ###   ########.fr       */
+/*   Created: 2026/03/17 19:12:14 by maleca             #+#    #+#             */
+/*   Updated: 2026/03/23 14:56:25 by maleca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef struct s_env	t_env;
 int		exec(t_cmd *cmd_tabl, t_shell *data);
 void	free_cmd_list(t_cmd *cmd_list);
 char	**env_to_tab(t_env *envp);
-void	exec_cmd(char **args, t_env *env);
+void	exec_cmd(char **args, t_shell *data);
 char	*get_path(char *cmd, t_env *env);
 char	**get_path_list(t_env *env);
 int		is_parent_builtin(char *cmd);

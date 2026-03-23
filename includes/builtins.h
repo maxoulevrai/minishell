@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: maleca<maleca@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/23 14:47:22 by root              #+#    #+#             */
-/*   Updated: 2026/03/23 14:47:36 by root             ###   ########.fr       */
+/*   Created: 2026/03/23 14:47:22 by maleca             #+#    #+#             */
+/*   Updated: 2026/03/23 14:47:36 by maleca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,17 @@ typedef struct s_env	t_env;
 # define TRUE 1
 # define FALSE 0
 
-int	builtins_checker(char *arg);
-int	builtins_dispatcher(t_env *envp, char **args);
+//		-- B/IN UTILS --
+
+int	is_child_builtin(char *cmd);
+int	is_parent_builtin(char *cmd);
+int	builtins_dispatcher(t_shell *data, char **args);
+
+
 int	ft_cd(t_env *envp, char **args);
 int	ft_echo(char **args);
 int	ft_env(t_env *envp, char **cmd);
-int	ft_exit(char **cmd);
+int	ft_exit(t_shell *data, char **cmd);
 int	ft_export(t_env *envp, char **args);
 int	ft_pwd(void);
 int	ft_unset(t_env *envp, char **args);

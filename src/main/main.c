@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: maleca<maleca@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 13:53:41 by maleca            #+#    #+#             */
-/*   Updated: 2026/03/23 14:46:15 by root             ###   ########.fr       */
+/*   Updated: 2026/03/23 14:46:15 by maleca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static int	loop(t_shell *data)
 	return (EXIT_SUCCESS);
 }
 
-void	free_all(t_shell *data)
+void	free_data(t_shell *data)
 {
 	t_env	*cur;
 	t_env	*next;
@@ -102,7 +102,7 @@ int	main(int ac, char **av, char **envp)
 	g_signal = 0;
 	init_signal();
 	loop(data);
-	free_all(data);
+	free_data(data);
 	ft_fprintf(STDOUT_FILENO, "exit\n");
 	return (0);
 }

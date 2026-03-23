@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: maleca<maleca@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/07 14:57:21 by root              #+#    #+#             */
-/*   Updated: 2026/03/20 18:41:09 by root             ###   ########.fr       */
+/*   Created: 2026/03/07 14:57:21 by maleca             #+#    #+#             */
+/*   Updated: 2026/03/20 18:41:09 by maleca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,29 @@
 
 char	*get_env_key(char *env_line)
 {
-	int	i;
-
+	int		i;
+	char	*ret;
 	i = 0;
 	while (env_line[i] && env_line[i] != '=')
 		i++;
 	if (!env_line[i])
 		return (NULL);
-	return (ft_strndup(env_line, i));
+	ret = ft_strndup(env_line, i);
+	return (ret);
 }
 
 char	*get_env_value(char *env_line)
 {
-	int	i;
+	int		i;
+	char	*ret;
 
 	i = 0;
 	while (env_line[i] && env_line[i] != '=')
 		i++;
 	if (!env_line[i])
 		return (NULL);
-	return (ft_strdup(&env_line[i + 1]));
+	ret = ft_strdup(&env_line[i + 1]);
+	return (ret);
 }
 
 char	*get_env(t_env **envp, char *key)
