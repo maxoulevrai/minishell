@@ -28,8 +28,8 @@ typedef struct s_shell	t_shell;
 typedef struct s_token	t_token;
 
 // Parsing
-t_cmd	*parsing(t_shell *shell);
-t_token	*tokenize(t_shell *shell);
+t_cmd	*parsing(const char *line, t_shell *shell);
+t_token	*tokenize(const char *line);
 t_cmd	*parse_tokens(t_token *token_list);
 void	free_tokens(t_token *token_list);
 void	expand(t_cmd *cmd_list, t_shell *shell);

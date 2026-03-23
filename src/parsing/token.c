@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yzidani <yzidani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 17:14:48 by yzidani           #+#    #+#             */
-/*   Updated: 2026/02/28 17:29:58 by yzidani          ###   ########.fr       */
+/*   Updated: 2026/03/21 16:07:49 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,23 +72,23 @@ static int	process_token(t_token **list, const char *line, int *i)
 	return (1);
 }
 
-t_token	*tokenize(t_shell *shell)
+t_token	*tokenize(const char *line)
 {
 	t_token	*token_list;
 	int		i;
 
-	if (!shell || !shell->line)
+	if (!line)
 		return (NULL);
 	token_list = NULL;
 	i = 0;
-	while (shell->line[i])
+	while (line[i])
 	{
-		while (shell->line[i] && (shell->line[i] == ' '
-				|| shell->line[i] == '\t' || shell->line[i] == '\n'))
+		while (line[i] && (line[i] == ' '
+				|| line[i] == '\t' || line[i] == '\n'))
 			i++;
-		if (!shell->line[i])
+		if (!line[i])
 			break ;
-		if (!process_token(&token_list, shell->line, &i))
+		if (!process_token(&token_list, line, &i))
 		{
 			free_tokens(token_list);
 			return (NULL);

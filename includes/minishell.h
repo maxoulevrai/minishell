@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 18:53:30 by maleca            #+#    #+#             */
-/*   Updated: 2026/03/20 04:05:33 by root             ###   ########.fr       */
+/*   Updated: 2026/03/23 14:49:49 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "execution.h"
 # include "builtins.h"
 # include <errno.h>
+# include <signal.h>
 # include <limits.h>
 # include <signal.h>
 # include <stdbool.h>
@@ -25,22 +26,22 @@
 # include <stdlib.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
+# include <sys/types.h>
 # include <fcntl.h>
 # include <unistd.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
-# define PROMPT "6ft shell>> $ "
+# define PROMPT "\001\033[1;36m\0026ft shell> \001\033[0m\002"
 
+extern volatile sig_atomic_t	g_signal;
 
-typedef struct s_env	t_env;
+typedef struct s_env			t_env;
 
 typedef struct s_shell
 {
-	pid_t	*pid_table;
-	int		last_status;
-	char	*line;
 	t_env	*envp;
+	int		last_status;
 }				t_shell;
 
 typedef struct s_env
@@ -67,13 +68,18 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }				t_cmd;
 
-int	main(int ac, char **av, char **envp);
+//		-- ENV --
+int		main(int ac, char **av, char **envp);
 t_env	*env_dup(char **envp);
 void	ft_envadd_back(t_env **head, t_env *new);
 t_env	*init_env_node(char	*env_line);
 char	*get_env_value(char *env_line);
-char	*get_env_key(char *env_line) ;
+char	*get_env_key(char *env_line);
 char	*get_env(t_env **envp, char *key);
 
+//		-- SIGNALS --
+
+void	init_signal(void);
+void	set_signal_heredoc(void);
 
 #endif

@@ -6,12 +6,13 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 13:53:41 by maleca            #+#    #+#             */
-/*   Updated: 2026/03/20 04:30:51 by root             ###   ########.fr       */
+/*   Updated: 2026/03/23 14:46:15 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+volatile sig_atomic_t	g_signal = 0;
 
 static t_shell	*init(char **envp)
 {
@@ -27,33 +28,44 @@ static t_shell	*init(char **envp)
 		return (NULL);
 	}
 	data->last_status = 0;
-	data->pid_table  = NULL;
-	data->line = NULL;
 	return (data);
+}
+
+static int	hdl_args(t_shell *data, char *line)
+{
+	t_cmd	*cmd_tabl;
+
+	add_history(line);
+	cmd_tabl = parsing(line, data);
+	if (!cmd_tabl)
+	{
+		free(line);
+		return (1);
+	}
+	exec(cmd_tabl, data);
+	free_cmd_list(cmd_tabl);
+	return (0);
 }
 
 static int	loop(t_shell *data)
 {
-	t_cmd	*cmd_tabl;
+	char	*line;
 
 	while (1)
 	{
-		data->line = readline(PROMPT);
-		if (!data->line) // == EOF (Ctrl + D)
-			return (EXIT_FAILURE);
-		else if (data->line[0] != '\0')
+		line = readline(PROMPT);
+		if (g_signal == SIGINT)
 		{
-			add_history(data->line);
-			cmd_tabl = parsing(data);
-			if (!cmd_tabl)
-			{
-				free(data->line);
-				continue ;
-			}
-			exec(cmd_tabl, data);
-			free_cmd_list(cmd_tabl);
+			data->last_status = 130;
+			g_signal = 0;
+			free(line);
+			continue ;
 		}
-		free(data->line);
+		if (!line)
+			return (EXIT_FAILURE);
+		else if (line[0] != '\0' && hdl_args(data, line) == 1)
+			continue ;
+		free(line);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -74,7 +86,6 @@ void	free_all(t_shell *data)
 		free(cur);
 		cur = next;
 	}
-	free(data->line);
 	free(data);
 }
 
@@ -88,8 +99,10 @@ int	main(int ac, char **av, char **envp)
 	data = init(envp);
 	if (!data)
 		return (1);
+	g_signal = 0;
+	init_signal();
 	loop(data);
 	free_all(data);
+	ft_fprintf(STDOUT_FILENO, "exit\n");
 	return (0);
 }
-

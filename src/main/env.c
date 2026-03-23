@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 14:46:39 by maleca            #+#    #+#             */
-/*   Updated: 2026/03/20 04:38:39 by root             ###   ########.fr       */
+/*   Updated: 2026/03/23 14:28:17 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,38 +25,6 @@ static void	free_env_list(t_env *env)
 		env = next;
 	}
 }
-
-// copie la ce qui se trouve avant le '=' 
-// dans la variable d'environnement (aka the key)
-
-char	*get_env_key(char *env_line)
-{
-	int	i;
-
-	i = 0;
-	while (env_line[i] != '=' && env_line[i])
-		i++;
-	if (env_line[i] == 0)
-		return (NULL);
-	return (ft_strndup(env_line, i));
-}
-
-// copie la ce qui se trouve apres le '=' 
-// dans la variable d'environnement (aka the value)
-
-char	*get_env_value(char *env_line)
-{
-	int	i;
-
-	i = 0;
-	while (env_line[i] != '=' && env_line[i])
-		i++;
-	if (env_line[i] == 0)
-		return (NULL);
-	return (ft_strdup(&env_line[i + 1]));
-}
-
-// init de la nouvelle node (duuh)
 
 t_env	*init_env_node(char	*env_line)
 {
@@ -109,7 +77,7 @@ t_env	*env_dup(char **envp)
 	size_t	i;
 
 	if (!envp)
-			return (NULL); // sortie propre a gerer
+		return (NULL);
 	i = 0;
 	head = NULL;
 	while (envp[i])

@@ -6,12 +6,35 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 14:57:21 by root              #+#    #+#             */
-/*   Updated: 2026/03/17 18:15:20 by root             ###   ########.fr       */
+/*   Updated: 2026/03/20 18:41:09 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+char	*get_env_key(char *env_line)
+{
+	int	i;
+
+	i = 0;
+	while (env_line[i] && env_line[i] != '=')
+		i++;
+	if (!env_line[i])
+		return (NULL);
+	return (ft_strndup(env_line, i));
+}
+
+char	*get_env_value(char *env_line)
+{
+	int	i;
+
+	i = 0;
+	while (env_line[i] && env_line[i] != '=')
+		i++;
+	if (!env_line[i])
+		return (NULL);
+	return (ft_strdup(&env_line[i + 1]));
+}
 
 char	*get_env(t_env **envp, char *key)
 {
