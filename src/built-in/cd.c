@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 17:02:23 by root              #+#    #+#             */
-/*   Updated: 2026/03/20 18:32:38 by root             ###   ########.fr       */
+/*   Updated: 2026/03/23 16:12:59 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 // avec argument -> va dans le path donné
 
 char	*get_env(t_env **envp, char *key);
-
 
 int	ft_cd(t_env *envp, char **t_cmd)
 {
