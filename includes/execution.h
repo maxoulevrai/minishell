@@ -6,12 +6,12 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 19:12:14 by root              #+#    #+#             */
-/*   Updated: 2026/03/20 18:21:33 by root             ###   ########.fr       */
+/*   Updated: 2026/03/20 21:54:53 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef		EXEC_H
-# define	EXEC_H
+#ifndef EXEC_H
+# define EXEC_H
 
 # include "minishell.h"
 # include <errno.h>
@@ -35,10 +35,10 @@ char	**env_to_tab(t_env *envp);
 void	exec_cmd(char **args, t_env *env);
 char	*get_path(char *cmd, t_env *env);
 char	**get_path_list(t_env *env);
-int			is_parent_builtin(char *cmd);
-int			exec_parent_builtin(t_cmd *cmd, t_shell *data);
-int			apply_input_redir(t_cmd *cmd);
-int			apply_output_redir(t_cmd *cmd);
+int		is_parent_builtin(char *cmd);
+int		exec_parent_builtin(t_cmd *cmd, t_shell *data);
+int		apply_input_redir(t_cmd *cmd);
+int		apply_output_redir(t_cmd *cmd);
 void	hdl_error(char *arg, int err_code);
 
 #endif

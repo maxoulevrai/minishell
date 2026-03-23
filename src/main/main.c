@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 13:53:41 by maleca            #+#    #+#             */
-/*   Updated: 2026/03/20 04:30:51 by root             ###   ########.fr       */
+/*   Updated: 2026/03/20 22:06:19 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,8 @@ int	main(int ac, char **av, char **envp)
 		return (1);
 	loop(data);
 	free_all(data);
+	rl_clear_history();
+	ft_fprintf(2, "exit\n");
 	return (0);
 }
 
