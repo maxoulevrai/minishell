@@ -50,6 +50,7 @@ OBJS = $(SRCS:%.c=build/%.o)
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
+SUPP_FILE    = valgrind_readline_leaks_ignore.supp
 
 all: $(NAME)
 
@@ -87,5 +88,32 @@ fclean: clean
 	@$(MAKE) -C lib lib_fclean
 
 re: fclean all
+
+# create .supp file that suppresses leaks from teh readline library
+$(SUPP_FILE):
+	@echo "Creating valgrind suppression file for readline library"
+	@echo "{" > $(SUPP_FILE)
+	@echo "   ignore_libreadline_leaks" >> $(SUPP_FILE)
+	@echo "   Memcheck:Leak" >> $(SUPP_FILE)
+	@echo "   ..." >> $(SUPP_FILE)
+	@echo "   obj:*/libreadline.so.*" >> $(SUPP_FILE)
+	@echo "}" >> $(SUPP_FILE)
+
+# launch ./minishell with valgrind set up with the suppressed file
+valgrind: $(NAME) $(SUPP_FILE)
+	valgrind --suppressions=$(SUPP_FILE) --leak-check=full --track-fds=yes --show-leak-kinds=all --trace-children=yes ./$(NAME) || true
+
+
+CHAT = { ignore_readline_leaks Memcheck:Leak ... obj:*/libreadline.so.* } { ignore_bin_functions Memcheck:Leak ... obj:/usr/bin/* } { ncurses_termcap Memcheck:Leak match-leak-kinds:reachable fun:rl_make_bare_keymap fun:rl_generic_bind fun:rl_parse_and_bind obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.2 fun:rl_initialize fun:readline }
+
+ignore:
+	@for i in $(CHAT); do \
+	       echo $$i >> ignore.supp; \
+	done
+
+val:
+	@make
+	@if ! [ -f "ignore.supp" ]; then make ignore; fi
+	@valgrind --suppressions=./ignore.supp --leak-check=full --show-leak-kinds=all --track-origins=yes --trace-children=yes --track-fds=yes -s ./minishell
 
 .PHONY: all clean fclean re
