@@ -34,7 +34,7 @@ typedef struct s_env	t_env;
 
 int	is_child_builtin(char *cmd);
 int	is_parent_builtin(char *cmd);
-int	builtins_dispatcher(t_shell *data, char **args);
+int	builtins_dispatcher(t_shell *data, t_cmd *cmd);
 
 
 int	ft_cd(t_env *envp, char **args);

@@ -32,7 +32,7 @@ typedef struct s_env	t_env;
 int		exec(t_cmd *cmd_tabl, t_shell *data);
 void	free_cmd_list(t_cmd *cmd_list);
 char	**env_to_tab(t_env *envp);
-void	exec_cmd(char **args, t_shell *data);
+void	exec_cmd(t_cmd *cmd, t_shell *data);
 char	*get_path(char *cmd, t_env *env);
 char	**get_path_list(t_env *env);
 int		is_parent_builtin(char *cmd);

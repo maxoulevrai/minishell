@@ -50,22 +50,22 @@ int	is_child_builtin(char *cmd)
 		return (FALSE);
 }
 
-int		builtins_dispatcher(t_shell *data, char **args)
+int		builtins_dispatcher(t_shell *data, t_cmd *cmd)
 {
-	if (!ft_strcmp(args[0], "pwd"))
+	if (!ft_strcmp(cmd->args[0], "pwd"))
 		return (ft_pwd());
-	else if (!ft_strcmp(args[0], "export"))
-		return (ft_export(data->envp, args));
-	else if (!ft_strcmp(args[0], "unset"))
-		return (ft_unset(data->envp, args));
-	else if (!ft_strcmp(args[0], "env"))
-		return (ft_env(data->envp, args));
-	else if (!ft_strcmp(args[0], "exit"))
-		return (ft_exit(data, args));
-	else if (!ft_strcmp(args[0], "echo"))
-		return (ft_echo(args));
-	else if (!ft_strcmp(args[0], "cd"))
-		return (ft_cd(data->envp, args));
+	else if (!ft_strcmp(cmd->args[0], "export"))
+		return (ft_export(data->envp, cmd->args));
+	else if (!ft_strcmp(cmd->args[0], "unset"))
+		return (ft_unset(data->envp, cmd->args));
+	else if (!ft_strcmp(cmd->args[0], "env"))
+		return (ft_env(data->envp, cmd->args));
+	else if (!ft_strcmp(cmd->args[0], "exit"))
+		return (ft_exit(data, cmd->args));
+	else if (!ft_strcmp(cmd->args[0], "echo"))
+		return (ft_echo(cmd->args));
+	else if (!ft_strcmp(cmd->args[0], "cd"))
+		return (ft_cd(data->envp, cmd->args));
 	else
 		return (1);
 }

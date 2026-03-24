@@ -61,9 +61,9 @@ int	ft_exit(t_shell *data, char **cmd)
 		ft_fprintf(STDERR_FILENO,
 			"minishell: exit: %s: numeric argument required\n", cmd[1]);
 		free_data(data);
-		exit(2);
+		return 2;
 	}
 	exit_code = ft_atol(cmd[1]);
 	free_data(data);
-	exit(exit_code % 256);
+	return(exit_code % 256);
 }

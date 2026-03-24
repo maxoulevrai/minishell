@@ -65,24 +65,30 @@ char	*get_path(char *cmd, t_env *env)
 	return (NULL);
 }
 
-void	exec_cmd(char **args, t_shell *data)
+void	exec_cmd(t_cmd *cmd, t_shell *data)
 {
 	char	*path;
 	char	**env_tabl;
 
-	if (!args || !args[0])
+	if (!cmd || !cmd->args[0])
 		return (ft_fprintf(STDERR_FILENO, "6ft shell: : command not found\n"),
 			_exit(127));
-	if (is_child_builtin(args[0]))
-		return (builtins_dispatcher(data, args), _exit(0));
+	if (is_child_builtin(cmd->args[0]))
+	{
+		builtins_dispatcher(data, cmd);
+		return (free_cmd_list(cmd), _exit(0));
+	}
 	env_tabl = env_to_tab(data->envp);
-	path = get_path(args[0], data->envp);
+	path = get_path(cmd->args[0], data->envp);
 	if (!path)
 		return (free_dtab(env_tabl),
 			ft_fprintf(STDERR_FILENO, "6ft shell: %s: command not found\n",
-				args[0]), _exit(127));
-	execve(path, args, env_tabl);
-	free(path);
-	free_dtab(env_tabl);
-	hdl_error(args[0], errno);
+				cmd->args[0]), _exit(127));
+	if (execve(path, cmd->args, env_tabl) == -1)
+	{
+		free(path);
+		free_dtab(env_tabl);
+		free_cmd_list(cmd);
+		hdl_error(NULL, errno);
+	}
 }

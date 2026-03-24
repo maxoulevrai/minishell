@@ -37,11 +37,13 @@ int	exec_parent_builtin(t_cmd *cmd, t_shell *data)
 		}
 		return (1);
 	}
-	status = builtins_dispatcher(data, cmd->args);
+	status = builtins_dispatcher(data, cmd);
 	dup2(save_in, STDIN_FILENO);
 	dup2(save_out, STDOUT_FILENO);
 	close(save_in);
 	close(save_out);
+	free_dtab(cmd->args);
+	free(cmd);
 	data->last_status = status;
 	return (status);
 }

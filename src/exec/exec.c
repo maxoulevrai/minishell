@@ -63,7 +63,7 @@ static void	child_process(t_cmd *cur, t_shell *data,
 	}
 	if (!cur->args || !cur->args[0])
 		_exit(0);
-	exec_cmd(cur->args, data);
+	exec_cmd(cur, data);
 }
 
 static pid_t	spawn_cmd(t_cmd *cur, t_shell *data,
