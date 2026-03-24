@@ -103,7 +103,7 @@ static void	set_env_var(t_env **envp, char *key, char *value)
 	ft_envadd_back(envp, new);
 }
 
-int	ft_export(t_env *envp, char **args)
+	ft_export(t_env *envp, char **args)
 {
 	char	**env_tab;
 	char	*key;
