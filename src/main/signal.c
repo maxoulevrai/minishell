@@ -18,9 +18,10 @@ static void	hdl_signal_prompt(int sig)
 	{
 		g_signal = SIGINT;
 		write(STDOUT_FILENO, "\n", 1);
-		rl_on_new_line();
 		rl_replace_line("", 0);
+		rl_on_new_line();
 		rl_redisplay();
+		rl_done = 1;
 	}
 }
 
@@ -29,7 +30,9 @@ static void	hdl_signal_heredoc(int sig)
 	if (sig == SIGINT)
 	{
 		g_signal = SIGINT;
-		write(STDOUT_FILENO, "\n", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
 		rl_done = 1;
 	}
 }

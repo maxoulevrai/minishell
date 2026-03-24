@@ -32,8 +32,6 @@ static int	wait_pipeline(pid_t last_pid)
 				sig = WTERMSIG(status);
 				if (sig == SIGINT)
 					write(STDOUT_FILENO, "\n", 1);
-				else if (sig == SIGQUIT)
-					write(STDERR_FILENO, "Quit (core dumped)\n", 19);
 				last_status = 128 + sig;
 			}
 		}
