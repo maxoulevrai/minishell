@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maleca<maleca@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/12 18:17:04 by maleca            #+#    #+#             */
-/*   Updated: 2026/03/23 14:53:58 by maleca            ###   ########.fr       */
+/*   Created: 2026/03/26 17:44:28 by root              #+#    #+#             */
+/*   Updated: 2026/03/26 17:44:43 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,6 @@ void	exec_cmd(t_cmd *cmd, t_shell *data)
 	if (!cmd || !cmd->args[0])
 		return (ft_fprintf(STDERR_FILENO, "6ft shell: : command not found\n"),
 			_exit(127));
-	if (is_child_builtin(cmd->args[0]))
-	{
-		builtins_dispatcher(data, cmd);
-		return (free_cmd_list(cmd), _exit(0));
-	}
 	env_tabl = env_to_tab(data->envp);
 	path = get_path(cmd->args[0], data->envp);
 	if (!path)

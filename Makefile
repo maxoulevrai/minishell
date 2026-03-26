@@ -50,7 +50,7 @@ OBJS = $(SRCS:%.c=build/%.o)
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
-SUPP_FILE    = valgrind_readline_leaks_ignore.supp
+SUPP_FILE = valgrind_readline_leaks_ignore.supp
 
 all: $(NAME)
 
@@ -89,7 +89,7 @@ fclean: clean
 
 re: fclean all
 
-# create .supp file that suppresses leaks from teh readline library
+# create .supp file that suppresses leaks from the readline library
 $(SUPP_FILE):
 	@echo "Creating valgrind suppression file for readline library"
 	@echo "{" > $(SUPP_FILE)

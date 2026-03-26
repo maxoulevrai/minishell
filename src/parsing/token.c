@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maleca<root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 17:14:48 by yzidani           #+#    #+#             */
-/*   Updated: 2026/03/21 16:07:49 by maleca            ###   ########.fr       */
+/*   Updated: 2026/03/26 17:37:52 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,36 +31,6 @@ static char	*extract_operator(const char *line, int *i)
 	}
 	return (NULL);
 }
-
-// static char	*extract_operator(const char *line, int *i)
-// {
-// 	char	*op;
-// 	int		j;
-
-// 	j = i;
-// 	while (is_operator(line[j]))
-// 		j++;
-// 	if (line[*i] == '>' && line[*i + 1] == '>')
-// 	{
-// 		*i += 2;
-// 		return (ft_strdup(">>"));
-// 	}
-// 	if (line[*i] == '<' && line[*i + 1] == '<')
-// 	{
-// 		*i += 2;
-// 		return (ft_strdup("<<"));
-// 	}
-// 	if (line[*i] == '>')
-// 		op = ft_strdup(">");
-// 	else if (line[*i] == '<')
-// 		op = ft_strdup("<");
-// 	else if (line[*i] == '|')
-// 		op = ft_strdup("|");
-// 	else
-// 		return (NULL);
-// 	(*i)++;
-// 	return (op);
-// }
 
 static char	*extract_word(const char *line, int *i)
 {
@@ -91,7 +61,8 @@ static int	process_token(t_token **list, const char *line, int *i)
 				"6ft shell: syntax error near unexpected token `newline'\n");
 		else
 			ft_fprintf(STDERR_FILENO,
-				"6ft shell: syntax error near unexpected token `%c'\n", line[*i]);
+				"6ft shell: syntax error near unexpected token `%c'\n",
+				line[*i]);
 		return (0);
 	}
 	new_token = create_token(token_value, get_token_type(token_value));

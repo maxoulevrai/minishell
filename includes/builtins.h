@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maleca<maleca@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/23 14:47:22 by maleca             #+#    #+#             */
-/*   Updated: 2026/03/23 14:47:36 by maleca            ###   ########.fr       */
+/*   Created: 2026/03/26 17:48:00 by root              #+#    #+#             */
+/*   Updated: 2026/03/26 17:49:23 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ typedef struct s_env	t_env;
 int	is_child_builtin(char *cmd);
 int	is_parent_builtin(char *cmd);
 int	builtins_dispatcher(t_shell *data, t_cmd *cmd);
-
 
 int	ft_cd(t_env *envp, char **args);
 int	ft_echo(char **args);

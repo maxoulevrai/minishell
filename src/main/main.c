@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maleca<maleca@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/25 13:53:41 by maleca            #+#    #+#             */
-/*   Updated: 2026/03/23 14:46:15 by maleca            ###   ########.fr       */
+/*   Created: 2026/03/12 17:46:02 by root              #+#    #+#             */
+/*   Updated: 2026/03/26 17:46:42 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ int	main(int ac, char **av, char **envp)
 	init_signal();
 	loop(data);
 	free_data(data);
+	rl_clear_history();
 	ft_fprintf(STDOUT_FILENO, "exit\n");
 	return (0);
 }

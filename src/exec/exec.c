@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maleca<maleca@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/02 15:08:31 by maleca            #+#    #+#             */
-/*   Updated: 2026/03/23 14:54:55 by maleca            ###   ########.fr       */
+/*   Created: 2026/03/26 17:45:02 by root              #+#    #+#             */
+/*   Updated: 2026/03/26 17:45:16 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,12 @@ static void	child_process(t_cmd *cur, t_shell *data,
 	}
 	if (!cur->args || !cur->args[0])
 		_exit(0);
+	if (is_child_builtin(cur->args[0]))
+	{
+		builtins_dispatcher(data, cur);
+		free_cmd_list(cur);
+		return (free_data(data), _exit(0));
+	}
 	exec_cmd(cur, data);
 }
 

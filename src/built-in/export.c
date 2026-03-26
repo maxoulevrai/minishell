@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maleca<maleca@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/05 01:22:47 by maleca             #+#    #+#             */
-/*   Updated: 2026/03/23 15:05:53 by maleca            ###   ########.fr       */
+/*   Created: 2026/03/26 16:11:01 by root              #+#    #+#             */
+/*   Updated: 2026/03/26 17:35:39 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static void	sort_n_print_env(char **env_tab)
 		ft_fprintf(STDOUT_FILENO, "%s\n", env_tab[i++]);
 }
 
-static void	set_env_var(t_env **envp, char *key, char *value)
+void	set_env_var(t_env **envp, char *key, char *value)
 {
 	t_env	*tmp;
 	t_env	*new;
@@ -103,7 +103,7 @@ static void	set_env_var(t_env **envp, char *key, char *value)
 	ft_envadd_back(envp, new);
 }
 
-	ft_export(t_env *envp, char **args)
+int	ft_export(t_env *envp, char **args)
 {
 	char	**env_tab;
 	char	*key;

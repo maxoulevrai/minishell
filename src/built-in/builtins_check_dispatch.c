@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_check_dispatch.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maleca<maleca@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/24 15:40:58 by maleca             #+#    #+#             */
-/*   Updated: 2026/03/20 04:35:11 by maleca            ###   ########.fr       */
+/*   Created: 2026/03/26 16:10:32 by root              #+#    #+#             */
+/*   Updated: 2026/03/26 17:35:31 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	is_child_builtin(char *cmd)
 		return (FALSE);
 }
 
-int		builtins_dispatcher(t_shell *data, t_cmd *cmd)
+int	builtins_dispatcher(t_shell *data, t_cmd *cmd)
 {
 	if (!ft_strcmp(cmd->args[0], "pwd"))
 		return (ft_pwd());

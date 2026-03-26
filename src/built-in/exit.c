@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maleca<maleca@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/24 17:08:16 by maleca             #+#    #+#             */
-/*   Updated: 2026/03/23 14:57:16 by maleca            ###   ########.fr       */
+/*   Created: 2026/03/26 16:04:50 by root              #+#    #+#             */
+/*   Updated: 2026/03/26 16:09:48 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ int	ft_exit(t_shell *data, char **cmd)
 		ft_fprintf(STDERR_FILENO,
 			"minishell: exit: %s: numeric argument required\n", cmd[1]);
 		free_data(data);
-		return 2;
+		return (2);
 	}
 	exit_code = ft_atol(cmd[1]);
 	free_data(data);
-	return(exit_code % 256);
+	return (exit_code % 256);
 }

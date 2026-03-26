@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parent_builtins.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maleca<maleca@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/20 18:11:12 by maleca             #+#    #+#             */
-/*   Updated: 2026/03/23 14:58:16 by maleca            ###   ########.fr       */
+/*   Created: 2026/03/26 17:38:19 by root              #+#    #+#             */
+/*   Updated: 2026/03/26 17:44:59 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/execution.h"
-
 
 int	exec_parent_builtin(t_cmd *cmd, t_shell *data)
 {
@@ -22,7 +21,13 @@ int	exec_parent_builtin(t_cmd *cmd, t_shell *data)
 	save_in = dup(STDIN_FILENO);
 	save_out = dup(STDOUT_FILENO);
 	if (save_in == -1 || save_out == -1)
+	{
+		if (save_in != -1)
+			close(save_in);
+		if (save_out != -1)
+			close(save_out);
 		return (1);
+	}
 	if (apply_input_redir(cmd) == -1 || apply_output_redir(cmd) == -1)
 	{
 		dup2(save_in, STDIN_FILENO);
@@ -42,8 +47,6 @@ int	exec_parent_builtin(t_cmd *cmd, t_shell *data)
 	dup2(save_out, STDOUT_FILENO);
 	close(save_in);
 	close(save_out);
-	free_dtab(cmd->args);
-	free(cmd);
 	data->last_status = status;
 	return (status);
 }

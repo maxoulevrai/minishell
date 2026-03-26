@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maleca<maleca@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/23 18:53:30 by maleca            #+#    #+#             */
-/*   Updated: 2026/03/23 14:56:41 by maleca            ###   ########.fr       */
+/*   Created: 2026/03/26 17:47:30 by root              #+#    #+#             */
+/*   Updated: 2026/03/26 17:47:45 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,9 @@ typedef struct s_cmd
 
 //		-- ENV --
 int		main(int ac, char **av, char **envp);
-t_env	*env_dup(char **envp);
 void	ft_envadd_back(t_env **head, t_env *new);
+void	set_env_var(t_env **envp, char *key, char *value);
+t_env	*env_dup(char **envp);
 t_env	*init_env_node(char	*env_line);
 char	*get_env_value(char *env_line);
 char	*get_env_key(char *env_line);
