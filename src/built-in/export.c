@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:11:01 by root              #+#    #+#             */
-/*   Updated: 2026/03/26 17:35:39 by root             ###   ########.fr       */
+/*   Updated: 2026/03/27 16:46:05 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static void	sort_n_print_env(char **env_tab)
 	}
 	i = 0;
 	while (env_tab[i])
-		ft_fprintf(STDOUT_FILENO, "%s\n", env_tab[i++]);
+		ft_fprintf(STDOUT_FILENO, "export %s\n", env_tab[i++]);
 }
 
 void	set_env_var(t_env **envp, char *key, char *value)

@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:48:26 by root              #+#    #+#             */
-/*   Updated: 2026/03/26 17:48:48 by root             ###   ########.fr       */
+/*   Updated: 2026/03/27 17:01:33 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,9 @@ int		ft_strcmp(char *s1, char *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t siz);
 int		ft_memcmp(const void *s1, const void *s2, size_t siz);
 int		ft_atoi(const char *nptr);
-long	ft_abs(long nbr);
 long	ft_atol(const char *nptr);
+long long	ft_atoll(const char *nptr);
+long	ft_abs(long nbr);
 void	ft_dtab_swap(char **s1, char **s2);
 void	free_dtab(char **dtab);
 void	ft_bzero(void *ptr, size_t n);

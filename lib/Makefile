@@ -55,6 +55,7 @@ LIB_SRCS = $(LIB_DIR)ft_abs.c \
 			$(LIB_DIR)ft_strnstr.c \
 			$(LIB_DIR)ft_atoi.c \
 			$(LIB_DIR)ft_atol.c \
+			$(LIB_DIR)ft_atoll.c \
 			$(LIB_DIR)ft_calloc.c \
 			$(LIB_DIR)ft_strdup.c \
 			$(LIB_DIR)ft_strndup.c \

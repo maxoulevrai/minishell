@@ -6,13 +6,36 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:04:50 by root              #+#    #+#             */
-/*   Updated: 2026/03/27 16:28:31 by root             ###   ########.fr       */
+/*   Updated: 2026/03/27 17:26:01 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/builtins.h"
 
+static int	check_limits(char *str)
+{
+	int					i;
+	int					sign;
+	unsigned long long	nb;
 
+	i = 0;
+	nb = 0;
+	sign = 1;
+	if (str[i] == '-')
+	{
+		sign = -1;
+		i++;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		nb = nb * 10 + (str[i] - '0');
+		if ((sign == -1 && nb > (unsigned long long)LLONG_MAX + 1)
+			|| (sign == 1 && nb > (unsigned long long)LLONG_MAX))
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 // vérifie si la string est un nombre valide
 // return 1 si valide, 0 sinon
@@ -52,7 +75,7 @@ static int	check_exit_args(t_shell *data, t_cmd *cmd_tbl)
 		ft_fprintf(STDERR_FILENO, "minishell: exit: too many arguments\n");
 		return (data->last_status = 1, 1);
 	}
-	if (!is_numeric(cmd_tbl->args[1]))
+	if (!is_numeric(cmd_tbl->args[1]) || !check_limits(cmd_tbl->args[1]))
 	{
 		ft_fprintf(STDERR_FILENO,
 			"minishell: exit: %s: numeric argument required\n", cmd_tbl->args[1]);
@@ -73,7 +96,7 @@ int	ft_exit(t_shell *data, t_cmd *cmd_tbl)
 
 	if (check_exit_args(data, cmd_tbl))
 		return (data->last_status);
-	exit_code = (ft_atol(cmd_tbl->args[1]) % 256) + 256;
+	exit_code = (((ft_atol(cmd_tbl->args[1]) % 256) + 256) % 256);
 	close(data->save_in);
 	close(data->save_out);
 	free_data(data);
