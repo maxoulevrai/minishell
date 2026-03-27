@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:38:19 by root              #+#    #+#             */
-/*   Updated: 2026/03/26 17:44:59 by root             ###   ########.fr       */
+/*   Updated: 2026/03/27 16:24:04 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,24 @@
 
 int	exec_parent_builtin(t_cmd *cmd, t_shell *data)
 {
-	int	save_in;
-	int	save_out;
 	int	status;
 
-	save_in = dup(STDIN_FILENO);
-	save_out = dup(STDOUT_FILENO);
-	if (save_in == -1 || save_out == -1)
+	data->save_in = dup(STDIN_FILENO);
+	data->save_out = dup(STDOUT_FILENO);
+	if (data->save_in == -1 || data->save_out == -1)
 	{
-		if (save_in != -1)
-			close(save_in);
-		if (save_out != -1)
-			close(save_out);
+		if (data->save_in != -1)
+			close(data->save_in);
+		if (data->save_out != -1)
+			close(data->save_out);
 		return (1);
 	}
 	if (apply_input_redir(cmd) == -1 || apply_output_redir(cmd) == -1)
 	{
-		dup2(save_in, STDIN_FILENO);
-		dup2(save_out, STDOUT_FILENO);
-		close(save_in);
-		close(save_out);
+		dup2(data->save_in, STDIN_FILENO);
+		dup2(data->save_out, STDOUT_FILENO);
+		close(data->save_in);
+		close(data->save_out);
 		if (g_signal == SIGINT)
 		{
 			data->last_status = 130;
@@ -43,10 +41,10 @@ int	exec_parent_builtin(t_cmd *cmd, t_shell *data)
 		return (1);
 	}
 	status = builtins_dispatcher(data, cmd);
-	dup2(save_in, STDIN_FILENO);
-	dup2(save_out, STDOUT_FILENO);
-	close(save_in);
-	close(save_out);
+	dup2(data->save_in, STDIN_FILENO);
+	dup2(data->save_out, STDOUT_FILENO);
+	close(data->save_in);
+	close(data->save_out);
 	data->last_status = status;
 	return (status);
 }

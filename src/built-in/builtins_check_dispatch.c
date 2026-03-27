@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:10:32 by root              #+#    #+#             */
-/*   Updated: 2026/03/26 17:35:31 by root             ###   ########.fr       */
+/*   Updated: 2026/03/27 14:58:38 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	builtins_dispatcher(t_shell *data, t_cmd *cmd)
 	else if (!ft_strcmp(cmd->args[0], "env"))
 		return (ft_env(data->envp, cmd->args));
 	else if (!ft_strcmp(cmd->args[0], "exit"))
-		return (ft_exit(data, cmd->args));
+		return (ft_exit(data, cmd));
 	else if (!ft_strcmp(cmd->args[0], "echo"))
 		return (ft_echo(cmd->args));
 	else if (!ft_strcmp(cmd->args[0], "cd"))

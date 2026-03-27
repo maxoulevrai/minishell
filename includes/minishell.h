@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:47:30 by root              #+#    #+#             */
-/*   Updated: 2026/03/26 17:47:45 by root             ###   ########.fr       */
+/*   Updated: 2026/03/27 16:23:09 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ typedef struct s_env			t_env;
 typedef struct s_shell
 {
 	t_env	*envp;
+	int		save_in;
+	int		save_out;
 	int		last_status;
 }				t_shell;
 

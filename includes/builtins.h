@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:48:00 by root              #+#    #+#             */
-/*   Updated: 2026/03/26 17:49:23 by root             ###   ########.fr       */
+/*   Updated: 2026/03/27 15:00:42 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	builtins_dispatcher(t_shell *data, t_cmd *cmd);
 int	ft_cd(t_env *envp, char **args);
 int	ft_echo(char **args);
 int	ft_env(t_env *envp, char **cmd);
-int	ft_exit(t_shell *data, char **cmd);
+int	ft_exit(t_shell *data, t_cmd *cmd_tbl);
 int	ft_export(t_env *envp, char **args);
 int	ft_pwd(void);
 int	ft_unset(t_env *envp, char **args);

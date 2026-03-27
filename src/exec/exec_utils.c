@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:44:28 by root              #+#    #+#             */
-/*   Updated: 2026/03/26 17:44:43 by root             ###   ########.fr       */
+/*   Updated: 2026/03/27 16:13:49 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,14 @@ void	exec_cmd(t_cmd *cmd, t_shell *data)
 	env_tabl = env_to_tab(data->envp);
 	path = get_path(cmd->args[0], data->envp);
 	if (!path)
-		return (free_dtab(env_tabl),
-			ft_fprintf(STDERR_FILENO, "6ft shell: %s: command not found\n",
-				cmd->args[0]), _exit(127));
+	{
+		ft_fprintf(STDERR_FILENO, "6ft shell: %s: command not found\n",
+			cmd->args[0]),
+		free_dtab(env_tabl);
+		free_cmd_list(cmd);
+		free_data(data);
+		_exit(127);
+	}	
 	if (execve(path, cmd->args, env_tabl) == -1)
 	{
 		free(path);
