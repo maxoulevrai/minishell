@@ -6,14 +6,16 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:44:28 by root              #+#    #+#             */
-/*   Updated: 2026/03/27 16:13:49 by root             ###   ########.fr       */
+/*   Updated: 2026/03/27 19:18:51 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/execution.h"
 
-void	hdl_error(char *arg, int err_code)
+void	hdl_error(t_shell *data, t_cmd *cmd_tbl, char *arg, int err_code)
 {
+	free_data(data);
+	free_cmd_list(cmd_tbl);
 	if (arg)
 		ft_fprintf(STDERR_FILENO, "6ft shell: %s: %s\n",
 			arg, strerror(err_code));
@@ -88,7 +90,6 @@ void	exec_cmd(t_cmd *cmd, t_shell *data)
 	{
 		free(path);
 		free_dtab(env_tabl);
-		free_cmd_list(cmd);
-		hdl_error(NULL, errno);
+		hdl_error(data, cmd, NULL, errno);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:45:02 by root              #+#    #+#             */
-/*   Updated: 2026/03/26 17:45:16 by root             ###   ########.fr       */
+/*   Updated: 2026/03/27 19:19:34 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ static void	child_process(t_cmd *cur, t_shell *data,
 {
 	set_signal_exec_child();
 	if (prev_read != -1 && dup2(prev_read, STDIN_FILENO) == -1)
-		hdl_error("dup2", errno);
+		hdl_error(data, cur, "dup2", errno);
 	if (cur->next && dup2(pipefd[1], STDOUT_FILENO) == -1)
-		hdl_error("dup2", errno);
+		hdl_error(data, cur, "dup2", errno);
 	if (prev_read != -1)
 		close(prev_read);
 	if (cur->next)
@@ -59,7 +59,7 @@ static void	child_process(t_cmd *cur, t_shell *data,
 	{
 		if (g_signal == SIGINT)
 			_exit(130);
-		hdl_error("redir", errno);
+		hdl_error(data, cur, "redir", errno);
 	}
 	if (!cur->args || !cur->args[0])
 		_exit(0);
