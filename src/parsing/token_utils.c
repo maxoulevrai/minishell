@@ -62,13 +62,19 @@ int	get_token_type(const char *str)
 int	get_word_len(const char *str, int i)
 {
 	int	len;
+	int	jump;
 
 	len = 0;
 	while (str[i] && str[i] != ' ' && str[i] != '\t' && str[i] != '\n'
 		&& str[i] != '|' && str[i] != '<' && str[i] != '>')
 	{
 		if (str[i] == '\'' || str[i] == '"')
-			len += skip_quotes(str, i, str[i]);
+		{
+			jump = skip_quotes(str, i, str[i]);
+			len += jump;
+			i += jump;
+			continue ;
+		}
 		else
 			len++;
 		i++;
