@@ -44,14 +44,14 @@ void	handle_redir(t_cmd *cmd, t_token **tok)
 		return ;
 	if (type == REDIR_IN || type == HERE_DOC)
 	{
-		cmd->input_file = remove_quotes(ft_strdup((*tok)->value));
+		cmd->input_file = ft_strdup((*tok)->value);
 		cmd->heredoc = (type == HERE_DOC);
 	}
 	else if (type == REDIR_OUT)
-		cmd->output_file = remove_quotes(ft_strdup((*tok)->value));
+		cmd->output_file = ft_strdup((*tok)->value);
 	else if (type == REDIR_APPEND)
 	{
-		cmd->output_file = remove_quotes(ft_strdup((*tok)->value));
+		cmd->output_file = ft_strdup((*tok)->value);
 		cmd->append = 1;
 	}
 	*tok = (*tok)->next;
@@ -89,7 +89,7 @@ char	**build_args(t_token *start, t_token *end)
 	while (start && start != end && i < count)
 	{
 		if (start->type == WORD)
-			args[i++] = remove_quotes(ft_strdup(start->value));
+			args[i++] = ft_strdup(start->value);
 		else if (is_redir(start->type) && start->next)
 			start = start->next;
 		start = start->next;
