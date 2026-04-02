@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:11:01 by root              #+#    #+#             */
-/*   Updated: 2026/04/02 17:11:47 by root             ###   ########.fr       */
+/*   Updated: 2026/04/02 19:36:18 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,28 @@
 
 static char	*dup_env_entry(t_env *node)
 {
-	char	*tmp;
+	char	*tmp_1;
+	char	*tmp_2;
 	char	*entry;
 
 	if (!node->value)
 		return (ft_strdup(node->key));
-	tmp = ft_strjoin(node->key, "=\"");
-	if (!tmp)
+	tmp_1 = ft_strjoin(node->key, "=\"");
+	if (!tmp_1)
 		return (NULL);
 	if (node->value)
 	{
-		entry = ft_strjoin(tmp, node->value);
+		tmp_2 = ft_strjoin(tmp_1, node->value);
+		if (!tmp_2)
+			return (free(tmp_1), NULL);
+		free(tmp_1);
+		entry = ft_strjoin(tmp_2, "\"");
 		if (!entry)
-			return (free(tmp), NULL);
-		
-
+			return(free(tmp_2), NULL);
+		free(tmp_2);
 	}
 	else
-		return (tmp);
-	free(tmp);
+		return (tmp_1);
 	return (entry);
 }
 
