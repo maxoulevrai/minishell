@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:45:40 by root              #+#    #+#             */
-/*   Updated: 2026/03/26 17:45:50 by root             ###   ########.fr       */
+/*   Updated: 2026/03/31 21:15:07 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ static void	free_env_list(t_env *env)
 	{
 		next = env->next;
 		free(env->key);
-		free(env->value);
+		if (env->value)
+			free(env->value);
 		free(env);
 		env = next;
 	}

@@ -42,6 +42,7 @@ SRCS = $(SRCS_DIR)main/main.c \
 		$(SRCS_DIR)built-in/env.c \
 		$(SRCS_DIR)built-in/exit.c \
 		$(SRCS_DIR)built-in/export.c \
+		$(SRCS_DIR)built-in/export_utils.c \
 		$(SRCS_DIR)built-in/pwd.c \
 		$(SRCS_DIR)built-in/unset.c
 

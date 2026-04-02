@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:11:01 by root              #+#    #+#             */
-/*   Updated: 2026/03/27 16:46:05 by root             ###   ########.fr       */
+/*   Updated: 2026/04/02 17:11:47 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,19 @@ static char	*dup_env_entry(t_env *node)
 
 	if (!node->value)
 		return (ft_strdup(node->key));
-	tmp = ft_strjoin(node->key, "=");
+	tmp = ft_strjoin(node->key, "=\"");
 	if (!tmp)
 		return (NULL);
-	entry = ft_strjoin(tmp, node->value);
+	if (node->value)
+	{
+		entry = ft_strjoin(tmp, node->value);
+		if (!entry)
+			return (free(tmp), NULL);
+		
+
+	}
+	else
+		return (tmp);
 	free(tmp);
 	return (entry);
 }
@@ -80,34 +89,48 @@ static void	sort_n_print_env(char **env_tab)
 		ft_fprintf(STDOUT_FILENO, "export %s\n", env_tab[i++]);
 }
 
-void	set_env_var(t_env **envp, char *key, char *value)
-{
-	t_env	*tmp;
-	t_env	*new;
-	char	*new_value;
+// void	set_env_var(t_env **envp, char **args)
+// {
+// 	t_env	*tmp;
+// 	t_env	*new;
+// 	char	*new_value;
 
-	tmp = *envp;
-	while (tmp && ft_strcmp(tmp->key, key) != 0)
-		tmp = tmp->next;
-	if (tmp)
-		return (new_value = ft_strdup(value),
-			new_value && (free(tmp->value), tmp->value = new_value), (void)0);
-	new = malloc(sizeof(t_env));
-	if (!new)
-		return ;
-	new->key = ft_strdup(key);
-	new->value = ft_strdup(value);
-	if (!new->key || !new->value)
-		return (free(new->key), free(new->value), free(new));
-	new->next = NULL;
-	ft_envadd_back(envp, new);
+// 	tmp = *envp;
+// 	while (tmp && ft_strcmp(tmp->key, key) != 0)
+// 		tmp = tmp->next;
+// 	if (tmp)
+// 		return (new_value = ft_strdup(value),
+// 			new_value && (free(tmp->value), tmp->value = new_value), (void)0);
+// 	new = malloc(sizeof(t_env));
+// 	if (!new)
+// 		return ;
+// 	new->key = ft_strdup(key);
+// 	new->value = ft_strdup(value);
+// 	if (!new->key)
+// 		return (free(new->key), free(new->value), free(new));
+// 	new->next = NULL;
+// 	ft_envadd_back(envp, new);
+// }
+
+int	parse_export(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] && str[i] != '=')
+	{
+		if (!isalpha(str[i]))
+			return (0);
+		i++;
+	}
+	if (!str[i])
+		return (2);
+	return (1);
 }
 
 int	ft_export(t_env *envp, char **args)
 {
 	char	**env_tab;
-	char	*key;
-	char	*value;
 
 	if (!args[1])
 	{
@@ -118,16 +141,10 @@ int	ft_export(t_env *envp, char **args)
 		free_dtab(env_tab);
 		return (0);
 	}
-	if (!ft_strchr(args[1], '='))
+	if (!parse_export(args[1]))
 		return (ft_fprintf(STDERR_FILENO,
 				"6ft shell: export: `%s': not a valid identifier\n",
 				args[1]), 1);
-	key = get_env_key(args[1]);
-	value = get_env_value(args[1]);
-	if (!key || !value)
-		return (free(key), free(value), 1);
-	set_env_var(&envp, key, value);
-	free(key);
-	free(value);
+	set_env_var(&envp, args[1]);
 	return (0);
 }

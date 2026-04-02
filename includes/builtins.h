@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:48:00 by root              #+#    #+#             */
-/*   Updated: 2026/03/27 15:00:42 by root             ###   ########.fr       */
+/*   Updated: 2026/04/02 16:08:12 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ typedef struct s_env	t_env;
 int	is_child_builtin(char *cmd);
 int	is_parent_builtin(char *cmd);
 int	builtins_dispatcher(t_shell *data, t_cmd *cmd);
+void	set_env_var(t_env **envp, char *arg);
+int	add_var_to_env(t_env **envp, char *key, char *value);
+
 
 int	ft_cd(t_env *envp, char **args);
 int	ft_echo(char **args);

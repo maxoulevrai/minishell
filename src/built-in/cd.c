@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:09:54 by root              #+#    #+#             */
-/*   Updated: 2026/03/26 17:44:25 by root             ###   ########.fr       */
+/*   Updated: 2026/04/02 16:07:41 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ int	update_pwd_vars(t_env *envp, char *old_pwd)
 		free(old_pwd);
 		return (1);
 	}
-	set_env_var(&envp, "OLDPWD", old_pwd);
-	set_env_var(&envp, "PWD", new_pwd);
+	add_var_to_env(&envp, "OLDPWD", old_pwd);
+	add_var_to_env(&envp, "PWD", new_pwd);
 	free(old_pwd);
 	free(new_pwd);
 	return (0);

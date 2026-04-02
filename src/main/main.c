@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 17:46:02 by root              #+#    #+#             */
-/*   Updated: 2026/03/27 15:39:59 by root             ###   ########.fr       */
+/*   Updated: 2026/03/31 17:17:55 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,14 @@ static int	loop(t_shell *data)
 
 	while (1)
 	{
+		init_signal();
+		rl_done = 0;
 		line = readline(PROMPT);
 		if (g_signal == SIGINT)
 		{
 			data->last_status = 130;
 			g_signal = 0;
 			free(line);
-			continue ;
 		}
 		if (!line)
 			return (EXIT_FAILURE);
@@ -100,7 +101,6 @@ int	main(int ac, char **av, char **envp)
 	if (!data)
 		return (1);
 	g_signal = 0;
-	init_signal();
 	loop(data);
 	free_data(data);
 	rl_clear_history();

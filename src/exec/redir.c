@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:11:59 by root              #+#    #+#             */
-/*   Updated: 2026/03/26 16:12:13 by root             ###   ########.fr       */
+/*   Updated: 2026/03/31 16:58:55 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,10 @@ static int	heredoc_to_fd(char *limiter)
 		return (-1);
 	g_signal = 0;
 	set_signal_heredoc();
+	rl_done = 0;
 	while (1)
 	{
-		line = readline("> ");
+		line = readline("heredoc> ");
 		if (g_signal == SIGINT)
 		{
 			free(line);

@@ -21,8 +21,13 @@ static int	wait_pipeline(pid_t last_pid)
 
 	last_status = 0;
 	pid = wait(&status);
-	while (pid > 0)
+	while (pid > 0 || (pid == -1 && errno == EINTR))
 	{
+		if (pid == -1)
+		{
+			pid = wait(&status);
+			continue ;
+		}
 		if (pid == last_pid)
 		{
 			if (WIFEXITED(status))
@@ -32,6 +37,8 @@ static int	wait_pipeline(pid_t last_pid)
 				sig = WTERMSIG(status);
 				if (sig == SIGINT)
 					write(STDOUT_FILENO, "\n", 1);
+				else if (sig == SIGQUIT)
+					write(STDOUT_FILENO, "Quit (core dumped)\n", 19);
 				last_status = 128 + sig;
 			}
 		}

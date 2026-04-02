@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:47:30 by root              #+#    #+#             */
-/*   Updated: 2026/03/27 16:23:09 by root             ###   ########.fr       */
+/*   Updated: 2026/04/02 16:03:07 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ typedef struct s_cmd
 //		-- ENV --
 int		main(int ac, char **av, char **envp);
 void	ft_envadd_back(t_env **head, t_env *new);
-void	set_env_var(t_env **envp, char *key, char *value);
+// void	set_env_var(t_env **envp, char *key, char *value);
 t_env	*env_dup(char **envp);
 t_env	*init_env_node(char	*env_line);
 char	*get_env_value(char *env_line);
