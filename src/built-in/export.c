@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:11:01 by root              #+#    #+#             */
-/*   Updated: 2026/04/02 19:36:18 by root             ###   ########.fr       */
+/*   Updated: 2026/04/03 16:45:19 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,37 +92,16 @@ static void	sort_n_print_env(char **env_tab)
 		ft_fprintf(STDOUT_FILENO, "export %s\n", env_tab[i++]);
 }
 
-// void	set_env_var(t_env **envp, char **args)
-// {
-// 	t_env	*tmp;
-// 	t_env	*new;
-// 	char	*new_value;
-
-// 	tmp = *envp;
-// 	while (tmp && ft_strcmp(tmp->key, key) != 0)
-// 		tmp = tmp->next;
-// 	if (tmp)
-// 		return (new_value = ft_strdup(value),
-// 			new_value && (free(tmp->value), tmp->value = new_value), (void)0);
-// 	new = malloc(sizeof(t_env));
-// 	if (!new)
-// 		return ;
-// 	new->key = ft_strdup(key);
-// 	new->value = ft_strdup(value);
-// 	if (!new->key)
-// 		return (free(new->key), free(new->value), free(new));
-// 	new->next = NULL;
-// 	ft_envadd_back(envp, new);
-// }
-
 int	parse_export(char *str)
 {
 	int	i;
 
-	i = 0;
+	if (!ft_isalpha(str[0]) && str[0] != '_')
+		return (0);
+	i = 1;
 	while (str[i] && str[i] != '=')
 	{
-		if (!isalpha(str[i]))
+		if (!ft_isalnum(str[i]) && str[i] != '_')
 			return (0);
 		i++;
 	}
@@ -131,23 +110,30 @@ int	parse_export(char *str)
 	return (1);
 }
 
-int	ft_export(t_env *envp, char **args)
+int	ft_export(t_shell *data, char **args)
 {
 	char	**env_tab;
+	int		i;
 
 	if (!args[1])
 	{
-		env_tab = convert_env_to_tab(envp);
+		env_tab = convert_env_to_tab(data->envp);
 		if (!env_tab)
 			return (1);
 		sort_n_print_env(env_tab);
 		free_dtab(env_tab);
 		return (0);
 	}
-	if (!parse_export(args[1]))
-		return (ft_fprintf(STDERR_FILENO,
-				"6ft shell: export: `%s': not a valid identifier\n",
-				args[1]), 1);
-	set_env_var(&envp, args[1]);
-	return (0);
+	i = 0;
+	while (args[++i])
+	{
+		if (parse_export(args[i]))
+			set_env_var(&data->envp, args[i]);
+		else
+		{
+			ft_fprintf(STDERR_FILENO, "6ft shell: export: '%s': not a valid identifier\n", args[i]);
+			data->last_status = 1;
+		}
+	}
+	return (data->last_status);
 }

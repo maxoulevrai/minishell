@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:09:54 by root              #+#    #+#             */
-/*   Updated: 2026/04/02 16:07:41 by root             ###   ########.fr       */
+/*   Updated: 2026/04/03 15:49:20 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,28 @@
 
 char	*get_env(t_env **envp, char *key);
 
+static void	update_pwd(t_env *envp, char *key, char *dir_path)
+{
+	t_env	*tmp;
+	tmp = envp;
+	while (tmp && ft_strcmp(tmp->key, key))
+		tmp = tmp->next;
+	if (tmp)
+	{
+		free(tmp->value);
+		tmp->value = dir_path;
+	}
+	else
+	{
+		tmp = malloc(sizeof(t_env));
+		if (!tmp)
+			return ;
+		tmp->key = ft_strdup(key);
+		tmp->value = dir_path;
+		ft_envadd_back(&envp, tmp);
+	}
+}
+
 int	update_pwd_vars(t_env *envp, char *old_pwd)
 {
 	char	*new_pwd;
@@ -30,10 +52,8 @@ int	update_pwd_vars(t_env *envp, char *old_pwd)
 		free(old_pwd);
 		return (1);
 	}
-	add_var_to_env(&envp, "OLDPWD", old_pwd);
-	add_var_to_env(&envp, "PWD", new_pwd);
-	free(old_pwd);
-	free(new_pwd);
+	update_pwd(envp, "OLDPWD", old_pwd);
+	update_pwd(envp, "PWD", new_pwd);
 	return (0);
 }
 

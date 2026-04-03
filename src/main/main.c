@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 17:46:02 by root              #+#    #+#             */
-/*   Updated: 2026/03/31 17:17:55 by root             ###   ########.fr       */
+/*   Updated: 2026/04/02 20:15:46 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int	loop(t_shell *data)
 			free(line);
 		}
 		if (!line)
-			return (EXIT_FAILURE);
+			return (data->last_status);
 		else if (line[0] != '\0' && hdl_args(data, line) == 1)
 			continue ;
 		free(line);
@@ -93,6 +93,7 @@ void	free_data(t_shell *data)
 int	main(int ac, char **av, char **envp)
 {
 	t_shell	*data;
+	int		last_status;
 
 	data = NULL;
 	(void)ac;
@@ -101,9 +102,9 @@ int	main(int ac, char **av, char **envp)
 	if (!data)
 		return (1);
 	g_signal = 0;
-	loop(data);
+	last_status = loop(data);
 	free_data(data);
 	rl_clear_history();
 	ft_fprintf(STDOUT_FILENO, "exit\n");
-	return (0);
+	return (last_status);
 }

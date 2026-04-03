@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:10:32 by root              #+#    #+#             */
-/*   Updated: 2026/03/27 14:58:38 by root             ###   ########.fr       */
+/*   Updated: 2026/04/03 16:45:41 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	builtins_dispatcher(t_shell *data, t_cmd *cmd)
 	if (!ft_strcmp(cmd->args[0], "pwd"))
 		return (ft_pwd());
 	else if (!ft_strcmp(cmd->args[0], "export"))
-		return (ft_export(data->envp, cmd->args));
+		return (ft_export(data, cmd->args));
 	else if (!ft_strcmp(cmd->args[0], "unset"))
 		return (ft_unset(data->envp, cmd->args));
 	else if (!ft_strcmp(cmd->args[0], "env"))

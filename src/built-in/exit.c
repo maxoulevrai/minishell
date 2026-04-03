@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:04:50 by root              #+#    #+#             */
-/*   Updated: 2026/03/27 17:26:01 by root             ###   ########.fr       */
+/*   Updated: 2026/04/02 20:39:04 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,9 @@ int	ft_exit(t_shell *data, t_cmd *cmd_tbl)
 {
 	long	exit_code;
 
-	if (check_exit_args(data, cmd_tbl))
-		return (data->last_status);
-	exit_code = (((ft_atol(cmd_tbl->args[1]) % 256) + 256) % 256);
+	exit_code = check_exit_args(data, cmd_tbl);
+	if (exit_code == 0)
+		exit_code = (((ft_atol(cmd_tbl->args[1]) % 256) + 256) % 256);
 	close(data->save_in);
 	close(data->save_out);
 	free_data(data);

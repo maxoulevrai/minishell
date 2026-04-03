@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:44:28 by root              #+#    #+#             */
-/*   Updated: 2026/03/27 19:18:51 by root             ###   ########.fr       */
+/*   Updated: 2026/04/03 16:51:27 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	exec_cmd(t_cmd *cmd, t_shell *data)
 	char	*path;
 	char	**env_tabl;
 
-	if (!cmd || !cmd->args[0])
+	if (!cmd || !cmd->args[0] || !cmd->args[0][0])
 		return (ft_fprintf(STDERR_FILENO, "6ft shell: : command not found\n"),
 			_exit(127));
 	env_tabl = env_to_tab(data->envp);

@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:48:00 by root              #+#    #+#             */
-/*   Updated: 2026/04/02 16:08:12 by root             ###   ########.fr       */
+/*   Updated: 2026/04/03 16:45:59 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	ft_cd(t_env *envp, char **args);
 int	ft_echo(char **args);
 int	ft_env(t_env *envp, char **cmd);
 int	ft_exit(t_shell *data, t_cmd *cmd_tbl);
-int	ft_export(t_env *envp, char **args);
+int	ft_export(t_shell *data, char **args);
 int	ft_pwd(void);
 int	ft_unset(t_env *envp, char **args);
 
