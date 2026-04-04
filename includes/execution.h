@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:47:49 by root              #+#    #+#             */
-/*   Updated: 2026/03/27 19:18:17 by root             ###   ########.fr       */
+/*   Updated: 2026/04/04 16:21:30 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int		is_parent_builtin(char *cmd);
 int		exec_parent_builtin(t_cmd *cmd, t_shell *data);
 int		apply_input_redir(t_cmd *cmd);
 int		apply_output_redir(t_cmd *cmd);
+int		heredoc_to_fd(char *limiter);
 void	hdl_error(t_shell *data, t_cmd *cmd_tbl, char *arg, int err_code);
 
 #endif

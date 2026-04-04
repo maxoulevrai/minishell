@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:45:02 by root              #+#    #+#             */
-/*   Updated: 2026/03/27 19:19:34 by root             ###   ########.fr       */
+/*   Updated: 2026/04/04 16:28:57 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,7 @@ static void	child_process(t_cmd *cur, t_shell *data,
 	if (prev_read != -1)
 		close(prev_read);
 	if (cur->next)
-	{
-		close(pipefd[0]);
-		close(pipefd[1]);
-	}
+		(close(pipefd[0]) ,close(pipefd[1]));
 	if (apply_input_redir(cur) == -1 || apply_output_redir(cur) == -1)
 	{
 		if (g_signal == SIGINT)
@@ -73,8 +70,7 @@ static void	child_process(t_cmd *cur, t_shell *data,
 	if (is_child_builtin(cur->args[0]))
 	{
 		builtins_dispatcher(data, cur);
-		free_cmd_list(cur);
-		return (free_data(data), _exit(0));
+		return (free_cmd_list(cur), free_data(data), _exit(0));
 	}
 	exec_cmd(cur, data);
 }
@@ -103,6 +99,17 @@ static void	update_parent_pipe(t_cmd *cur, int *prev_read, int pipefd[2])
 	}
 }
 
+static int	collect_heredocs(t_cmd *cmd_tabl)
+{
+	if (cmd_tabl->heredoc)
+	{
+		cmd_tabl->heredoc_fd = heredoc_to_fd(cmd_tabl->input_file);
+		if (cmd_tabl->heredoc_fd == -1)
+			return (-1);
+	}
+	return (0);
+}
+
 int	exec(t_cmd *cmd_tabl, t_shell *data)
 {
 	t_cmd	*cur;
@@ -110,6 +117,8 @@ int	exec(t_cmd *cmd_tabl, t_shell *data)
 	int		prev_read;
 	pid_t	last_pid;
 
+	if (collect_heredocs(cmd_tabl) == -1)
+		return (data->last_status = 130, 130);
 	if (cmd_tabl && !cmd_tabl->next && cmd_tabl->args
 		&& is_parent_builtin(cmd_tabl->args[0]))
 		return (exec_parent_builtin(cmd_tabl, data));

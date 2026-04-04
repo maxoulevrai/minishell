@@ -6,13 +6,13 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:11:59 by root              #+#    #+#             */
-/*   Updated: 2026/03/31 16:58:55 by root             ###   ########.fr       */
+/*   Updated: 2026/04/04 16:24:01 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/execution.h"
 
-static int	heredoc_to_fd(char *limiter)
+int	heredoc_to_fd(char *limiter)
 {
 	char	*line;
 	int		pipefd[2];
@@ -57,7 +57,7 @@ int	apply_input_redir(t_cmd *cmd)
 	if (!cmd->input_file)
 		return (0);
 	if (cmd->heredoc)
-		fd = heredoc_to_fd(cmd->input_file);
+		fd = cmd->heredoc_fd;
 	else
 		fd = open(cmd->input_file, O_RDONLY);
 	if (fd < 0)

@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 16:59:48 by root              #+#    #+#             */
-/*   Updated: 2026/03/27 17:01:12 by root             ###   ########.fr       */
+/*   Updated: 2026/04/04 13:45:10 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 long long	ft_atoll(const char *nptr)
 {
-	size_t	i;
-	int		sign;
+	size_t		i;
+	int			sign;
 	long long	nbr;
 
 	i = 0;

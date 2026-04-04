@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:47:30 by root              #+#    #+#             */
-/*   Updated: 2026/04/02 16:03:07 by root             ###   ########.fr       */
+/*   Updated: 2026/04/04 16:17:58 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef struct s_cmd
 	char			*output_file;
 	int				append;
 	int				heredoc;
+	int				heredoc_fd;
 	struct s_cmd	*next;
 }				t_cmd;
 

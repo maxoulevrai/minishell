@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yzidani <yzidani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 16:16:03 by yzidani           #+#    #+#             */
-/*   Updated: 2026/03/07 16:17:29 by yzidani          ###   ########.fr       */
+/*   Updated: 2026/04/04 16:18:27 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_cmd	*init_cmd(void)
 	cmd->output_file = NULL;
 	cmd->append = 0;
 	cmd->heredoc = 0;
+	cmd->heredoc_fd = 0;
 	cmd->next = NULL;
 	return (cmd);
 }
