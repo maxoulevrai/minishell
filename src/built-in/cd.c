@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:09:54 by root              #+#    #+#             */
-/*   Updated: 2026/04/03 15:49:20 by root             ###   ########.fr       */
+/*   Updated: 2026/04/04 17:00:13 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	ft_cd(t_env *envp, char **cmd_tabl)
 	if (!path)
 		return (1);
 	old_pwd = getcwd(NULL, 0);
-	if (!old_pwd)
+	if (!old_pwd && cmd_tabl[1])
 		return (ft_fprintf(STDERR_FILENO, "minishell: pwd: %s\n",
 				strerror(errno)), 1);
 	if (chdir(path) == -1)

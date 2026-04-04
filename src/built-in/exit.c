@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:04:50 by root              #+#    #+#             */
-/*   Updated: 2026/04/03 17:20:22 by root             ###   ########.fr       */
+/*   Updated: 2026/04/04 16:47:24 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ static int	check_exit_args(t_shell *data, t_cmd *cmd_tbl)
 		close(data->save_out);
 		free_cmd_list(cmd_tbl);
 		free_data(data);
+		ft_fprintf(STDOUT_FILENO, "exit\n");
 		exit(0);
 	}
 	if (cmd_tbl->args[2])
@@ -103,5 +104,6 @@ int	ft_exit(t_shell *data, t_cmd *cmd_tbl)
 	close(data->save_out);
 	free_data(data);
 	free_cmd_list(cmd_tbl);
+	ft_fprintf(STDOUT_FILENO, "exit\n");
 	exit(exit_code);
 }
