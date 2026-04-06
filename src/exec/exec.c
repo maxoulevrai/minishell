@@ -6,74 +6,11 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:45:02 by root              #+#    #+#             */
-/*   Updated: 2026/04/04 16:28:57 by root             ###   ########.fr       */
+/*   Updated: 2026/04/06 19:47:51 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/execution.h"
-
-static int	wait_pipeline(pid_t last_pid)
-{
-	int		status;
-	int		last_status;
-	int		sig;
-	pid_t	pid;
-
-	last_status = 0;
-	pid = wait(&status);
-	while (pid > 0 || (pid == -1 && errno == EINTR))
-	{
-		if (pid == -1)
-		{
-			pid = wait(&status);
-			continue ;
-		}
-		if (pid == last_pid)
-		{
-			if (WIFEXITED(status))
-				last_status = WEXITSTATUS(status);
-			else if (WIFSIGNALED(status))
-			{
-				sig = WTERMSIG(status);
-				if (sig == SIGINT)
-					write(STDOUT_FILENO, "\n", 1);
-				else if (sig == SIGQUIT)
-					write(STDOUT_FILENO, "Quit (core dumped)\n", 19);
-				last_status = 128 + sig;
-			}
-		}
-		pid = wait(&status);
-	}
-	return (last_status);
-}
-
-static void	child_process(t_cmd *cur, t_shell *data,
-		int prev_read, int pipefd[2])
-{
-	set_signal_exec_child();
-	if (prev_read != -1 && dup2(prev_read, STDIN_FILENO) == -1)
-		hdl_error(data, cur, "dup2", errno);
-	if (cur->next && dup2(pipefd[1], STDOUT_FILENO) == -1)
-		hdl_error(data, cur, "dup2", errno);
-	if (prev_read != -1)
-		close(prev_read);
-	if (cur->next)
-		(close(pipefd[0]) ,close(pipefd[1]));
-	if (apply_input_redir(cur) == -1 || apply_output_redir(cur) == -1)
-	{
-		if (g_signal == SIGINT)
-			_exit(130);
-		hdl_error(data, cur, "redir", errno);
-	}
-	if (!cur->args || !cur->args[0])
-		_exit(0);
-	if (is_child_builtin(cur->args[0]))
-	{
-		builtins_dispatcher(data, cur);
-		return (free_cmd_list(cur), free_data(data), _exit(0));
-	}
-	exec_cmd(cur, data);
-}
 
 static pid_t	spawn_cmd(t_cmd *cur, t_shell *data,
 		int prev_read, int pipefd[2])
@@ -99,45 +36,73 @@ static void	update_parent_pipe(t_cmd *cur, int *prev_read, int pipefd[2])
 	}
 }
 
-static int	collect_heredocs(t_cmd *cmd_tabl)
+static int	collect_heredoc(t_cmd *cmd_tbl)
 {
-	if (cmd_tabl->heredoc)
+	t_cmd	*cur;
+	t_cmd	*prev;
+
+	cur = cmd_tbl;
+	while (cur)
 	{
-		cmd_tabl->heredoc_fd = heredoc_to_fd(cmd_tabl->input_file);
-		if (cmd_tabl->heredoc_fd == -1)
-			return (-1);
+		if (cur->heredoc)
+		{
+			cur->heredoc_fd = heredoc_to_fd(cur->input_file);
+			if (cur->heredoc_fd == -1)
+			{
+				prev = cmd_tbl;
+				while (prev != cur)
+				{
+					if (prev->heredoc && prev->heredoc_fd > STDERR_FILENO)
+						(close(prev->heredoc_fd), prev->heredoc_fd = -1);
+					prev = prev->next;
+				}
+				return (-1);
+			}
+		}
+		cur = cur->next;
 	}
 	return (0);
 }
 
-int	exec(t_cmd *cmd_tabl, t_shell *data)
+static int	exec_loop(t_shell *data, t_cmd *cmd_tbl)
 {
 	t_cmd	*cur;
-	int		pipefd[2];
-	int		prev_read;
 	pid_t	last_pid;
+	int		prev_read;
+	int		pipefd[2];
 
-	if (collect_heredocs(cmd_tabl) == -1)
-		return (data->last_status = 130, 130);
-	if (cmd_tabl && !cmd_tabl->next && cmd_tabl->args
-		&& is_parent_builtin(cmd_tabl->args[0]))
-		return (exec_parent_builtin(cmd_tabl, data));
-	cur = cmd_tabl;
+	cur = cmd_tbl;
 	prev_read = -1;
-	last_pid = -1;
-	set_signal_exec_parent();
 	while (cur)
 	{
 		if (cur->next && pipe(pipefd) == -1)
-			return (init_signal(), 1);
+			return (init_signal(), -1);
 		last_pid = spawn_cmd(cur, data, prev_read, pipefd);
 		if (last_pid == -1)
-			return (init_signal(), 1);
+			return (init_signal(), -1);
 		update_parent_pipe(cur, &prev_read, pipefd);
 		cur = cur->next;
 	}
 	if (prev_read != -1)
 		close(prev_read);
+	return (last_pid);
+}
+
+int	exec(t_cmd *cmd_tbl, t_shell *data)
+{
+	pid_t	last_pid;
+
+	if (collect_heredoc(cmd_tbl) == -1)
+		return (data->last_status = 130, 130);
+	if (cmd_tbl && !cmd_tbl->next && cmd_tbl->args
+		&& is_parent_builtin(cmd_tbl->args[0]))
+		return (exec_parent_builtin(cmd_tbl, data));
+	last_pid = -1;
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	last_pid = exec_loop(data, cmd_tbl);
+	if (last_pid == -1)
+		return (1);
 	data->last_status = wait_pipeline(last_pid);
 	return (init_signal(), data->last_status);
 }

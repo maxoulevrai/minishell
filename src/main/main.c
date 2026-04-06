@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 17:46:02 by root              #+#    #+#             */
-/*   Updated: 2026/04/02 20:15:46 by root             ###   ########.fr       */
+/*   Updated: 2026/04/06 15:30:22 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,18 +55,19 @@ static int	loop(t_shell *data)
 	{
 		init_signal();
 		rl_done = 0;
+		g_signal = 0;
 		line = readline(PROMPT);
 		if (g_signal == SIGINT)
 		{
 			data->last_status = 130;
 			g_signal = 0;
-			free(line);
 		}
 		if (!line)
 			return (data->last_status);
 		else if (line[0] != '\0' && hdl_args(data, line) == 1)
 			continue ;
-		free(line);
+		if (line)
+			free(line);
 	}
 	return (EXIT_SUCCESS);
 }

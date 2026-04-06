@@ -6,11 +6,20 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:11:59 by root              #+#    #+#             */
-/*   Updated: 2026/04/04 16:24:01 by root             ###   ########.fr       */
+/*   Updated: 2026/04/06 19:00:32 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/execution.h"
+
+static void	hdl_sigint_heredoc(char *line, int *pipefd)
+{
+	free(line);
+	close(pipefd[0]);
+	close(pipefd[1]);
+	g_signal = 0;
+	init_signal();
+}
 
 int	heredoc_to_fd(char *limiter)
 {
@@ -26,14 +35,7 @@ int	heredoc_to_fd(char *limiter)
 	{
 		line = readline("heredoc> ");
 		if (g_signal == SIGINT)
-		{
-			free(line);
-			close(pipefd[0]);
-			close(pipefd[1]);
-			errno = EINTR;
-			init_signal();
-			return (-1);
-		}
+			return (hdl_sigint_heredoc(line, pipefd), -1);
 		if (!line)
 			break ;
 		if (ft_strcmp(line, limiter) == 0)
@@ -45,9 +47,7 @@ int	heredoc_to_fd(char *limiter)
 		write(pipefd[1], "\n", 1);
 		free(line);
 	}
-	init_signal();
-	close(pipefd[1]);
-	return (pipefd[0]);
+	return (init_signal(), close(pipefd[1]), pipefd[0]);
 }
 
 int	apply_input_redir(t_cmd *cmd)
@@ -68,6 +68,8 @@ int	apply_input_redir(t_cmd *cmd)
 		return (-1);
 	}
 	close(fd);
+	if (cmd->heredoc)
+		cmd->heredoc_fd = -1;
 	return (0);
 }
 

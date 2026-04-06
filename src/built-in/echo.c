@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:04:30 by root              #+#    #+#             */
-/*   Updated: 2026/03/27 16:39:57 by root             ###   ########.fr       */
+/*   Updated: 2026/04/06 18:51:06 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 
 static void	ft_putstr_echo(char **t_cmd, int i)
 {
-	// int	i;
 	int	j;
 
-	// i = 0;
 	while (t_cmd[i])
 	{
 		j = 0;
@@ -36,7 +34,6 @@ static void	ft_putstr_echo(char **t_cmd, int i)
 		i++;
 	}
 }
-
 
 // verifie la validité du flag -n
 // return 1 si flag valide sinon 0

@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:11:01 by root              #+#    #+#             */
-/*   Updated: 2026/04/03 16:45:19 by root             ###   ########.fr       */
+/*   Updated: 2026/04/06 18:52:51 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static char	*dup_env_entry(t_env *node)
 		free(tmp_1);
 		entry = ft_strjoin(tmp_2, "\"");
 		if (!entry)
-			return(free(tmp_2), NULL);
+			return (free(tmp_2), NULL);
 		free(tmp_2);
 	}
 	else
@@ -131,7 +131,8 @@ int	ft_export(t_shell *data, char **args)
 			set_env_var(&data->envp, args[i]);
 		else
 		{
-			ft_fprintf(STDERR_FILENO, "6ft shell: export: '%s': not a valid identifier\n", args[i]);
+			ft_fprintf(STDERR_FILENO,
+				"6ft shell: export: '%s': not a valid identifier\n", args[i]);
 			data->last_status = 1;
 		}
 	}

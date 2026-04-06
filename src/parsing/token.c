@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 17:14:48 by yzidani           #+#    #+#             */
-/*   Updated: 2026/03/26 17:37:52 by root             ###   ########.fr       */
+/*   Updated: 2026/04/06 18:47:03 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,7 @@ static int	process_token(t_token **list, const char *line, int *i)
 		free(token_value);
 		return (0);
 	}
-	add_token(list, new_token);
-	return (1);
+	return (add_token(list, new_token), 1);
 }
 
 t_token	*tokenize(const char *line)

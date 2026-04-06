@@ -6,11 +6,26 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:38:19 by root              #+#    #+#             */
-/*   Updated: 2026/03/27 17:31:35 by root             ###   ########.fr       */
+/*   Updated: 2026/04/06 18:58:12 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/execution.h"
+
+static int	hdl_failed_redir(t_shell *data)
+{
+	dup2(data->save_in, STDIN_FILENO);
+	dup2(data->save_out, STDOUT_FILENO);
+	close(data->save_in);
+	close(data->save_out);
+	if (g_signal == SIGINT)
+	{
+		data->last_status = 130;
+		g_signal = 0;
+		return (130);
+	}
+	return (1);
+}
 
 int	exec_parent_builtin(t_cmd *cmd, t_shell *data)
 {
@@ -27,19 +42,7 @@ int	exec_parent_builtin(t_cmd *cmd, t_shell *data)
 		return (1);
 	}
 	if (apply_input_redir(cmd) == -1 || apply_output_redir(cmd) == -1)
-	{
-		dup2(data->save_in, STDIN_FILENO);
-		dup2(data->save_out, STDOUT_FILENO);
-		close(data->save_in);
-		close(data->save_out);
-		if (g_signal == SIGINT)
-		{
-			data->last_status = 130;
-			g_signal = 0;
-			return (130);
-		}
-		return (1);
-	}
+		return (hdl_failed_redir(data));
 	status = builtins_dispatcher(data, cmd);
 	dup2(data->save_in, STDIN_FILENO);
 	dup2(data->save_out, STDOUT_FILENO);

@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:09:54 by root              #+#    #+#             */
-/*   Updated: 2026/04/04 17:00:13 by root             ###   ########.fr       */
+/*   Updated: 2026/04/06 18:51:59 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ char	*get_env(t_env **envp, char *key);
 static void	update_pwd(t_env *envp, char *key, char *dir_path)
 {
 	t_env	*tmp;
+
 	tmp = envp;
 	while (tmp && ft_strcmp(tmp->key, key))
 		tmp = tmp->next;

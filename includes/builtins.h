@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:48:00 by root              #+#    #+#             */
-/*   Updated: 2026/04/04 13:46:59 by root             ###   ########.fr       */
+/*   Updated: 2026/04/06 18:42:56 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int		is_parent_builtin(char *cmd);
 int		builtins_dispatcher(t_shell *data, t_cmd *cmd);
 void	set_env_var(t_env **envp, char *arg);
 int		add_var_to_env(t_env **envp, char *key, char *value);
-
 
 int		ft_cd(t_env *envp, char **args);
 int		ft_echo(char **args);

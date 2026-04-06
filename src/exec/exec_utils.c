@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:44:28 by root              #+#    #+#             */
-/*   Updated: 2026/04/03 16:51:27 by root             ###   ########.fr       */
+/*   Updated: 2026/04/06 19:48:17 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,35 @@ char	*get_path(char *cmd, t_env *env)
 	return (NULL);
 }
 
+void	child_process(t_cmd *cur, t_shell *data,
+		int prev_read, int pipefd[2])
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	if (prev_read != -1 && dup2(prev_read, STDIN_FILENO) == -1)
+		hdl_error(data, cur, "dup2", errno);
+	if (cur->next && dup2(pipefd[1], STDOUT_FILENO) == -1)
+		hdl_error(data, cur, "dup2", errno);
+	if (prev_read != -1)
+		close(prev_read);
+	if (cur->next)
+		(close(pipefd[0]), close(pipefd[1]));
+	if (apply_input_redir(cur) == -1 || apply_output_redir(cur) == -1)
+	{
+		if (g_signal == SIGINT)
+			_exit(130);
+		hdl_error(data, cur, "redir", errno);
+	}
+	if (!cur->args || !cur->args[0])
+		_exit(0);
+	if (is_child_builtin(cur->args[0]))
+	{
+		builtins_dispatcher(data, cur);
+		return (free_cmd_list(cur), free_data(data), _exit(0));
+	}
+	exec_cmd(cur, data);
+}
+
 void	exec_cmd(t_cmd *cmd, t_shell *data)
 {
 	char	*path;
@@ -85,7 +114,7 @@ void	exec_cmd(t_cmd *cmd, t_shell *data)
 		free_cmd_list(cmd);
 		free_data(data);
 		_exit(127);
-	}	
+	}
 	if (execve(path, cmd->args, env_tabl) == -1)
 	{
 		free(path);

@@ -6,25 +6,33 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 18:58:23 by root              #+#    #+#             */
-/*   Updated: 2026/04/02 16:25:58 by root             ###   ########.fr       */
+/*   Updated: 2026/04/06 20:07:08 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-// static void	appen_export_var(t_env *tmp, char *value)
-// {
-// 	char	*new_value;
+static int	appen_export_var(t_env **envp, char *key, char *value)
+{
+	t_env	*new;
 
-// 	free(tmp->value);
-// 	new_value = ft_strdup(value);
-// 	tmp->value = new_value;
-// }
+	new = malloc(sizeof(t_env));
+	if (!new)
+	{
+		free(key);
+		free(value);
+		return (1);
+	}
+	new->key = key;
+	new->value = value;
+	new->next = NULL;
+	ft_envadd_back(envp, new);
+	return (0);
+}
 
 int	add_var_to_env(t_env **envp, char *key, char *value)
 {
 	t_env	*tmp;
-	t_env	*new;
 
 	if (!key)
 		return (1);
@@ -38,22 +46,9 @@ int	add_var_to_env(t_env **envp, char *key, char *value)
 		free(key);
 	}
 	else if (!tmp)
-	{
-		new = malloc(sizeof(t_env));
-		if (!new)
-			return (free(key), free(value), 1);
-		new->key = key;
-		new->value = value;
-		new->next = NULL;
-		ft_envadd_back(envp, new);
-	}
+		return (appen_export_var(envp, key, value));
 	else
-	{
-		if (key)
-			free(key);
-		if (value)
-			free(value);
-	}
+		free(key);
 	return (0);
 }
 

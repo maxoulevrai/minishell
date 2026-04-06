@@ -26,6 +26,7 @@ SRCS = $(SRCS_DIR)main/main.c \
 		$(SRCS_DIR)exec/exec_cleanup.c \
 		$(SRCS_DIR)exec/parent_builtins.c \
 		$(SRCS_DIR)exec/redir.c \
+		$(SRCS_DIR)exec/wait_pipeline.c \
 		$(SRCS_DIR)parsing/parsing.c \
 		$(SRCS_DIR)parsing/token.c \
 		$(SRCS_DIR)parsing/token_utils.c \

@@ -21,6 +21,8 @@ void	free_cmd_list(t_cmd *cmd_list)
 		next = cmd_list->next;
 		if (cmd_list->args)
 			free_dtab(cmd_list->args);
+		if (cmd_list->heredoc && cmd_list->heredoc_fd > STDERR_FILENO)
+			close(cmd_list->heredoc_fd);
 		free(cmd_list->input_file);
 		free(cmd_list->output_file);
 		free(cmd_list);
