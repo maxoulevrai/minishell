@@ -70,7 +70,7 @@ typedef struct s_cmd
 	int				heredoc_fd;
 	int				redir_count;
 	int				*redir_types;
-	char				**redir_files;
+	char			**redir_files;
 	struct s_cmd	*next;
 }				t_cmd;
 
