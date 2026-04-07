@@ -81,11 +81,7 @@ void	child_process(t_cmd *cur, t_shell *data,
 	if (cur->next)
 		(close(pipefd[0]), close(pipefd[1]));
 	if (apply_input_redir(cur) == -1 || apply_output_redir(cur) == -1)
-	{
-		if (g_signal == SIGINT)
-			_exit(130);
-		hdl_error(data, cur, "redir", errno);
-	}
+		hdl_redir_error(cur, data);
 	if (!cur->args || !cur->args[0])
 		_exit(0);
 	if (is_child_builtin(cur->args[0]))

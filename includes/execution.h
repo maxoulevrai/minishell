@@ -42,6 +42,7 @@ char	**get_path_list(t_env *env);
 void	free_cmd_list(t_cmd *cmd_list);
 void	exec_cmd(t_cmd *cmd, t_shell *data);
 void	hdl_error(t_shell *data, t_cmd *cmd_tbl, char *arg, int err_code);
+void	hdl_redir_error(t_cmd *cur, t_shell *data);
 void	child_process(t_cmd *cur, t_shell *data, int prev_read, int pipefd[2]);
 
 #endif

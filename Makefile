@@ -22,6 +22,7 @@ SRCS = $(SRCS_DIR)main/main.c \
 		$(SRCS_DIR)main/signal.c \
 		$(SRCS_DIR)exec/exec.c \
 		$(SRCS_DIR)exec/exec_utils.c \
+		$(SRCS_DIR)exec/exec_utils2.c \
 		$(SRCS_DIR)exec/env_tab.c \
 		$(SRCS_DIR)exec/exec_cleanup.c \
 		$(SRCS_DIR)exec/parent_builtins.c \
