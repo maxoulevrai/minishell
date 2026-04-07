@@ -33,6 +33,7 @@ SRCS = $(SRCS_DIR)main/main.c \
 		$(SRCS_DIR)parsing/token_utils.c \
 		$(SRCS_DIR)parsing/parse_cmd.c \
 		$(SRCS_DIR)parsing/parse_utils.c \
+		$(SRCS_DIR)parsing/parse_utils2.c \
 		$(SRCS_DIR)parsing/expand.c \
 		$(SRCS_DIR)parsing/expand_word.c \
 		$(SRCS_DIR)parsing/expand_av.c \

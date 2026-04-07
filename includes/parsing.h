@@ -46,6 +46,9 @@ int		is_redir(int type);
 void	handle_redir(t_cmd *cmd, t_token **tok);
 int		count_args(t_token *start, t_token *end);
 char	**build_args(t_token *start, t_token *end);
+int		add_cmd_redir(t_cmd *cmd, int type, const char *value);
+void	set_effective_redir(t_cmd *cmd, int type, const char *value);
+void	expand_cmd_redirs(t_cmd *cmd, t_shell *shell);
 
 // Token Utils
 t_token	*create_token(char *value, int type);

@@ -80,7 +80,7 @@ void	child_process(t_cmd *cur, t_shell *data,
 		close(prev_read);
 	if (cur->next)
 		(close(pipefd[0]), close(pipefd[1]));
-	if (apply_input_redir(cur) == -1 || apply_output_redir(cur) == -1)
+	if (apply_redirs(cur) == -1)
 		hdl_redir_error(cur, data);
 	if (!cur->args || !cur->args[0])
 		_exit(0);

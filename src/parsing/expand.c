@@ -36,6 +36,7 @@ void	expand(t_cmd *cmd_list, t_shell *shell)
 	{
 		if (command->args)
 			command->args = expand_av(command->args, shell);
+		expand_cmd_redirs(command, shell);
 		update_redirection(&command->input_file, shell);
 		update_redirection(&command->output_file, shell);
 		command = command->next;

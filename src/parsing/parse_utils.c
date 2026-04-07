@@ -25,6 +25,9 @@ t_cmd	*init_cmd(void)
 	cmd->append = 0;
 	cmd->heredoc = 0;
 	cmd->heredoc_fd = 0;
+	cmd->redir_count = 0;
+	cmd->redir_types = NULL;
+	cmd->redir_files = NULL;
 	cmd->next = NULL;
 	return (cmd);
 }
@@ -43,18 +46,9 @@ void	handle_redir(t_cmd *cmd, t_token **tok)
 	*tok = (*tok)->next;
 	if (!*tok || (*tok)->type != WORD)
 		return ;
-	if (type == REDIR_IN || type == HERE_DOC)
-	{
-		cmd->input_file = ft_strdup((*tok)->value);
-		cmd->heredoc = (type == HERE_DOC);
-	}
-	else if (type == REDIR_OUT)
-		cmd->output_file = ft_strdup((*tok)->value);
-	else if (type == REDIR_APPEND)
-	{
-		cmd->output_file = ft_strdup((*tok)->value);
-		cmd->append = 1;
-	}
+	if (add_cmd_redir(cmd, type, (*tok)->value) != 0)
+		return ;
+	set_effective_redir(cmd, type, (*tok)->value);
 	*tok = (*tok)->next;
 }
 

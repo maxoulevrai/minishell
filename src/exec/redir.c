@@ -50,46 +50,44 @@ int	heredoc_to_fd(char *limiter)
 	return (init_signal(), close(pipefd[1]), pipefd[0]);
 }
 
-int	apply_input_redir(t_cmd *cmd)
+static int	open_redir_fd(t_cmd *cmd, int i)
 {
-	int	fd;
+	if (cmd->redir_types[i] == REDIR_IN)
+		return (open(cmd->redir_files[i], O_RDONLY));
+	if (cmd->redir_types[i] == REDIR_OUT)
+		return (open(cmd->redir_files[i], O_WRONLY | O_CREAT | O_TRUNC, 0644));
+	if (cmd->redir_types[i] == REDIR_APPEND)
+		return (open(cmd->redir_files[i], O_WRONLY | O_CREAT | O_APPEND, 0644));
+	return (cmd->heredoc_fd);
+}
 
-	if (!cmd->input_file)
-		return (0);
-	if (cmd->heredoc)
-		fd = cmd->heredoc_fd;
-	else
-		fd = open(cmd->input_file, O_RDONLY);
-	if (fd < 0)
-		return (-1);
-	if (dup2(fd, STDIN_FILENO) == -1)
+static int	dup_redir_fd(int fd, int type)
+{
+	if (type == REDIR_IN || type == HERE_DOC)
 	{
-		close(fd);
-		return (-1);
+		if (dup2(fd, STDIN_FILENO) == -1)
+			return (close(fd), -1);
 	}
+	else if (dup2(fd, STDOUT_FILENO) == -1)
+		return (close(fd), -1);
 	close(fd);
-	if (cmd->heredoc)
-		cmd->heredoc_fd = -1;
 	return (0);
 }
 
-int	apply_output_redir(t_cmd *cmd)
+int	apply_redirs(t_cmd *cmd)
 {
 	int	fd;
+	int	i;
 
-	if (!cmd->output_file)
-		return (0);
-	if (cmd->append)
-		fd = open(cmd->output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	else
-		fd = open(cmd->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd < 0)
-		return (-1);
-	if (dup2(fd, STDOUT_FILENO) == -1)
+	i = 0;
+	while (i < cmd->redir_count)
 	{
-		close(fd);
-		return (-1);
+		fd = open_redir_fd(cmd, i);
+		if (fd < 0)
+			return (-1);
+		if (dup_redir_fd(fd, cmd->redir_types[i]) == -1)
+			return (-1);
+		i++;
 	}
-	close(fd);
 	return (0);
 }

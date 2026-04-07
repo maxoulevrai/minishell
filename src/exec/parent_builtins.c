@@ -27,10 +27,23 @@ static int	hdl_failed_redir(t_shell *data)
 	return (1);
 }
 
-int	exec_parent_builtin(t_cmd *cmd, t_shell *data)
+static int	run_parent_builtin(t_cmd *cmd, t_shell *data)
 {
 	int	status;
 
+	if (apply_redirs(cmd) == -1)
+		return (hdl_failed_redir(data));
+	status = builtins_dispatcher(data, cmd);
+	dup2(data->save_in, STDIN_FILENO);
+	dup2(data->save_out, STDOUT_FILENO);
+	close(data->save_in);
+	close(data->save_out);
+	data->last_status = status;
+	return (status);
+}
+
+int	exec_parent_builtin(t_cmd *cmd, t_shell *data)
+{
 	data->save_in = dup(STDIN_FILENO);
 	data->save_out = dup(STDOUT_FILENO);
 	if (data->save_in == -1 || data->save_out == -1)
@@ -41,13 +54,5 @@ int	exec_parent_builtin(t_cmd *cmd, t_shell *data)
 			close(data->save_out);
 		return (1);
 	}
-	if (apply_input_redir(cmd) == -1 || apply_output_redir(cmd) == -1)
-		return (hdl_failed_redir(data));
-	status = builtins_dispatcher(data, cmd);
-	dup2(data->save_in, STDIN_FILENO);
-	dup2(data->save_out, STDOUT_FILENO);
-	close(data->save_in);
-	close(data->save_out);
-	data->last_status = status;
-	return (status);
+	return (run_parent_builtin(cmd, data));
 }

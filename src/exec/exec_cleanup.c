@@ -12,6 +12,20 @@
 
 #include "../../includes/execution.h"
 
+static void	free_redirs(t_cmd *cmd)
+{
+	int	i;
+
+	i = 0;
+	while (i < cmd->redir_count)
+	{
+		free(cmd->redir_files[i]);
+		i++;
+	}
+	free(cmd->redir_types);
+	free(cmd->redir_files);
+}
+
 void	free_cmd_list(t_cmd *cmd_list)
 {
 	t_cmd	*next;
@@ -23,6 +37,7 @@ void	free_cmd_list(t_cmd *cmd_list)
 			free_dtab(cmd_list->args);
 		if (cmd_list->heredoc && cmd_list->heredoc_fd > STDERR_FILENO)
 			close(cmd_list->heredoc_fd);
+		free_redirs(cmd_list);
 		free(cmd_list->input_file);
 		free(cmd_list->output_file);
 		free(cmd_list);
