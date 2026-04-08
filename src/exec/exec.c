@@ -13,7 +13,7 @@
 #include "../../includes/execution.h"
 
 static pid_t	spawn_cmd(t_cmd *cur, t_shell *data,
-		int prev_read, int pipefd[2])
+		t_cmd *cmd_head, int prev_read, int pipefd[2])
 {
 	pid_t	pid;
 
@@ -21,7 +21,7 @@ static pid_t	spawn_cmd(t_cmd *cur, t_shell *data,
 	if (pid == -1)
 		return (-1);
 	if (pid == 0)
-		child_process(cur, data, prev_read, pipefd);
+		child_process(cur, cmd_head, data, prev_read, pipefd);
 	return (pid);
 }
 
@@ -77,7 +77,7 @@ static int	exec_loop(t_shell *data, t_cmd *cmd_tbl)
 	{
 		if (cur->next && pipe(pipefd) == -1)
 			return (init_signal(), -1);
-		last_pid = spawn_cmd(cur, data, prev_read, pipefd);
+		last_pid = spawn_cmd(cur, data, cmd_tbl, prev_read, pipefd);
 		if (last_pid == -1)
 			return (init_signal(), -1);
 		update_parent_pipe(cur, &prev_read, pipefd);

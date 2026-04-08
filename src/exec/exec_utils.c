@@ -67,32 +67,32 @@ char	*get_path(char *cmd, t_env *env)
 	return (NULL);
 }
 
-void	child_process(t_cmd *cur, t_shell *data,
+void	child_process(t_cmd *cur, t_cmd *cmd_head, t_shell *data,
 		int prev_read, int pipefd[2])
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	if (prev_read != -1 && dup2(prev_read, STDIN_FILENO) == -1)
-		hdl_error(data, cur, "dup2", errno);
+		hdl_error(data, cmd_head, "dup2", errno);
 	if (cur->next && dup2(pipefd[1], STDOUT_FILENO) == -1)
-		hdl_error(data, cur, "dup2", errno);
+		hdl_error(data, cmd_head, "dup2", errno);
 	if (prev_read != -1)
 		close(prev_read);
 	if (cur->next)
 		(close(pipefd[0]), close(pipefd[1]));
 	if (apply_redirs(cur) == -1)
-		hdl_redir_error(cur, data);
+		hdl_redir_error(cmd_head, data);
 	if (!cur->args || !cur->args[0])
-		_exit(0);
+		return (free_cmd_list(cmd_head), free_data(data), _exit(0));
 	if (is_child_builtin(cur->args[0]))
 	{
 		builtins_dispatcher(data, cur);
-		return (free_cmd_list(cur), free_data(data), _exit(0));
+		return (free_cmd_list(cmd_head), free_data(data), _exit(0));
 	}
-	exec_cmd(cur, data);
+	exec_cmd(cur, cmd_head, data);
 }
 
-void	exec_cmd(t_cmd *cmd, t_shell *data)
+void	exec_cmd(t_cmd *cmd, t_cmd *cmd_head, t_shell *data)
 {
 	char	*path;
 	char	**env_tabl;
@@ -107,7 +107,7 @@ void	exec_cmd(t_cmd *cmd, t_shell *data)
 		ft_fprintf(STDERR_FILENO, "6ft shell: %s: command not found\n",
 			cmd->args[0]),
 		free_dtab(env_tabl);
-		free_cmd_list(cmd);
+		free_cmd_list(cmd_head);
 		free_data(data);
 		_exit(127);
 	}
@@ -115,6 +115,6 @@ void	exec_cmd(t_cmd *cmd, t_shell *data)
 	{
 		free(path);
 		free_dtab(env_tabl);
-		hdl_error(data, cmd, NULL, errno);
+		hdl_error(data, cmd_head, NULL, errno);
 	}
 }

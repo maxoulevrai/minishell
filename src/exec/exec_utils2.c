@@ -12,11 +12,11 @@
 
 #include "../../includes/execution.h"
 
-void	hdl_redir_error(t_cmd *cur, t_shell *data)
+void	hdl_redir_error(t_cmd *cmd_head, t_shell *data)
 {
 	if (g_signal == SIGINT)
 		_exit(130);
-	free_cmd_list(cur);
+	free_cmd_list(cmd_head);
 	free_data(data);
 	ft_fprintf(STDERR_FILENO, "6ft shell: redir: %s\n", strerror(errno));
 	_exit(1);
