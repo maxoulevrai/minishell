@@ -105,7 +105,7 @@ $(SUPP_FILE):
 
 # launch ./minishell with valgrind set up with the suppressed file
 valgrind: $(NAME) $(SUPP_FILE)
-	valgrind --suppressions=$(SUPP_FILE) --leak-check=full --track-fds=yes --show-leak-kinds=all --trace-children=yes ./$(NAME) || true
+	valgrind --suppressions=$(SUPP_FILE) --leak-check=full --track-fds=yes --show-leak-kinds=all --trace-children=yes --trace-children-skip='/bin/*,/sbin/*,/usr/bin/*,/usr/sbin/*,/usr/local/bin/*,/usr/local/sbin/*' ./$(NAME) || true
 
 
 CHAT = { ignore_readline_leaks Memcheck:Leak ... obj:*/libreadline.so.* } { ignore_bin_functions Memcheck:Leak ... obj:/usr/bin/* } { ncurses_termcap Memcheck:Leak match-leak-kinds:reachable fun:rl_make_bare_keymap fun:rl_generic_bind fun:rl_parse_and_bind obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.2 fun:rl_initialize fun:readline }
