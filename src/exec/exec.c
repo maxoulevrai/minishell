@@ -5,15 +5,15 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/26 17:45:02 by root              #+#    #+#             */
-/*   Updated: 2026/04/06 19:47:51 by root             ###   ########.fr       */
+/*   Created: 2026/04/09 19:06:53 by root              #+#    #+#             */
+/*   Updated: 2026/04/09 19:06:56 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/execution.h"
 
 static pid_t	spawn_cmd(t_cmd *cur, t_shell *data,
-		t_cmd *cmd_head, int prev_read, int pipefd[2])
+		t_cmd *cmd_head, t_pipe pipe_tbl)
 {
 	pid_t	pid;
 
@@ -21,7 +21,7 @@ static pid_t	spawn_cmd(t_cmd *cur, t_shell *data,
 	if (pid == -1)
 		return (-1);
 	if (pid == 0)
-		child_process(cur, cmd_head, data, prev_read, pipefd);
+		child_process(cur, cmd_head, data, pipe_tbl);
 	return (pid);
 }
 
@@ -68,23 +68,22 @@ static int	exec_loop(t_shell *data, t_cmd *cmd_tbl)
 {
 	t_cmd	*cur;
 	pid_t	last_pid;
-	int		prev_read;
-	int		pipefd[2];
+	t_pipe	pipe_tbl;
 
 	cur = cmd_tbl;
-	prev_read = -1;
+	pipe_tbl.prev_read = -1;
 	while (cur)
 	{
-		if (cur->next && pipe(pipefd) == -1)
+		if (cur->next && pipe(pipe_tbl.pipe) == -1)
 			return (init_signal(), -1);
-		last_pid = spawn_cmd(cur, data, cmd_tbl, prev_read, pipefd);
+		last_pid = spawn_cmd(cur, data, cmd_tbl, pipe_tbl);
 		if (last_pid == -1)
 			return (init_signal(), -1);
-		update_parent_pipe(cur, &prev_read, pipefd);
+		update_parent_pipe(cur, &pipe_tbl.prev_read, pipe_tbl.pipe);
 		cur = cur->next;
 	}
-	if (prev_read != -1)
-		close(prev_read);
+	if (pipe_tbl.prev_read != -1)
+		close(pipe_tbl.prev_read);
 	return (last_pid);
 }
 

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/26 16:04:50 by root              #+#    #+#             */
-/*   Updated: 2026/04/06 20:22:44 by root             ###   ########.fr       */
+/*   Created: 2026/04/09 19:10:37 by root              #+#    #+#             */
+/*   Updated: 2026/04/09 19:10:42 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,17 +73,17 @@ static int	check_exit_args(t_shell *data, t_cmd *cmd_tbl)
 		ft_fprintf(STDOUT_FILENO, "exit\n");
 		exit(0);
 	}
-	if (cmd_tbl->args[2])
-	{
-		ft_fprintf(STDERR_FILENO, "minishell: exit: too many arguments\n");
-		return (1);
-	}
 	if (!is_numeric(cmd_tbl->args[1]) || !check_limits(cmd_tbl->args[1]))
 	{
 		ft_fprintf(STDERR_FILENO,
 			"minishell: exit: %s: numeric argument required\n",
 			cmd_tbl->args[1]);
 		return (2);
+	}
+	if (cmd_tbl->args[2])
+	{
+		ft_fprintf(STDERR_FILENO, "minishell: exit: too many arguments\n");
+		return (1);
 	}
 	exit_code = (((ft_atol(cmd_tbl->args[1]) % 256) + 256) % 256);
 	return (exit_code);
@@ -102,6 +102,8 @@ int	ft_exit(t_shell *data, t_cmd *cmd_tbl)
 	if (cmd_tbl->next)
 		return (0);
 	exit_code = check_exit_args(data, cmd_tbl);
+	if (exit_code == 1)
+		return (1);
 	close(data->save_in);
 	close(data->save_out);
 	free_data(data);

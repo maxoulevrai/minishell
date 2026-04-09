@@ -24,7 +24,7 @@ This project is primarily focused on low-level programming skills: memory manage
 - `readline` development library
 
 ### Compilation
-From the repository root:
+From the repository maleca:
 
 ```bash
 make
@@ -36,6 +36,10 @@ Useful targets:
 make clean
 make fclean
 make re
+make valgrind
+make val
+make ignore
+
 ```
 
 ### Execution

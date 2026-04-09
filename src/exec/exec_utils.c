@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/26 17:44:28 by root              #+#    #+#             */
-/*   Updated: 2026/04/06 19:48:17 by root             ###   ########.fr       */
+/*   Created: 2026/04/09 19:07:31 by root              #+#    #+#             */
+/*   Updated: 2026/04/09 19:07:34 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,18 +68,19 @@ char	*get_path(char *cmd, t_env *env)
 }
 
 void	child_process(t_cmd *cur, t_cmd *cmd_head, t_shell *data,
-		int prev_read, int pipefd[2])
+		t_pipe pipe_tbl)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
-	if (prev_read != -1 && dup2(prev_read, STDIN_FILENO) == -1)
+	if (pipe_tbl.prev_read != -1
+		&& dup2(pipe_tbl.prev_read, STDIN_FILENO) == -1)
 		hdl_error(data, cmd_head, "dup2", errno);
-	if (cur->next && dup2(pipefd[1], STDOUT_FILENO) == -1)
+	if (cur->next && dup2(pipe_tbl.pipe[1], STDOUT_FILENO) == -1)
 		hdl_error(data, cmd_head, "dup2", errno);
-	if (prev_read != -1)
-		close(prev_read);
+	if (pipe_tbl.prev_read != -1)
+		close(pipe_tbl.prev_read);
 	if (cur->next)
-		(close(pipefd[0]), close(pipefd[1]));
+		(close(pipe_tbl.pipe[0]), close(pipe_tbl.pipe[1]));
 	if (apply_redirs(cur) == -1)
 		hdl_redir_error(cmd_head, data);
 	if (!cur->args || !cur->args[0])

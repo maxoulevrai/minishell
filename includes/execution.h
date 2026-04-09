@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/26 17:47:49 by root              #+#    #+#             */
-/*   Updated: 2026/04/06 19:48:28 by root             ###   ########.fr       */
+/*   Created: 2026/04/09 19:05:28 by root              #+#    #+#             */
+/*   Updated: 2026/04/09 19:05:32 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,12 @@ typedef struct s_cmd	t_cmd;
 typedef struct s_shell	t_shell;
 typedef struct s_env	t_env;
 
+typedef struct s_pipe
+{
+	int		pipe[2];
+	int		prev_read;
+}			t_pipe;
+
 int		exec(t_cmd *cmd_tabl, t_shell *data);
 int		wait_pipeline(pid_t last_pid);
 int		is_parent_builtin(char *cmd);
@@ -43,6 +49,6 @@ void	exec_cmd(t_cmd *cmd, t_cmd *cmd_head, t_shell *data);
 void	hdl_error(t_shell *data, t_cmd *cmd_tbl, char *arg, int err_code);
 void	hdl_redir_error(t_cmd *cmd_head, t_shell *data);
 void	child_process(t_cmd *cur, t_cmd *cmd_head, t_shell *data,
-		int prev_read, int pipefd[2]);
+			t_pipe pipe_tbl);
 
 #endif
